@@ -8,5 +8,5 @@ Mini-curso de [Manipulação de dados meteorológicos com R](https://github.com/
 
 
 <p align="center">
-  <img src="figs/logo_small.png" alt="Resbmet"/>
+  <img src="figs/logo_resbmet.png" alt="Resbmet"/>
 </p>
