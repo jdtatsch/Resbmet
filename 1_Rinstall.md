@@ -1,39 +1,8 @@
----
-title: "Instalando R e RStudio"
-author: "Jônatan Tatsch e Roilan Hernan"
-date: "16-11-2015"
-output:
-  html_document:
-    fig_caption: yes
-    fig_width: 6
-    highlight: kate
-    keep_md: yes
-    number_sections: yes
-    toc: yes
-  pdf_document:
-    toc: yes
----
+# Instalando R e RStudio
+Jônatan Tatsch e Roilan Hernan  
+16-11-2015  
 
-```{r Chunk0, comment="",prompt=FALSE, echo=FALSE, eval=TRUE, error=TRUE,highlight=TRUE,message=FALSE,warning=FALSE, results='hide'}
-rm(list=ls())
-# definindo globalmente tz = "GMT"
-Sys.setenv(TZ = 'GMT')
-# data manipulation packages
-pcks <- c("knitr", "knitcitations",
-          #"printr",
-          "R.utils", "magrittr", "lubridate","stringr", 
-          "plyr", "dplyr", "raster", "lattice",
-          "rasterVis")
-invisible(sapply(pcks, require, character.only = TRUE, quietly = TRUE))
-# configuraçoes knitcitations
-#cleanbib()
-#cite_options(citation_format = "text",
-#            cite.style = "authoryear", 
-#            style = "html", 
-#            hyperlink = "to.bib")
-# configuraçoes knitr
-opts_chunk$set(cache = FALSE, fig.path = "figs/")
-```
+
 
 - - -
 
@@ -76,7 +45,7 @@ O [RStudio](http://www.rstudio.com/) é um ambiente de desenvolvimento integrado
 
 # R sempre atualizado
 
-O [R](http://www.r-project.org/) é um software multiplataforma (Windows, Linux e MacOS) distribuído  na **Rede Abrangente de Arquivos do R** ([CRAN](http://cran.r-project.org/mirrors.html)). Geralmente há duas atualizações ao ano. A versão mais atual é a `r R.version$version.string`. Para que ele seja atualizado automaticamente no Ubuntu precisamos adicionar o [repósitório do R](http://cran.r-project.org/mirrors.html) mais próximo da nossa região à lista de repositórios do sistema. No nosso caso, o repositório mais próximo é o da UFPR (<http://cran-r.c3sl.ufpr.br/>).
+O [R](http://www.r-project.org/) é um software multiplataforma (Windows, Linux e MacOS) distribuído  na **Rede Abrangente de Arquivos do R** ([CRAN](http://cran.r-project.org/mirrors.html)). Geralmente há duas atualizações ao ano. A versão mais atual é a R version 3.2.2 (2015-08-14). Para que ele seja atualizado automaticamente no Ubuntu precisamos adicionar o [repósitório do R](http://cran.r-project.org/mirrors.html) mais próximo da nossa região à lista de repositórios do sistema. No nosso caso, o repositório mais próximo é o da UFPR (<http://cran-r.c3sl.ufpr.br/>).
 
 ## Adicionando o repositório do R na Lista de repositórios do Ubuntu
 
@@ -88,10 +57,23 @@ $ cat /etc/apt/sources.list
 
 As primeiras linhas desse arquivo devem ser similares ao mostrado abaixo:
 
-```{r Chunk1, message=FALSE, comment="",highlight=TRUE, prompt=FALSE,echo=FALSE,eval=TRUE}
-sl <- system("cat /etc/apt/sources.list", intern = T)
-print(sl[1:15], quote = F)
-##sl[(length(sl)-10) : length(sl)]
+
+```
+ [1] # deb cdrom:[Ubuntu 14.04.2 LTS _Trusty Tahr_ - Release amd64 (20150218.1)]/ trusty main restricted
+ [2]                                                                                                    
+ [3] # See http://help.ubuntu.com/community/UpgradeNotes for how to upgrade to                          
+ [4] # newer versions of the distribution.                                                              
+ [5] deb http://br.archive.ubuntu.com/ubuntu/ trusty main restricted                                    
+ [6] deb-src http://br.archive.ubuntu.com/ubuntu/ trusty main restricted                                
+ [7]                                                                                                    
+ [8] ## Major bug fix updates produced after the final release of the                                   
+ [9] ## distribution.                                                                                   
+[10] deb http://br.archive.ubuntu.com/ubuntu/ trusty-updates main restricted                            
+[11] deb-src http://br.archive.ubuntu.com/ubuntu/ trusty-updates main restricted                        
+[12]                                                                                                    
+[13] ## N.B. software from this repository is ENTIRELY UNSUPPORTED by the Ubuntu                        
+[14] ## team. Also, please note that software in universe WILL NOT receive any                          
+[15] ## review or updates from the Ubuntu security team.                                                
 ```
 
 Note que o nome da versão Ubuntu na máquina acima é a `trusty` (Ubuntu 14.04), mas na sua máquina pode ser outra versão como a `utopic` (Ubuntu 14.10), [entre outras](http://releases.ubuntu.com/). O nome da versão Ubuntu utilizada no seu sistema pode ser obtido pelo comando:
@@ -176,10 +158,20 @@ Para iniciar o R no Ubuntu, digite `R` no cursor do terminal:
 
 A partir desse momento começamos uma sessão no R. Vamos gerar uma sequência de 1 a 10 e plotá-la.
 
-```{r Chunck4, comment="",fig.align='center',highlight=TRUE}
+
+```r
 1:10
+```
+
+```
+ [1]  1  2  3  4  5  6  7  8  9 10
+```
+
+```r
 plot(1:10)
 ```
+
+<img src="figs/Chunck4-1.png" title="" alt="" style="display: block; margin: auto;" />
 
 # RStudio no Ubuntu
 
@@ -211,16 +203,5 @@ Agora você está pronto para começar a programar com R aproveitando as facilid
 Outros links que podem ajudar na instalação do [R](https://cran.r-project.org/bin/linux/ubuntu/README) e do [RStudio](http://www.rstudio.com/ide/download/desktop).
 
 
-```{r Chunck5, comment="",fig.align='center',highlight=TRUE,eval=FALSE,echo=FALSE}
-# PACOTES PARA TRABALHAR COM DADOS ESPACIAIS E OPERAÇÕES GIS
-# ACESSO A DADOS ON-LINE, NETCDF, BANCO DE DADOS
-system("apt-get install netcdf-bin")
-system("apt-get install proj-bin")
-system("apt-get install libproj-dev")
-system("apt-get install gdal-bin")
-system("apt-get install libwxgtk-media3.0-0")
-system("apt-get install libxml2-dev")              #(XML package)
-system("apt-get install libcurl4-gnutls-dev")      #(RCurl)
-system("apt-get install libpq-dev postgresql-9.3") #(dplyr)
-```
+
 
