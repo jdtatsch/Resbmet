@@ -11,11 +11,11 @@ Mini-curso de [Manipulação de dados meteorológicos com R](https://github.com/
   <img src="figs/logo_resbmet.png" alt="Resbmet"/>
 </p>
 
+O curso será ministrado no Labaratório Setorial de Informática (LSI) do Centro de Ciências Naturais e Exatas ([CCNE](http://w3.ufsm.br/ccne/)) da [UFSM](http://site.ufsm.br/). O LSI possui *Desktops* com sistema operacional Linux [Ubuntu](http://ubuntu-br.org/). 
+
 - - - 
 
-Próximo: [Instalação](http://htmlpreview.github.com/https://rawgit.com/jdtatsch/Resbmet/master/Rinstall.html)
-
-# https://rawgit.com/jdtatsch/Resbmet/master/Rinstall.html).
+Próximo: [Instalação](https://rawgit.com/jdtatsch/Resbmet/master/1_Rinstall.html))
 
 
  
