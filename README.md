@@ -10,3 +10,13 @@ Mini-curso de [Manipulação de dados meteorológicos com R](https://github.com/
 <p align="center">
   <img src="figs/logo_resbmet.png" alt="Resbmet"/>
 </p>
+
+- - - 
+
+Próximo: [Instalação](http://htmlpreview.github.com/https://rawgit.com/jdtatsch/Resbmet/master/Rinstall.html)
+
+# https://rawgit.com/jdtatsch/Resbmet/master/Rinstall.html).
+
+
+ 
+ 
