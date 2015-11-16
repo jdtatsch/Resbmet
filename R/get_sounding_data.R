@@ -369,6 +369,7 @@ set_file_name <- function(xlist, type = "profile"){
   return(paste0(y_m, "_",site,"_", ifelse(type!="profile", "index", type), ".csv"))
 }
 
+# EXEMPLO
 res <- get_sounding_data(idate = "2014-12-16", stnm = 83378)
 head(res$profiles)
 head(res$indices)
