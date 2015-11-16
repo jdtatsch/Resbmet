@@ -121,6 +121,30 @@ Ferramentas específicas para:
 
 * lista de completa de razões [aqui](https://www.youtube.com/watch?v=UgPX49gkby4)
 
+RStudio
+=======
+
+[RStudio](http://www.rstudio.com/) é um ambiente de desenvolvimento integrado livre e de código aberto. 
+
+![RStudio IDE](http://www.rstudio.com/images/screenshots/rstudio-ubuntu.png)
+
+-------------
+- Para Windos, Linux e Mac
+<br/>  
+- ênfase da sintaxe do R, auto-preenchimento de código, identação inteligente
+<br/>  
+- execução do R diretamente do editor
+<br/>  
+- manejo de diretórios e projetos
+<br/>  
+- histórico de gráficos, zoom, atalhos para exportar imagens e PDF
+<br/>  
+- Integrado com Knitr
+<br/>  
+- Integrado com Git para controle de versões
+
+
+
 
 Programação do curso
 =======================
