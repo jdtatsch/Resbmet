@@ -17,7 +17,7 @@ O curso será ministrado no Labaratório Setorial de Informática (LSI) do Centr
 
 - - - 
 
-Acesse: [Introdução ao curso](https://rawgit.com/jdtatsch/Resbmet/master/0_Rinstall.html)
+Acesse: [Introdução ao curso](https://rawgit.com/jdtatsch/Resbmet/master/introducao_resbmet.html)
 
 
  
