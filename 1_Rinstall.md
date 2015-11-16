@@ -2,8 +2,6 @@
 Jônatan Tatsch  
 11-08-2015  
 
-
-
 - - -
 
 <p align="center">
@@ -12,10 +10,15 @@ Jônatan Tatsch
 
 - - -
 
+
+
+
+
 # Introdução
 
-O curso de Análise de dados ambientais com o *R* (ADAR) será ministrado no Labaratório Setorial de Informática (LSI) do Centro de Ciências Naturais e Exatas ([CCNE](http://w3.ufsm.br/ccne/)) da [UFSM](http://site.ufsm.br/). O LSI possui *Desktops* com sistema operacional Linux [Ubuntu](http://ubuntu-br.org/). 
-Nesse documento descreve-se como instalar o *R* e o [RStudio](http://www.rstudio.com/) no Linux Ubuntu. 
+O curso de Manipulação de dados meteorológicos com o R será ministrado no Labaratório Setorial de Informática (LSI) do Centro de Ciências Naturais e Exatas ([CCNE](http://w3.ufsm.br/ccne/)) da [UFSM](http://site.ufsm.br/). O LSI possui *Desktops* com sistema operacional Linux [Ubuntu](http://ubuntu-br.org/).
+ 
+Nesse documento descreve-se como instalar o R e o [RStudio](http://www.rstudio.com/) no Linux Ubuntu.
 
 [R](https://www.r-project.org/about.html) é uma linguagem e um ambiente de programação para computação estatística e análise de dados interativa. O *R* é um software livre, de código fonte  aberto e funciona em diversos sistemas operacionais (Linux, Windows e MacOS).
 
@@ -69,7 +72,6 @@ Vamos adicionar o endereço do repositório da UFPR na última linha do arquivo 
 
     $ sudo su
 
-
 Vamos definir na terminal uma variável com o endereço do repositório.
 
     # repos="deb http://cran-r.c3sl.ufpr.br/bin/linux/ubuntu `lsb_release --codename | cut -f2`/"
@@ -78,7 +80,7 @@ Note que a variável `repos` é uma sequência de caracteres com as seguintes in
 
     deb `linkRepositorioSelecionado`/bin/linux/ubuntu `versaoUbuntu`/
 
-A versão de Ubuntu é dada pelo comando entre crases, pode ver a linha com o comando: `$repos`, verifique que a última palavra corresponde a um dos codenames de Ubuntu. Para acrescentar essa informação no final do arquivo `sources.list` digite:
+A versão de Ubuntu é dada pelo comando entre crases, pode ver a linha com o comando: `$repos`, verifique se a última palavra corresponde a um dos codenames das versões Ubuntu. Para acrescentar essa informação no final do arquivo `sources.list` digite no terminal linux:
 
     # echo $repos >> /etc/apt/sources.list
 
@@ -125,7 +127,7 @@ Para informar ao **R** onde procurar os pacotes que instalamos criamos um arquiv
 
     $ echo 'R_LIBS=`echo $HOME`/.R/libs/' >> `echo $HOME`/.Renviron
     
-Esse caminho fica então visível ao *R*, o que pode ser verificado executando a função `.libPaths()` desde a console de *R*.     
+Esse caminho fica então visível ao *R*, o que pode ser verificado executando a função `.libPaths()` a partir do console do *R*.     
 
 ## Iniciando o *R*
 
@@ -137,6 +139,7 @@ A partir desse momento já começamos uma sessão no R. Vamos gerar uma sequênc
 
 
 ```r
+# sequência de 10 números
 1:10
 ```
 
@@ -145,6 +148,7 @@ A partir desse momento já começamos uma sessão no R. Vamos gerar uma sequênc
 ```
 
 ```r
+# gráfico
 plot(1:10)
 ```
 
@@ -179,29 +183,101 @@ Agora você está pronto para começar a programar com *R* aproveitando as facil
 
 Outros links que podem ajudar na instalação do [R](https://cran.r-project.org/bin/linux/ubuntu/README) e do [RStudio](http://www.rstudio.com/ide/download/desktop).
 
-# Pacotes recomendados para aplicação em Meteorologia
+# Bibliotecas Linux que são pré-requisitos para alguns pacotes do R 
 
-Existem vários pacotes de *R* amplamente utilizados por pesquisadores nos campos relacionados com a Meteorologia. Alguns exemplos são os pacotes `openair` (funções para análise estatístico de séries temporais), `hydroGOF` (funções para apliacação em hidrometeorologia), `raster` (funções para trabalhar com dados espaciais, semelhante a Sistemas de Informação Geográfica), entre outros.
+Para preparação dos computadores do LSI para esse curso foram instaladas algumas bibliotecas linux. Essas bibliotecas podem ser necessárias como pré-requisito de algums pacotes do R. Um exemplo desse tipo de dependência é o pacote [RGDAL](https://cran.r-project.org/web/packages/rgdal/index.html) que faz a ligação com o software (GDAL)[http://www.gdal.org/] (*Geospatial Data Abstraction Library*) possibilitando o accesso a operações de transformação/projeção da biblioteca [PROJ.4](https://en.wikipedia.org/wiki/PROJ.4). Então para usarmos o pacote [RGDAL](https://cran.r-project.org/web/packages/rgdal/index.html) é necessário a instalação das bibliotecas: `proj-bin`, `libproj-dev`, `gdal-bin`, `libgdal1-dev`.
 
-A continuação mostra-se linhas a executar desde a console de *R*, esses comandos instalarám alguns das librerias de linux que são necessárias para pacotes de *R* usados na meteorologia e outras utilidades. 
+A seguir mostra-se a forma como foi feita a instalação dessas bibliotecas LSI. Utilizaram-se comandos básicos de R e Linux facilmente executados no terminal de ambos. As bibliotecas instaladas a seguir possibilitam a ligação do R com softwares que permitem por exemplo: acesso a dados em diferentes formatos [SIG](https://pt.wikipedia.org/wiki/Sistema_de_informa%C3%A7%C3%A3o_geogr%C3%A1fica), banco de dados e a [extração de dados da web](https://en.wikipedia.org/wiki/Web_scraping), importação de dados no formato [NetCDF](https://en.wikipedia.org/wiki/NetCDF) entre outras.
 
 
-Na terminal de Linux execute o siguinte comando:
+
+Para instalação destas bibliotecas, no terminal Linux, execute os seguintes comandos:
 
     $ lista=`cat ~/lista_libs.txt`
     $ for i in $lista; do sudo apt-get -y install $i; done
 
-Na terminal de Linux execute os siguentes comandos que permitirão o uso da linguagem Java pelo sistema e o *R*.
+A linguagem Java é um pré-requisito de alguns pacotes do *R* que possibilitam a animação de gráficos e o acesso a alguns banco de dados. Para instalá-lo digite (requer permissão de super usuário):
 
     sudo R CMD javareconf
     wget -c http://www.rforge.net/src/contrib/rJava_0.9-8.tar.gz
     R CMD INSTALL rJava_0.9-8.tar.gz
 
-Na seção siguente serão instalados os pacotes do *R* mais importantes para a Meteorologia, alguns deles são utilizados no presente curso.
+# Pacotes do R instalados para o curso
+
+Existe uma diversidade de pacotes do *R* relacionados a Meteorologia. Alguns exemplos são os pacotes [openair](http://www.openair-project.org/) (ferramentas para análise de poluentes atmosféricos), `hydroTSM` (ferramentas para manipulação de séries hidrometeorológicas), `raster` (ferramentas análise de dados geográficos), entre outros.
+
+Nesta seção serão instalados os pacotes do *R* importantes para aplicações em  Meteorologia. Alguns deles são utilizados nesse curso.
+
+
+```r
+# vetor com nome dos pacotes do R
+pacotes <- c("lattice",
+             "Rcpp",
+             "devtools",
+             "latticeExtra",
+             "sfsmisc",
+             "plyr",
+             "dplyr",
+             "tidyr",
+             "openair",
+             "fields",
+             "RColorBrewer",
+             "raster",
+             "rasterVis",
+             "magrittr",
+             "doBy",
+             "XLConnect",
+             "stringr",
+             "lubridate",
+             "reshape2",
+             "rgdal",
+             "ggplot2",
+             "sp",
+             "maptools",
+             "knitr",
+             "readxl",
+             "readr",
+             "roxygen2",
+             "httr")
+# comando para instalação de pacotes
+install.packages(pacotes, dependencies = T)
+```
 
 
 
-# Outros pacotes de R para analises meteorológica.
+# Informações da sessão R
+
+
+```r
+sessionInfo()
+```
+
+```
+R version 3.2.2 (2015-08-14)
+Platform: x86_64-pc-linux-gnu (64-bit)
+Running under: Ubuntu 14.04.3 LTS
+
+locale:
+ [1] LC_CTYPE=en_US.UTF-8       LC_NUMERIC=C              
+ [3] LC_TIME=pt_BR.UTF-8        LC_COLLATE=en_US.UTF-8    
+ [5] LC_MONETARY=pt_BR.UTF-8    LC_MESSAGES=en_US.UTF-8   
+ [7] LC_PAPER=pt_BR.UTF-8       LC_NAME=C                 
+ [9] LC_ADDRESS=C               LC_TELEPHONE=C            
+[11] LC_MEASUREMENT=pt_BR.UTF-8 LC_IDENTIFICATION=C       
+
+attached base packages:
+[1] stats     graphics  grDevices utils     datasets  methods   base     
+
+other attached packages:
+[1] knitr_1.11
+
+loaded via a namespace (and not attached):
+ [1] magrittr_1.5    formatR_1.2     tools_3.2.2     htmltools_0.2.6
+ [5] yaml_2.1.13     stringi_0.5-5   rmarkdown_0.7.3 stringr_1.0.0  
+ [9] digest_0.6.8    evaluate_0.7.2 
+```
+
+# Lista de pacotes do R relacionados a meteorologia.
 
 * [cmsaf](https://cran.r-project.org/web/packages/cmsaf/index.html) Tools for CM SAF Netcdf Data
 
@@ -290,12 +366,10 @@ Meteorological Observations
 
 * [radar](https://cran.r-project.org/web/packages/radar/index.html)	Fundamental Formulas for Radar
 
-* [tempdisagg](https://cran.r-project.org/web/packages/tempdisagg/index.html)	Methods for Temporal Disaggregation and Interpolation of Time Series
-
-* [timsac](https://cran.r-project.org/web/packages/timsac/index.html)	TIMe Series Analysis and Control package
+* [timsac](https://cran.r-project.org/web/packages/timsac/index.html)	Time Series Analysis and Control package
 
 * [TSA](https://cran.r-project.org/web/packages/TSA/index.html)	Time Series Analysis
 
 * [ClamR](https://cran.r-project.org/web/packages/ClamR/index.html) Time Series Modeling for Climate Change Proxies
 
-* [stationaRy](https://cran.fhcrc.org/web/packages/stationaRy/index.html) Get Hourly Meteorological Data from Global Stations
+* [REddyProc](https://cran.r-project.org/web/packages/ClamR/index.html) EddyCovariance data processing and plotting utilities

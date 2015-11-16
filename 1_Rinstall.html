@@ -88,8 +88,10 @@ img {
 </ul></li>
 <li><a href="#rstudio-no-ubuntu"><span class="toc-section-number">3</span> RStudio no Ubuntu</a></li>
 <li><a href="#referencias"><span class="toc-section-number">4</span> Referências</a></li>
-<li><a href="#pacotes-recomendados-para-aplicacao-em-meteorologia"><span class="toc-section-number">5</span> Pacotes recomendados para aplicação em Meteorologia</a></li>
-<li><a href="#outros-pacotes-de-r-para-analises-meteorologica."><span class="toc-section-number">6</span> Outros pacotes de R para analises meteorológica.</a></li>
+<li><a href="#bibliotecas-linux-que-sao-pre-requisitos-para-alguns-pacotes-do-r"><span class="toc-section-number">5</span> Bibliotecas Linux que são pré-requisitos para alguns pacotes do R</a></li>
+<li><a href="#pacotes-do-r-instalados-para-o-curso"><span class="toc-section-number">6</span> Pacotes do R instalados para o curso</a></li>
+<li><a href="#informacoes-da-sessao-r"><span class="toc-section-number">7</span> Informações da sessão R</a></li>
+<li><a href="#lista-de-pacotes-do-r-relacionados-a-meteorologia."><span class="toc-section-number">8</span> Lista de pacotes do R relacionados a meteorologia.</a></li>
 </ul>
 </div>
 
@@ -100,7 +102,8 @@ img {
 <hr />
 <div id="introducao" class="section level1">
 <h1><span class="header-section-number">1</span> Introdução</h1>
-<p>O curso de Análise de dados ambientais com o <em>R</em> (ADAR) será ministrado no Labaratório Setorial de Informática (LSI) do Centro de Ciências Naturais e Exatas (<a href="http://w3.ufsm.br/ccne/">CCNE</a>) da <a href="http://site.ufsm.br/">UFSM</a>. O LSI possui <em>Desktops</em> com sistema operacional Linux <a href="http://ubuntu-br.org/">Ubuntu</a>. Nesse documento descreve-se como instalar o <em>R</em> e o <a href="http://www.rstudio.com/">RStudio</a> no Linux Ubuntu.</p>
+<p>O curso de Manipulação de dados meteorológicos com o R será ministrado no Labaratório Setorial de Informática (LSI) do Centro de Ciências Naturais e Exatas (<a href="http://w3.ufsm.br/ccne/">CCNE</a>) da <a href="http://site.ufsm.br/">UFSM</a>. O LSI possui <em>Desktops</em> com sistema operacional Linux <a href="http://ubuntu-br.org/">Ubuntu</a>.</p>
+<p>Nesse documento descreve-se como instalar o R e o <a href="http://www.rstudio.com/">RStudio</a> no Linux Ubuntu.</p>
 <p><a href="https://www.r-project.org/about.html">R</a> é uma linguagem e um ambiente de programação para computação estatística e análise de dados interativa. O <em>R</em> é um software livre, de código fonte aberto e funciona em diversos sistemas operacionais (Linux, Windows e MacOS).</p>
 <p>O <a href="http://www.rstudio.com/">RStudio</a> é um ambiente de desenvolvimento integrado (IDE) para o <em>R</em> e será utilizado no curso.</p>
 <p>O <em>R</em> pode ser instalado a partir dos binários pré-compilados ou do código fonte. Aqui descreve-se a instalação do <em>R</em> a partir dos binários e como configurar o Linux Ubuntu para atualizar automaticamente o <em>R</em>.</p>
@@ -137,7 +140,7 @@ img {
 <pre><code># repos=&quot;deb http://cran-r.c3sl.ufpr.br/bin/linux/ubuntu `lsb_release --codename | cut -f2`/&quot;</code></pre>
 <p>Note que a variável <code>repos</code> é uma sequência de caracteres com as seguintes informações:</p>
 <pre><code>deb `linkRepositorioSelecionado`/bin/linux/ubuntu `versaoUbuntu`/</code></pre>
-<p>A versão de Ubuntu é dada pelo comando entre crases, pode ver a linha com o comando: <code>$repos</code>, verifique que a última palavra corresponde a um dos codenames de Ubuntu. Para acrescentar essa informação no final do arquivo <code>sources.list</code> digite:</p>
+<p>A versão de Ubuntu é dada pelo comando entre crases, pode ver a linha com o comando: <code>$repos</code>, verifique se a última palavra corresponde a um dos codenames das versões Ubuntu. Para acrescentar essa informação no final do arquivo <code>sources.list</code> digite no terminal linux:</p>
 <pre><code># echo $repos &gt;&gt; /etc/apt/sources.list</code></pre>
 <p>Podemos retornar a sessão de usuário comum (<em>lsi</em>):</p>
 <pre><code># exit</code></pre>
@@ -168,16 +171,18 @@ $ gpg -a --export E084DAB9 | sudo apt-key add -</code></pre>
 <pre><code>$ mkdir -p `echo $HOME`/.R/libs/</code></pre>
 <p>Para informar ao <strong>R</strong> onde procurar os pacotes que instalamos criamos um arquivo chamado <code>.Renviron</code> no diretório <code>$HOME</code> contendo a linha <code>R_LIBS=/home/usuario/.R/libs/</code>, o que pode ser feito com o comando:</p>
 <pre><code>$ echo 'R_LIBS=`echo $HOME`/.R/libs/' &gt;&gt; `echo $HOME`/.Renviron</code></pre>
-<p>Esse caminho fica então visível ao <em>R</em>, o que pode ser verificado executando a função <code>.libPaths()</code> desde a console de <em>R</em>.</p>
+<p>Esse caminho fica então visível ao <em>R</em>, o que pode ser verificado executando a função <code>.libPaths()</code> a partir do console do <em>R</em>.</p>
 </div>
 <div id="iniciando-o-r" class="section level2">
 <h2><span class="header-section-number">2.5</span> Iniciando o <em>R</em></h2>
 <p>Para iniciar o <em>R</em> no Ubuntu, digite <code>R</code> no cursor do terminal:</p>
 <pre><code>$ R</code></pre>
 <p>A partir desse momento já começamos uma sessão no R. Vamos gerar uma sequência de 1 a 10 e plotá-la.</p>
-<pre class="sourceCode r"><code class="sourceCode r"><span class="dv">1</span>:<span class="dv">10</span></code></pre>
+<pre class="sourceCode r"><code class="sourceCode r"><span class="co"># sequência de 10 números</span>
+<span class="dv">1</span>:<span class="dv">10</span></code></pre>
 <pre><code> [1]  1  2  3  4  5  6  7  8  9 10</code></pre>
-<pre class="sourceCode r"><code class="sourceCode r"><span class="kw">plot</span>(<span class="dv">1</span>:<span class="dv">10</span>)</code></pre>
+<pre class="sourceCode r"><code class="sourceCode r"><span class="co"># gráfico</span>
+<span class="kw">plot</span>(<span class="dv">1</span>:<span class="dv">10</span>)</code></pre>
 <p><img src="data:image/png;base64,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" title alt style="display: block; margin: auto;" /></p>
 </div>
 </div>
@@ -204,21 +209,82 @@ $ gpg -a --export E084DAB9 | sudo apt-key add -</code></pre>
 <h1><span class="header-section-number">4</span> Referências</h1>
 <p>Outros links que podem ajudar na instalação do <a href="https://cran.r-project.org/bin/linux/ubuntu/README">R</a> e do <a href="http://www.rstudio.com/ide/download/desktop">RStudio</a>.</p>
 </div>
-<div id="pacotes-recomendados-para-aplicacao-em-meteorologia" class="section level1">
-<h1><span class="header-section-number">5</span> Pacotes recomendados para aplicação em Meteorologia</h1>
-<p>Existem vários pacotes de <em>R</em> amplamente utilizados por pesquisadores nos campos relacionados com a Meteorologia. Alguns exemplos são os pacotes <code>openair</code> (funções para análise estatístico de séries temporais), <code>hydroGOF</code> (funções para apliacação em hidrometeorologia), <code>raster</code> (funções para trabalhar com dados espaciais, semelhante a Sistemas de Informação Geográfica), entre outros.</p>
-<p>A continuação mostra-se linhas a executar desde a console de <em>R</em>, esses comandos instalarám alguns das librerias de linux que são necessárias para pacotes de <em>R</em> usados na meteorologia e outras utilidades.</p>
-<p>Na terminal de Linux execute o siguinte comando:</p>
+<div id="bibliotecas-linux-que-sao-pre-requisitos-para-alguns-pacotes-do-r" class="section level1">
+<h1><span class="header-section-number">5</span> Bibliotecas Linux que são pré-requisitos para alguns pacotes do R</h1>
+<p>Para preparação dos computadores do LSI para esse curso foram instaladas algumas bibliotecas linux. Essas bibliotecas podem ser necessárias como pré-requisito de algums pacotes do R. Um exemplo desse tipo de dependência é o pacote <a href="https://cran.r-project.org/web/packages/rgdal/index.html">RGDAL</a> que faz a ligação com o software (GDAL)[<a href="http://www.gdal.org/" class="uri">http://www.gdal.org/</a>] (<em>Geospatial Data Abstraction Library</em>) possibilitando o accesso a operações de transformação/projeção da biblioteca <a href="https://en.wikipedia.org/wiki/PROJ.4">PROJ.4</a>. Então para usarmos o pacote <a href="https://cran.r-project.org/web/packages/rgdal/index.html">RGDAL</a> é necessário a instalação das bibliotecas: <code>proj-bin</code>, <code>libproj-dev</code>, <code>gdal-bin</code>, <code>libgdal1-dev</code>.</p>
+<p>A seguir mostra-se a forma como foi feita a instalação dessas bibliotecas LSI. Utilizaram-se comandos básicos de R e Linux facilmente executados no terminal de ambos. As bibliotecas instaladas a seguir possibilitam a ligação do R com softwares que permitem por exemplo: acesso a dados em diferentes formatos <a href="https://pt.wikipedia.org/wiki/Sistema_de_informa%C3%A7%C3%A3o_geogr%C3%A1fica">SIG</a>, banco de dados e a <a href="https://en.wikipedia.org/wiki/Web_scraping">extração de dados da web</a>, importação de dados no formato <a href="https://en.wikipedia.org/wiki/NetCDF">NetCDF</a> entre outras.</p>
+<p>Para instalação destas bibliotecas, no terminal Linux, execute os seguintes comandos:</p>
 <pre><code>$ lista=`cat ~/lista_libs.txt`
 $ for i in $lista; do sudo apt-get -y install $i; done</code></pre>
-<p>Na terminal de Linux execute os siguentes comandos que permitirão o uso da linguagem Java pelo sistema e o <em>R</em>.</p>
+<p>A linguagem Java é um pré-requisito de alguns pacotes do <em>R</em> que possibilitam a animação de gráficos e o acesso a alguns banco de dados. Para instalá-lo digite (requer permissão de super usuário):</p>
 <pre><code>sudo R CMD javareconf
 wget -c http://www.rforge.net/src/contrib/rJava_0.9-8.tar.gz
 R CMD INSTALL rJava_0.9-8.tar.gz</code></pre>
-<p>Na seção siguente serão instalados os pacotes do <em>R</em> mais importantes para a Meteorologia, alguns deles são utilizados no presente curso.</p>
 </div>
-<div id="outros-pacotes-de-r-para-analises-meteorologica." class="section level1">
-<h1><span class="header-section-number">6</span> Outros pacotes de R para analises meteorológica.</h1>
+<div id="pacotes-do-r-instalados-para-o-curso" class="section level1">
+<h1><span class="header-section-number">6</span> Pacotes do R instalados para o curso</h1>
+<p>Existe uma diversidade de pacotes do <em>R</em> relacionados a Meteorologia. Alguns exemplos são os pacotes <a href="http://www.openair-project.org/">openair</a> (ferramentas para análise de poluentes atmosféricos), <code>hydroTSM</code> (ferramentas para manipulação de séries hidrometeorológicas), <code>raster</code> (ferramentas análise de dados geográficos), entre outros.</p>
+<p>Nesta seção serão instalados os pacotes do <em>R</em> importantes para aplicações em Meteorologia. Alguns deles são utilizados nesse curso.</p>
+<pre class="sourceCode r"><code class="sourceCode r"><span class="co"># vetor com nome dos pacotes do R</span>
+pacotes &lt;-<span class="st"> </span><span class="kw">c</span>(<span class="st">&quot;lattice&quot;</span>,
+             <span class="st">&quot;Rcpp&quot;</span>,
+             <span class="st">&quot;devtools&quot;</span>,
+             <span class="st">&quot;latticeExtra&quot;</span>,
+             <span class="st">&quot;sfsmisc&quot;</span>,
+             <span class="st">&quot;plyr&quot;</span>,
+             <span class="st">&quot;dplyr&quot;</span>,
+             <span class="st">&quot;tidyr&quot;</span>,
+             <span class="st">&quot;openair&quot;</span>,
+             <span class="st">&quot;fields&quot;</span>,
+             <span class="st">&quot;RColorBrewer&quot;</span>,
+             <span class="st">&quot;raster&quot;</span>,
+             <span class="st">&quot;rasterVis&quot;</span>,
+             <span class="st">&quot;magrittr&quot;</span>,
+             <span class="st">&quot;doBy&quot;</span>,
+             <span class="st">&quot;XLConnect&quot;</span>,
+             <span class="st">&quot;stringr&quot;</span>,
+             <span class="st">&quot;lubridate&quot;</span>,
+             <span class="st">&quot;reshape2&quot;</span>,
+             <span class="st">&quot;rgdal&quot;</span>,
+             <span class="st">&quot;ggplot2&quot;</span>,
+             <span class="st">&quot;sp&quot;</span>,
+             <span class="st">&quot;maptools&quot;</span>,
+             <span class="st">&quot;knitr&quot;</span>,
+             <span class="st">&quot;readxl&quot;</span>,
+             <span class="st">&quot;readr&quot;</span>,
+             <span class="st">&quot;roxygen2&quot;</span>,
+             <span class="st">&quot;httr&quot;</span>)
+<span class="co"># comando para instalação de pacotes</span>
+<span class="kw">install.packages</span>(pacotes, <span class="dt">dependencies =</span> T)</code></pre>
+</div>
+<div id="informacoes-da-sessao-r" class="section level1">
+<h1><span class="header-section-number">7</span> Informações da sessão R</h1>
+<pre class="sourceCode r"><code class="sourceCode r"><span class="kw">sessionInfo</span>()</code></pre>
+<pre><code>R version 3.2.2 (2015-08-14)
+Platform: x86_64-pc-linux-gnu (64-bit)
+Running under: Ubuntu 14.04.3 LTS
+
+locale:
+ [1] LC_CTYPE=en_US.UTF-8       LC_NUMERIC=C              
+ [3] LC_TIME=pt_BR.UTF-8        LC_COLLATE=en_US.UTF-8    
+ [5] LC_MONETARY=pt_BR.UTF-8    LC_MESSAGES=en_US.UTF-8   
+ [7] LC_PAPER=pt_BR.UTF-8       LC_NAME=C                 
+ [9] LC_ADDRESS=C               LC_TELEPHONE=C            
+[11] LC_MEASUREMENT=pt_BR.UTF-8 LC_IDENTIFICATION=C       
+
+attached base packages:
+[1] stats     graphics  grDevices utils     datasets  methods   base     
+
+other attached packages:
+[1] knitr_1.11
+
+loaded via a namespace (and not attached):
+ [1] magrittr_1.5    formatR_1.2     tools_3.2.2     htmltools_0.2.6
+ [5] yaml_2.1.13     stringi_0.5-5   rmarkdown_0.7.3 stringr_1.0.0  
+ [9] digest_0.6.8    evaluate_0.7.2 </code></pre>
+</div>
+<div id="lista-de-pacotes-do-r-relacionados-a-meteorologia." class="section level1">
+<h1><span class="header-section-number">8</span> Lista de pacotes do R relacionados a meteorologia.</h1>
 <ul>
 <li><p><a href="https://cran.r-project.org/web/packages/cmsaf/index.html">cmsaf</a> Tools for CM SAF Netcdf Data</p></li>
 <li><p><a href="https://cran.r-project.org/web/packages/RNCEP/index.html">RNCEP</a> Obtain, Organize, and Visualize NCEP Weather Data</p></li>
@@ -263,11 +329,10 @@ R CMD INSTALL rJava_0.9-8.tar.gz</code></pre>
 <li><p><a href="https://cran.r-project.org/web/packages/modiscloud/index.html">modiscloud</a> R tools for processing Level 2 Cloud Mask products from MODIS</p></li>
 <li><p><a href="https://cran.r-project.org/web/packages/MODISTools/index.html">MODISTools</a> MODIS Subsetting Tools</p></li>
 <li><p><a href="https://cran.r-project.org/web/packages/radar/index.html">radar</a> Fundamental Formulas for Radar</p></li>
-<li><p><a href="https://cran.r-project.org/web/packages/tempdisagg/index.html">tempdisagg</a> Methods for Temporal Disaggregation and Interpolation of Time Series</p></li>
-<li><p><a href="https://cran.r-project.org/web/packages/timsac/index.html">timsac</a> TIMe Series Analysis and Control package</p></li>
+<li><p><a href="https://cran.r-project.org/web/packages/timsac/index.html">timsac</a> Time Series Analysis and Control package</p></li>
 <li><p><a href="https://cran.r-project.org/web/packages/TSA/index.html">TSA</a> Time Series Analysis</p></li>
 <li><p><a href="https://cran.r-project.org/web/packages/ClamR/index.html">ClamR</a> Time Series Modeling for Climate Change Proxies</p></li>
-<li><p><a href="https://cran.fhcrc.org/web/packages/stationaRy/index.html">stationaRy</a> Get Hourly Meteorological Data from Global Stations</p></li>
+<li><p><a href="https://cran.r-project.org/web/packages/ClamR/index.html">REddyProc</a> EddyCovariance data processing and plotting utilities</p></li>
 </ul>
 </div>
 
