@@ -8,7 +8,7 @@
 <meta http-equiv="Content-Type" content="text/html; charset=utf-8" />
 <meta name="generator" content="pandoc" />
 
-<meta name="author" content="Jônatan Tatsch e Roilan Hernan" />
+<meta name="author" content="Jônatan Tatsch" />
 
 
 <title>Instalando R e RStudio</title>
@@ -71,27 +71,25 @@ img {
 
 
 <div id="header">
-<h1 class="title">Instalando R e RStudio</h1>
-<h4 class="author"><em>Jônatan Tatsch e Roilan Hernan</em></h4>
-<h4 class="date"><em>16-11-2015</em></h4>
+<h1 class="title">Instalando <em>R</em> e RStudio</h1>
+<h4 class="author"><em>Jônatan Tatsch</em></h4>
+<h4 class="date"><em>11-08-2015</em></h4>
 </div>
 
 <div id="TOC">
 <ul>
-<li><a href="#introducao"><span class="toc-section-number">1</span> Introdução</a><ul>
-<li><a href="#o-que-e-o-r"><span class="toc-section-number">1.1</span> O que é o R?</a></li>
-<li><a href="#porque-usar-o-r"><span class="toc-section-number">1.2</span> Porque usar o R?</a></li>
-<li><a href="#o-que-e-o-rstudio"><span class="toc-section-number">1.3</span> O que é o RStudio?</a></li>
-</ul></li>
-<li><a href="#r-sempre-atualizado"><span class="toc-section-number">2</span> R sempre atualizado</a><ul>
-<li><a href="#adicionando-o-repositorio-do-r-na-lista-de-repositorios-do-ubuntu"><span class="toc-section-number">2.1</span> Adicionando o repositório do R na Lista de repositórios do Ubuntu</a></li>
+<li><a href="#introducao"><span class="toc-section-number">1</span> Introdução</a></li>
+<li><a href="#r-sempre-atualizado"><span class="toc-section-number">2</span> <em>R</em> sempre atualizado</a><ul>
+<li><a href="#adicionando-o-repositorio-do-r-na-lista-de-repositorios-do-ubuntu"><span class="toc-section-number">2.1</span> Adicionando o repositório do <em>R</em> na Lista de repositórios do Ubuntu</a></li>
 <li><a href="#apt-protegido-adaptado-da-cran-secao-secure-apt."><span class="toc-section-number">2.2</span> <a href="https://wiki.debian.org/SecureApt">APT protegido</a> (adaptado da <a href="http://cran.r-project.org">CRAN</a> seção Secure Apt).</a></li>
-<li><a href="#atualizacao-da-lista-de-repositorios-do-ubuntu-e-instalacao-do-r"><span class="toc-section-number">2.3</span> Atualização da lista de repositórios do Ubuntu e instalação do R</a></li>
+<li><a href="#atualizacao-da-lista-de-repositorios-do-ubuntu-e-instalacao-do-r"><span class="toc-section-number">2.3</span> Atualização da lista de repositórios do Ubuntu e instalação do <em>R</em></a></li>
 <li><a href="#local-para-instalacao-de-pacotes"><span class="toc-section-number">2.4</span> Local para instalação de pacotes</a></li>
-<li><a href="#iniciando-o-r"><span class="toc-section-number">2.5</span> Iniciando o R</a></li>
+<li><a href="#iniciando-o-r"><span class="toc-section-number">2.5</span> Iniciando o <em>R</em></a></li>
 </ul></li>
 <li><a href="#rstudio-no-ubuntu"><span class="toc-section-number">3</span> RStudio no Ubuntu</a></li>
 <li><a href="#referencias"><span class="toc-section-number">4</span> Referências</a></li>
+<li><a href="#pacotes-recomendados-para-aplicacao-em-meteorologia"><span class="toc-section-number">5</span> Pacotes recomendados para aplicação em Meteorologia</a></li>
+<li><a href="#outros-pacotes-de-r-para-analises-meteorologica."><span class="toc-section-number">6</span> Outros pacotes de R para analises meteorológica.</a></li>
 </ul>
 </div>
 
@@ -102,37 +100,19 @@ img {
 <hr />
 <div id="introducao" class="section level1">
 <h1><span class="header-section-number">1</span> Introdução</h1>
-<p>O curso de Manipulação de dados meteorológicos com o R será ministrado no Labaratório Setorial de Informática (LSI) do Centro de Ciências Naturais e Exatas (<a href="http://w3.ufsm.br/ccne/">CCNE</a>) da <a href="http://site.ufsm.br/">UFSM</a>. O LSI possui <em>Desktops</em> com sistema operacional Linux <a href="http://ubuntu-br.org/">Ubuntu</a>. Nesse documento descreve-se como instalar o R e o <a href="http://www.rstudio.com/">RStudio</a> no Linux Ubuntu.</p>
-<div id="o-que-e-o-r" class="section level2">
-<h2><span class="header-section-number">1.1</span> O que é o R?</h2>
-<p><a href="https://www.r-project.org/about.html">R</a> é uma linguagem e um ambiente de programação para computação estatística e análise de dados interativa.</p>
-<p>Principais características do R:</p>
-<ul>
-<li>software livre</li>
-<li>código fonte aberto</li>
-<li>funciona em diversos sistemas operacionais (Linux, Windows e MacOS)</li>
-<li>asd</li>
-</ul>
-<p>O R pode ser instalado a partir dos binários pré-compilados ou do código fonte. Aqui descreve-se a instalação do R a partir dos binários e como configurar o Linux Ubuntu para atualizar automaticamente o R.</p>
-</div>
-<div id="porque-usar-o-r" class="section level2">
-<h2><span class="header-section-number">1.2</span> Porque usar o R?</h2>
-<p><a href="http://www.youtube.com/watch?feature=player_embedded&amp;v=lLuc6rtWkrM
-" target="_blank"><img src="data:image/jpeg;base64,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" alt="IMAGE ALT TEXT HERE" width="240" height="180" border="10" /></a></p>
-</div>
-<div id="o-que-e-o-rstudio" class="section level2">
-<h2><span class="header-section-number">1.3</span> O que é o RStudio?</h2>
-<p>O <a href="http://www.rstudio.com/">RStudio</a> é um ambiente de desenvolvimento integrado (IDE) para o R e será utilizado no curso. O RStudio oferece um conjunto de ferramentas integradas para tornar a interação com o R mais produtiva. O RStudio inclui: - console do R - editor de texto com realce da sintaxe do R que suporta a execução direta de código - ferramentas para gráficos, majeo do histórico e do espaço de trabalho</p>
-</div>
+<p>O curso de Análise de dados ambientais com o <em>R</em> (ADAR) será ministrado no Labaratório Setorial de Informática (LSI) do Centro de Ciências Naturais e Exatas (<a href="http://w3.ufsm.br/ccne/">CCNE</a>) da <a href="http://site.ufsm.br/">UFSM</a>. O LSI possui <em>Desktops</em> com sistema operacional Linux <a href="http://ubuntu-br.org/">Ubuntu</a>. Nesse documento descreve-se como instalar o <em>R</em> e o <a href="http://www.rstudio.com/">RStudio</a> no Linux Ubuntu.</p>
+<p><a href="https://www.r-project.org/about.html">R</a> é uma linguagem e um ambiente de programação para computação estatística e análise de dados interativa. O <em>R</em> é um software livre, de código fonte aberto e funciona em diversos sistemas operacionais (Linux, Windows e MacOS).</p>
+<p>O <a href="http://www.rstudio.com/">RStudio</a> é um ambiente de desenvolvimento integrado (IDE) para o <em>R</em> e será utilizado no curso.</p>
+<p>O <em>R</em> pode ser instalado a partir dos binários pré-compilados ou do código fonte. Aqui descreve-se a instalação do <em>R</em> a partir dos binários e como configurar o Linux Ubuntu para atualizar automaticamente o <em>R</em>.</p>
 </div>
 <div id="r-sempre-atualizado" class="section level1">
-<h1><span class="header-section-number">2</span> R sempre atualizado</h1>
+<h1><span class="header-section-number">2</span> <em>R</em> sempre atualizado</h1>
 <p>O <a href="http://www.r-project.org/">R</a> é um software multiplataforma (Windows, Linux e MacOS) distribuído na <strong>Rede Abrangente de Arquivos do R</strong> (<a href="http://cran.r-project.org/mirrors.html">CRAN</a>). Geralmente há duas atualizações ao ano. A versão mais atual é a R version 3.2.2 (2015-08-14). Para que ele seja atualizado automaticamente no Ubuntu precisamos adicionar o <a href="http://cran.r-project.org/mirrors.html">repósitório do R</a> mais próximo da nossa região à lista de repositórios do sistema. No nosso caso, o repositório mais próximo é o da UFPR (<a href="http://cran-r.c3sl.ufpr.br/" class="uri">http://cran-r.c3sl.ufpr.br/</a>).</p>
 <div id="adicionando-o-repositorio-do-r-na-lista-de-repositorios-do-ubuntu" class="section level2">
-<h2><span class="header-section-number">2.1</span> Adicionando o repositório do R na Lista de repositórios do Ubuntu</h2>
-<p>A lista de repositórios do sistema é armazenada no arquivo <code>/etc/apt/sources.list</code>. Vamos abrir um terminal linux (use o atalho <code>Ctr+Alt+t</code>) e ver o conteúdo desse arquivo pelo seguinte comando no no terminal linux:</p>
+<h2><span class="header-section-number">2.1</span> Adicionando o repositório do <em>R</em> na Lista de repositórios do Ubuntu</h2>
+<p>A lista de repositórios do sistema é armazenada no arquivo <code>/etc/apt/sources.list</code>. Vamos abrir um terminal linux (use o atalho <code>Ctr+Alt+t</code>) e ver o conteúdo desse arquivo pelo seguinte comando no terminal linux:</p>
 <pre><code>$ cat /etc/apt/sources.list </code></pre>
-<p>As primeiras linhas desse arquivo devem ser similares ao mostrado abaixo:</p>
+<p>Desde o <em>R</em> as primeiras linhas desse arquivo podem ser lidas com o comando abaixo:</p>
 <pre><code> [1] # deb cdrom:[Ubuntu 14.04.2 LTS _Trusty Tahr_ - Release amd64 (20150218.1)]/ trusty main restricted
  [2]                                                                                                    
  [3] # See http://help.ubuntu.com/community/UpgradeNotes for how to upgrade to                          
@@ -148,16 +128,16 @@ img {
 [13] ## N.B. software from this repository is ENTIRELY UNSUPPORTED by the Ubuntu                        
 [14] ## team. Also, please note that software in universe WILL NOT receive any                          
 [15] ## review or updates from the Ubuntu security team.                                                </code></pre>
-<p>Note que o nome da versão Ubuntu na máquina acima é a <code>trusty</code> (Ubuntu 14.04), mas na sua máquina pode ser outra versão como a <code>utopic</code> (Ubuntu 14.10), <a href="http://releases.ubuntu.com/">entre outras</a>. O nome da versão Ubuntu utilizada no seu sistema pode ser obtido pelo comando:</p>
-<pre><code>$ cat /etc/lsb-release</code></pre>
-<p>Precisamos incluir no arquivo <code>sources.list</code> o repositório da UFPR. Assim o gerenciador de pacotes <a href="http://pt.wikipedia.org/wiki/Advanced_Packaging_Tool">apt</a>, usado para instalação, atualização e remoção de pacotes em distribuições Debian GNU/Linux, fará a atualização do R quando uma nova versão estiver disponível. Ou seja, você estará utilizando sempre versão mais atual do R.</p>
-<p>Vamos adicionar o endereço do repositório da UFPR na última linha do arquivo <code>sources.list</code> através de alguns comandos do linux. Essa tarefa requer privilégios de superusuário, ou seja você precisa da senha de administrador do sistema. Vamos trocar de usuário comum para super usuário.</p>
+<p>No trabalho com distribuições Linux devemos sempre preferir versões com soporte estável, nesse momento as versões de Soporte por Longo Tempo (LTS) são as 12.04 (abril de 2012, codename <code>precise</code>), 14.04 (abril de 2014, codename <code>trusty</code>) e a 15.04 (abril de 2015, codename <code>vivid</code>), você pode saber mais sobre as <a href="http://releases.ubuntu.com/">versões de Ubuntu</a>. Para saber qual é a versão do sistema operacional (SO) de sua PC digite na terminal linux o seguinte comando:</p>
+<pre><code>$ lsb_release --codename | cut -f2</code></pre>
+<p>Precisamos incluir no arquivo <code>sources.list</code> o repositório da UFPR. Assim o gerenciador de pacotes <a href="http://pt.wikipedia.org/wiki/Advanced_Packaging_Tool">apt</a>, usado para instalação, atualização e remoção de pacotes em distribuições Debian GNU/Linux, fará a atualização do <em>R</em> quando uma nova versão estiver disponível. Ou seja, você estará utilizando sempre versão mais atual do <em>R</em>.</p>
+<p>Vamos adicionar o endereço do repositório da UFPR na última linha do arquivo <code>sources.list</code> através de alguns comandos do linux. Essa tarefa requer privilégios de superusuário, ou seja você precisa da senha de administrador do sistema. Vamos trocar de usuário comum para super usuário desde a terminal.</p>
 <pre><code>$ sudo su</code></pre>
-<p>Vamos definir uma variável com o endereço do repositório.</p>
-<pre><code> # repos=&quot;deb http://cran-r.c3sl.ufpr.br/bin/linux/ubuntu utopic/&quot;</code></pre>
+<p>Vamos definir na terminal uma variável com o endereço do repositório.</p>
+<pre><code># repos=&quot;deb http://cran-r.c3sl.ufpr.br/bin/linux/ubuntu `lsb_release --codename | cut -f2`/&quot;</code></pre>
 <p>Note que a variável <code>repos</code> é uma sequência de caracteres com as seguintes informações:</p>
 <pre><code>deb `linkRepositorioSelecionado`/bin/linux/ubuntu `versaoUbuntu`/</code></pre>
-<p>A <code>versaoUbuntu</code> deve ser informada conforme a versão de sua máquina (<code>utopic</code> no caso dos desktops do LSI). Para acrescentar essa informação no final do arquivo <code>sources.list</code> digite:</p>
+<p>A versão de Ubuntu é dada pelo comando entre crases, pode ver a linha com o comando: <code>$repos</code>, verifique que a última palavra corresponde a um dos codenames de Ubuntu. Para acrescentar essa informação no final do arquivo <code>sources.list</code> digite:</p>
 <pre><code># echo $repos &gt;&gt; /etc/apt/sources.list</code></pre>
 <p>Podemos retornar a sessão de usuário comum (<em>lsi</em>):</p>
 <pre><code># exit</code></pre>
@@ -176,25 +156,25 @@ $ gpg -a --export E084DAB9 | sudo apt-key add -</code></pre>
 <pre><code>$ sudo apt-key adv --keyserver keyserver.ubuntu.com --recv-keys E084DAB9</code></pre>
 </div>
 <div id="atualizacao-da-lista-de-repositorios-do-ubuntu-e-instalacao-do-r" class="section level2">
-<h2><span class="header-section-number">2.3</span> Atualização da lista de repositórios do Ubuntu e instalação do R</h2>
+<h2><span class="header-section-number">2.3</span> Atualização da lista de repositórios do Ubuntu e instalação do <em>R</em></h2>
 <p>Após fazer as configurações da lista de repositórios e adicionar a chave é necessário fazer a atualização dessa lista (requer poderes de super usuário):</p>
 <pre><code>$ sudo apt-get update</code></pre>
-<p>Agora, instale o binário do R:</p>
+<p>Agora, pode instalar o binário do R:</p>
 <pre><code>$ sudo apt-get install r-base</code></pre>
 </div>
 <div id="local-para-instalacao-de-pacotes" class="section level2">
 <h2><span class="header-section-number">2.4</span> Local para instalação de pacotes</h2>
-<p>Para termos melhor controle sobre os pacotes do R instalados no sistema é recomendado criar um diretório (<code>/home/lsi/.R/libs</code>) no seu <code>home</code>. No nosso caso o <code>home</code> refere-se ao diretório <code>$/home/lsi</code>, altere o nome do <em>lsi</em> conforme seu caso.</p>
-<pre><code>$ mkdir -p /home/lsi/.R/libs/</code></pre>
-<p>Para informar ao R onde procurar os pacotes que instalamos criamos um arquivo chamado <code>.Renviron</code> no diretório <code>HOME</code> contendo a linha <code>R_LIBS=/home/lsi/.R/libs/</code>, o que pode ser feito com o comando:</p>
-<pre><code>$ echo 'R_LIBS=/home/lsi/.R/libs/' &gt;&gt; /home/lsi/.Renviron</code></pre>
-<p>Esse caminho fica então visível ao R, o que pode ser verificado pela função do R <code>.libPaths()</code> que pode ser executado na linha de comando do R.</p>
+<p>Para termos melhor controle sobre os pacotes do <em>R</em> instalados no sistema é recomendado criar um diretório (<code>/home/usuario/.R/libs</code>) no seu <code>home</code>. O diretório do <code>home</code> pode ser obtido com o comando <code>echo $HOME</code>.</p>
+<pre><code>$ mkdir -p `echo $HOME`/.R/libs/</code></pre>
+<p>Para informar ao <strong>R</strong> onde procurar os pacotes que instalamos criamos um arquivo chamado <code>.Renviron</code> no diretório <code>$HOME</code> contendo a linha <code>R_LIBS=/home/usuario/.R/libs/</code>, o que pode ser feito com o comando:</p>
+<pre><code>$ echo 'R_LIBS=`echo $HOME`/.R/libs/' &gt;&gt; `echo $HOME`/.Renviron</code></pre>
+<p>Esse caminho fica então visível ao <em>R</em>, o que pode ser verificado executando a função <code>.libPaths()</code> desde a console de <em>R</em>.</p>
 </div>
 <div id="iniciando-o-r" class="section level2">
-<h2><span class="header-section-number">2.5</span> Iniciando o R</h2>
-<p>Para iniciar o R no Ubuntu, digite <code>R</code> no cursor do terminal:</p>
+<h2><span class="header-section-number">2.5</span> Iniciando o <em>R</em></h2>
+<p>Para iniciar o <em>R</em> no Ubuntu, digite <code>R</code> no cursor do terminal:</p>
 <pre><code>$ R</code></pre>
-<p>A partir desse momento começamos uma sessão no R. Vamos gerar uma sequência de 1 a 10 e plotá-la.</p>
+<p>A partir desse momento já começamos uma sessão no R. Vamos gerar uma sequência de 1 a 10 e plotá-la.</p>
 <pre class="sourceCode r"><code class="sourceCode r"><span class="dv">1</span>:<span class="dv">10</span></code></pre>
 <pre><code> [1]  1  2  3  4  5  6  7  8  9 10</code></pre>
 <pre class="sourceCode r"><code class="sourceCode r"><span class="kw">plot</span>(<span class="dv">1</span>:<span class="dv">10</span>)</code></pre>
@@ -203,7 +183,7 @@ $ gpg -a --export E084DAB9 | sudo apt-key add -</code></pre>
 </div>
 <div id="rstudio-no-ubuntu" class="section level1">
 <h1><span class="header-section-number">3</span> RStudio no Ubuntu</h1>
-<p>O RStudio é um ambiente integrado de desenvolvimento (<a href="http://en.wikipedia.org/wiki/Integrated_development_environment">IDE</a>) construído especificamente para o R. Existem <a href="http://www.sciviews.org/_rgui/projects/Editors.html">diversas opções de IDEs</a> para o R. Nesse curso utilizaremos o RStudio. Assim como R pode ser baixado gratuitamente e é multiplataforma. O ambiente do RStudio disponibiliza o console do R, um editor com realce da sintaxe do R, ferramentas para gráficos, navegação de diretórios, manejo do espaço de trabalho, depuração de código e páginas de ajuda do R.</p>
+<p>O RStudio é um ambiente integrado de desenvolvimento (<a href="http://en.wikipedia.org/wiki/Integrated_development_environment">IDE</a>) construído especificamente para o <em>R</em>. Existem <a href="http://www.sciviews.org/_rgui/projects/Editors.html">diversas opções de IDEs</a> para o <em>R</em>. Nesse curso utilizaremos o RStudio. Assim como <em>R</em> pode ser baixado gratuitamente e é multiplataforma. O ambiente do RStudio disponibiliza o console do <em>R</em>, um editor com realce da sintaxe do <em>R</em>, ferramentas para gráficos, navegação de diretórios, manejo do espaço de trabalho, depuração de código e páginas de ajuda do <em>R</em>.</p>
 <p>Para instalação você precisa saber seu sistema operacional e é 64 ou 32-bit. No Linux Ubuntu essa informação é obtida pelo comando linux:</p>
 <pre><code>$ arch</code></pre>
 <p>Se retornar <strong>x86_64</strong> sua máquina é 64-bit.</p>
@@ -213,16 +193,82 @@ $ gpg -a --export E084DAB9 | sudo apt-key add -</code></pre>
 <li>clique em <em>Download RStudio</em></li>
 <li>clique <em>Desktop</em></li>
 <li>clique em <em>Download RStudio Desktop</em></li>
-<li>clique sobre o link da sua plataforma, p.ex.: <em>RStudio 0.99.467 - Debian 8+/Ubuntu 12.04+ (64-bit)</em></li>
+<li>clique sobre o link da sua plataforma, p.ex.: <em>RStudio x.xx.xxx - Debian 8+/Ubuntu 12.04+ (64-bit)</em></li>
 <li>clique sobre o arquivo baixado com o botão direito, abra com <em>Ubuntu Software Center</em> e clique em <code>instalar</code>.</li>
 </ol>
 <p>Abra o RStudio digitando no terminal:</p>
 <pre><code>$ rstudio &amp;</code></pre>
-<p>Agora você está pronto para começar a programar com R aproveitando as facilidades que o RStudio oferece.</p>
+<p>Agora você está pronto para começar a programar com <em>R</em> aproveitando as facilidades que o RStudio oferece.</p>
 </div>
 <div id="referencias" class="section level1">
 <h1><span class="header-section-number">4</span> Referências</h1>
 <p>Outros links que podem ajudar na instalação do <a href="https://cran.r-project.org/bin/linux/ubuntu/README">R</a> e do <a href="http://www.rstudio.com/ide/download/desktop">RStudio</a>.</p>
+</div>
+<div id="pacotes-recomendados-para-aplicacao-em-meteorologia" class="section level1">
+<h1><span class="header-section-number">5</span> Pacotes recomendados para aplicação em Meteorologia</h1>
+<p>Existem vários pacotes de <em>R</em> amplamente utilizados por pesquisadores nos campos relacionados com a Meteorologia. Alguns exemplos são os pacotes <code>openair</code> (funções para análise estatístico de séries temporais), <code>hydroGOF</code> (funções para apliacação em hidrometeorologia), <code>raster</code> (funções para trabalhar com dados espaciais, semelhante a Sistemas de Informação Geográfica), entre outros.</p>
+<p>A continuação mostra-se linhas a executar desde a console de <em>R</em>, esses comandos instalarám alguns das librerias de linux que são necessárias para pacotes de <em>R</em> usados na meteorologia e outras utilidades.</p>
+<p>Na terminal de Linux execute o siguinte comando:</p>
+<pre><code>$ lista=`cat ~/lista_libs.txt`
+$ for i in $lista; do sudo apt-get -y install $i; done</code></pre>
+<p>Na terminal de Linux execute os siguentes comandos que permitirão o uso da linguagem Java pelo sistema e o <em>R</em>.</p>
+<pre><code>sudo R CMD javareconf
+wget -c http://www.rforge.net/src/contrib/rJava_0.9-8.tar.gz
+R CMD INSTALL rJava_0.9-8.tar.gz</code></pre>
+<p>Na seção siguente serão instalados os pacotes do <em>R</em> mais importantes para a Meteorologia, alguns deles são utilizados no presente curso.</p>
+</div>
+<div id="outros-pacotes-de-r-para-analises-meteorologica." class="section level1">
+<h1><span class="header-section-number">6</span> Outros pacotes de R para analises meteorológica.</h1>
+<ul>
+<li><p><a href="https://cran.r-project.org/web/packages/cmsaf/index.html">cmsaf</a> Tools for CM SAF Netcdf Data</p></li>
+<li><p><a href="https://cran.r-project.org/web/packages/RNCEP/index.html">RNCEP</a> Obtain, Organize, and Visualize NCEP Weather Data</p></li>
+<li><p><a href="https://cran.r-project.org/web/packages/clifro/index.html">clifro</a> Easily Download and Visualise Climate Data from CliFlo</p></li>
+<li><p><a href="https://cran.r-project.org/web/packages/ClimClass/index.html">ClimClass</a> Climate Classification According to Several Indices</p></li>
+<li><p><a href="https://cran.r-project.org/web/packages/climtrends/index.html">climtrends</a> Statistical Methods for Climate Sciences</p></li>
+<li><p><a href="https://cran.r-project.org/web/packages/climwin/index.html">climwin</a> Climate Window Analysis</p></li>
+<li><p><a href="https://cran.r-project.org/web/packages/comclim/index.html">comclim</a> Community climate statistics</p></li>
+<li><p><a href="https://cran.r-project.org/web/packages/crn/index.html">crn</a> Downloads and Builds datasets for Climate Reference Network</p></li>
+<li><p><a href="https://cran.r-project.org/web/packages/dcv/index.html">dcv</a> Conventional Cross-validation statistics for climate-growth model</p></li>
+<li><p><a href="https://cran.r-project.org/web/packages/HiClimR/index.html">HiClimR</a> Hierarchical Climate Regionalization</p></li>
+<li><p><a href="https://cran.r-project.org/web/packages/qmap/index.html">qmap</a> Statistical transformations for post-processing climate model output</p></li>
+<li><p><a href="https://cran.r-project.org/web/packages/raincpc/index.html">raincpc</a> Obtain and Analyze Rainfall Data from the Climate Prediction Center</p></li>
+<li><p><a href="https://cran.r-project.org/web/packages/rWBclimate/index.html">rWBclimate</a> A package for accessing World Bank climate data</p></li>
+<li><p><a href="https://cran.r-project.org/web/packages/SCI/index.html">SCI</a> Standardized Climate Indices such as SPI, SRI or SPEI</p></li>
+<li><p><a href="https://cran.r-project.org/web/packages/getMet/index.html">getMet</a> Get Meteorological Data for Hydrological Modeling</p></li>
+<li><p><a href="https://cran.r-project.org/web/packages/HelpersMG/index.html">HelpersMG</a> Tools for Earth Meteorological Analysis</p></li>
+<li><p><a href="https://cran.r-project.org/web/packages/meteo/index.html">meteo</a> Spatio-Temporal Analysis and Mapping of Meteorological Observations</p></li>
+<li><p><a href="https://cran.r-project.org/web/packages/meteoForecast/index.html">meteoForecast</a> Numerical Weather Predictions</p></li>
+<li><p><a href="https://cran.r-project.org/web/packages/meteogRam/index.html">meteogRam</a> Tools for plotting meteograms</p></li>
+<li><p><a href="https://cran.r-project.org/web/packages/RadioSonde/index.html">RadioSonde</a> Tools for plotting skew-T diagrams and wind profiles</p></li>
+<li><p><a href="https://cran.r-project.org/web/packages/topmodel/index.html">topmodel</a> Implementation of the hydrological model TOPMODEL in R</p></li>
+<li><p><a href="https://cran.r-project.org/web/packages/dynatopmodel/index.html">dynatopmodel</a> Implementation of the Dynamic TOPMODEL hydrological model</p></li>
+<li><p><a href="https://cran.r-project.org/web/packages/waterData/index.html">waterData</a> An R Package for Retrieval, Analysis, and Anomaly Calculation of Daily Hydrologic Time Series Data</p></li>
+<li><p><a href="https://cran.r-project.org/web/packages/EcoHydRology/index.html">EcoHydRology</a> A community modeling foundation for Eco-Hydrology</p></li>
+<li><p><a href="https://cran.r-project.org/web/packages/hddtools/index.html">hddtools</a> Hydrological Data Discovery Tools</p></li>
+<li><p><a href="https://cran.r-project.org/web/packages/hydroApps/index.html">hydroApps</a> Tools and models for hydrological applications</p></li>
+<li><p><a href="https://cran.r-project.org/web/packages/hydrogeo/index.html">hydrogeo</a> Groundwater data presentation and interpretation</p></li>
+<li><p><a href="https://cran.r-project.org/web/packages/hydroGOF/index.html">hydroGOF</a> Goodness-of-fit functions for comparison of simulated and observed hydrological time series</p></li>
+<li><p><a href="https://cran.r-project.org/web/packages/HydroMe/index.html">HydroMe</a> R codes for estimating water retention and infiltration model parameters using experimental data</p></li>
+<li><p><a href="https://cran.r-project.org/web/packages/hydrostats/index.html">hydrostats</a> Hydrologic Indices for Daily Time Series Data</p></li>
+<li><p><a href="https://cran.r-project.org/web/packages/hydroTSM/index.html">hydroTSM</a> Time series management, analysis and interpolation for hydrological modelling</p></li>
+<li><p><a href="https://cran.r-project.org/web/packages/precintcon/index.html">precintcon</a> Precipitation Intensity, Concentration and Anomaly Analysis</p></li>
+<li><p><a href="https://cran.r-project.org/web/packages/RGENERATEPREC/index.html">RGENERATEPREC</a> Tools To Generate Daily-Precipitation Time Series</p></li>
+<li><p><a href="https://cran.r-project.org/web/packages/SPEI/index.html">SPEI</a> Calculation of the Standardised Precipitation-Evapotranspiration Index</p></li>
+<li><p><a href="https://cran.r-project.org/web/packages/sirad/index.html">sirad</a> Functions for Calculating Daily Solar Radiation and Evapotranspiration</p></li>
+<li><p><a href="https://cran.r-project.org/web/packages/insol/index.html">insol</a> Solar Radiation</p></li>
+<li><p><a href="https://cran.r-project.org/web/packages/FAOSTAT/index.html">FAOSTAT</a> Download Data from the FAOSTAT Database of the Food and Agricultural Organization (FAO) of the United Nations</p></li>
+<li><p><a href="https://cran.r-project.org/web/packages/water/index.html">water</a> Actual Evapotranspiration with Energy Balance Models</p></li>
+<li><p><a href="https://cran.r-project.org/web/packages/Evapotranspiration/index.html">Evapotranspiration</a> Modelling Actual, Potential and Reference Crop Evapotranspiration]</p></li>
+<li><p><a href="https://cran.r-project.org/web/packages/kwb.hantush/index.html">kwb.hantush</a> Calculation of Groundwater Mounding Beneath an Infiltration Basin</p></li>
+<li><p><a href="https://cran.r-project.org/web/packages/modiscloud/index.html">modiscloud</a> R tools for processing Level 2 Cloud Mask products from MODIS</p></li>
+<li><p><a href="https://cran.r-project.org/web/packages/MODISTools/index.html">MODISTools</a> MODIS Subsetting Tools</p></li>
+<li><p><a href="https://cran.r-project.org/web/packages/radar/index.html">radar</a> Fundamental Formulas for Radar</p></li>
+<li><p><a href="https://cran.r-project.org/web/packages/tempdisagg/index.html">tempdisagg</a> Methods for Temporal Disaggregation and Interpolation of Time Series</p></li>
+<li><p><a href="https://cran.r-project.org/web/packages/timsac/index.html">timsac</a> TIMe Series Analysis and Control package</p></li>
+<li><p><a href="https://cran.r-project.org/web/packages/TSA/index.html">TSA</a> Time Series Analysis</p></li>
+<li><p><a href="https://cran.r-project.org/web/packages/ClamR/index.html">ClamR</a> Time Series Modeling for Climate Change Proxies</p></li>
+<li><p><a href="https://cran.fhcrc.org/web/packages/stationaRy/index.html">stationaRy</a> Get Hourly Meteorological Data from Global Stations</p></li>
+</ul>
 </div>
 
 
