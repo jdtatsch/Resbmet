@@ -1,40 +1,8 @@
----
-title: "Instalando *R* e RStudio"
-author: "Jônatan Tatsch"
-date: "11-08-2015"
-output:
-  html_document:
-    fig_caption: yes
-    fig_width: 6
-    highlight: kate
-    keep_md: yes
-    number_sections: yes
-    toc: yes
-  pdf_document:
-    toc: yes
----
+# Instalando *R* e RStudio
+Jônatan Tatsch  
+11-08-2015  
 
-```{r Chunk0, comment="",prompt=FALSE, echo=FALSE, eval=TRUE, error=TRUE,highlight=TRUE,message=FALSE,warning=FALSE, results='hide'}
-rm(list=ls())
-# definindo globalmente tz = "GMT"
-Sys.setenv(TZ = 'GMT')
-# data manipulation packages
-pcks <- c("knitr"#, "knitcitations",
-          #"printr",
-          #"R.utils", "magrittr", "lubridate","stringr", 
-          #"plyr", "dplyr", "raster", "lattice",
-          #"rasterVis"
-          )
-invisible(sapply(pcks, require, character.only = TRUE, quietly = TRUE))
-# configuraçoes knitcitations
-#cleanbib()
-#cite_options(citation_format = "text",
-#            cite.style = "authoryear", 
-#            style = "html", 
-#            hyperlink = "to.bib")
-# configuraçoes knitr
-opts_chunk$set(cache = FALSE, fig.path = "figs/")
-```
+
 
 - - -
 
@@ -59,7 +27,7 @@ O *R* pode ser instalado a partir dos binários pré-compilados ou do código fo
 
 # *R* sempre atualizado
 
-O [R](http://www.r-project.org/) é um software multiplataforma (Windows, Linux e MacOS) distribuído  na **Rede Abrangente de Arquivos do R** ([CRAN](http://cran.r-project.org/mirrors.html)). Geralmente há duas atualizações ao ano. A versão mais atual é a `r R.version$version.string`. Para que ele seja atualizado automaticamente no Ubuntu precisamos adicionar o [repósitório do R](http://cran.r-project.org/mirrors.html) mais próximo da nossa região à lista de repositórios do sistema. No nosso caso, o repositório mais próximo é o da UFPR (<http://cran-r.c3sl.ufpr.br/>).
+O [R](http://www.r-project.org/) é um software multiplataforma (Windows, Linux e MacOS) distribuído  na **Rede Abrangente de Arquivos do R** ([CRAN](http://cran.r-project.org/mirrors.html)). Geralmente há duas atualizações ao ano. A versão mais atual é a R version 3.2.2 (2015-08-14). Para que ele seja atualizado automaticamente no Ubuntu precisamos adicionar o [repósitório do R](http://cran.r-project.org/mirrors.html) mais próximo da nossa região à lista de repositórios do sistema. No nosso caso, o repositório mais próximo é o da UFPR (<http://cran-r.c3sl.ufpr.br/>).
 
 ## Incluindo repositório do *R* na Lista de repositórios do Ubuntu
 
@@ -71,10 +39,23 @@ $ cat /etc/apt/sources.list
 
 Desde o *R* as primeiras linhas desse arquivo podem ser lidas com o comando abaixo:
 
-```{r Chunk1, message=FALSE, comment="",highlight=TRUE, prompt=FALSE,echo=FALSE,eval=TRUE}
-sl <- system("cat /etc/apt/sources.list", intern = T)
-print(sl[1:15], quote = F)
-##sl[(length(sl)-10) : length(sl)]
+
+```
+ [1] # deb cdrom:[Ubuntu 14.04.2 LTS _Trusty Tahr_ - Release amd64 (20150218.1)]/ trusty main restricted
+ [2]                                                                                                    
+ [3] # See http://help.ubuntu.com/community/UpgradeNotes for how to upgrade to                          
+ [4] # newer versions of the distribution.                                                              
+ [5] deb http://br.archive.ubuntu.com/ubuntu/ trusty main restricted                                    
+ [6] deb-src http://br.archive.ubuntu.com/ubuntu/ trusty main restricted                                
+ [7]                                                                                                    
+ [8] ## Major bug fix updates produced after the final release of the                                   
+ [9] ## distribution.                                                                                   
+[10] deb http://br.archive.ubuntu.com/ubuntu/ trusty-updates main restricted                            
+[11] deb-src http://br.archive.ubuntu.com/ubuntu/ trusty-updates main restricted                        
+[12]                                                                                                    
+[13] ## N.B. software from this repository is ENTIRELY UNSUPPORTED by the Ubuntu                        
+[14] ## team. Also, please note that software in universe WILL NOT receive any                          
+[15] ## review or updates from the Ubuntu security team.                                                
 ```
 
 No trabalho com distribuições Linux devemos sempre preferir versões com soporte estável, nesse momento as versões de Soporte por Longo Tempo (LTS) são as 12.04 (abril de 2012, codename `precise`), 14.04 (abril de 2014, codename `trusty`) e a 15.04 (abril de 2015, codename `vivid`), você pode saber mais sobre as [versões de Ubuntu](http://releases.ubuntu.com/). Para saber qual é a versão do sistema operacional (SO) de sua PC digite na terminal linux o seguinte comando:
@@ -154,12 +135,22 @@ Para iniciar o *R* no Ubuntu, digite `R` no cursor do terminal:
 
 A partir desse momento já começamos uma sessão no R. Vamos gerar uma sequência de 1 a 10 e plotá-la.
 
-```{r Chunck4, comment="",fig.align='center',highlight=TRUE}
+
+```r
 # sequência de 10 números
 1:10
+```
+
+```
+ [1]  1  2  3  4  5  6  7  8  9 10
+```
+
+```r
 # gráfico
 plot(1:10)
 ```
+
+<img src="figs/Chunck4-1.png" title="" alt="" style="display: block; margin: auto;" />
 
 # RStudio no Ubuntu
 
@@ -192,46 +183,7 @@ Para preparação dos computadores do LSI para esse curso foram instaladas algum
 
 A seguir mostra-se a forma como foi feita a instalação dessas bibliotecas LSI. Utilizaram-se comandos básicos de R e Linux facilmente executados no terminal de ambos. As bibliotecas instaladas a seguir possibilitam a ligação do R com softwares que permitem por exemplo: acesso a dados em diferentes formatos [SIG](https://pt.wikipedia.org/wiki/Sistema_de_informa%C3%A7%C3%A3o_geogr%C3%A1fica), banco de dados e a [extração de dados da web](https://en.wikipedia.org/wiki/Web_scraping), importação de dados no formato [NetCDF](https://en.wikipedia.org/wiki/NetCDF) entre outras.
 
-```{r Chunck5, comment="",fig.align='center',highlight=TRUE,eval=FALSE,echo=FALSE}
-# lista de bibliotecas linux ubuntu
-libs <- c("g++
-          gcc-4.8-doc libstdc++6-4.8-dbg
-          lib32stdc++6-4.8-dbg 
-          libx32stdc++6-4.8-dbg
-          libstdc++5
-          build-essential
-          lib32z1 lib32ncurses5 lib32bz2-1.0
-          libunwind8
-          gfortran
-          htop
-          netcdf-bin
-          proj-bin
-          libproj-dev
-          gdal-bin
-          libgdal1-dev
-          libwxgtk-media3.0-0
-          libxml2-dev (XML package)
-          libcurl4-gnutls-dev (RCurl)
-          libpq-dev postgresql-9.3
-          r-cran-xml
-          libcurl4-openssl-dev
-          r-cran-rcurl
-          libboost-dev
-          git git-doc git-el
-          install openjdk-7-*
-          libwxgtk-media3.0-dev
-          tk-dev
-          python-gdal python3-gdal
-          mpich2 cmake
-          mesa-common-dev
-          libglu1-mesa-dev
-          bwidget
-          libgmp3-dev
-          libmpfr-dev libmpfr4
-          libgsl0-dev")
-# salvando lista de bibliotecas em aquivo texto
-write(libs, file = "~/lista_libs.txt")
-```
+
 
 Para instalação destas bibliotecas, no terminal Linux, execute os seguintes comandos:
 
@@ -250,7 +202,8 @@ Existe uma diversidade de pacotes do *R* relacionados a Meteorologia. Alguns exe
 
 Nesta seção serão instalados os pacotes do *R* importantes para aplicações em  Meteorologia. Alguns deles são utilizados nesse curso.
 
-```{r Chunck6, comment="",fig.align='center',highlight=TRUE,eval=FALSE,echo=TRUE}
+
+```r
 # vetor com nome dos pacotes do R
 pacotes <- c("lattice",
              "Rcpp",
@@ -282,20 +235,40 @@ pacotes <- c("lattice",
              "httr")
 # comando para instalação de pacotes
 install.packages(pacotes, dependencies = T)
-``` 
-
-```{r Chunck7, comment="",fig.align='center',highlight=TRUE,eval=FALSE,echo=FALSE}
-install.packages(
-  'printr',
-  type = 'source',
-  repos = c('http://yihui.name/xran', 'http://cran.rstudio.com')
-)
 ```
+
+
 
 # Informações da sessão R
 
-```{r Chunck8, comment="",fig.align='center',highlight=TRUE,eval=TRUE,echo=TRUE}
+
+```r
 sessionInfo()
+```
+
+```
+R version 3.2.2 (2015-08-14)
+Platform: x86_64-pc-linux-gnu (64-bit)
+Running under: Ubuntu 14.04.3 LTS
+
+locale:
+ [1] LC_CTYPE=en_US.UTF-8       LC_NUMERIC=C              
+ [3] LC_TIME=pt_BR.UTF-8        LC_COLLATE=en_US.UTF-8    
+ [5] LC_MONETARY=pt_BR.UTF-8    LC_MESSAGES=en_US.UTF-8   
+ [7] LC_PAPER=pt_BR.UTF-8       LC_NAME=C                 
+ [9] LC_ADDRESS=C               LC_TELEPHONE=C            
+[11] LC_MEASUREMENT=pt_BR.UTF-8 LC_IDENTIFICATION=C       
+
+attached base packages:
+[1] stats     graphics  grDevices utils     datasets  methods   base     
+
+other attached packages:
+[1] knitr_1.11
+
+loaded via a namespace (and not attached):
+ [1] magrittr_1.5    formatR_1.2     tools_3.2.2     htmltools_0.2.6
+ [5] yaml_2.1.13     stringi_0.5-5   rmarkdown_0.7.3 stringr_1.0.0  
+ [9] digest_0.6.8    evaluate_0.7.2 
 ```
 
 # Lista de pacotes do R relacionados a meteorologia.
