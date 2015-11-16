@@ -119,7 +119,19 @@ Ferramentas específicas para:
 
 * leitura de dados em formatos específicos (netcdf, binários, ...)
 
-* lista de completa de razões [aqui](https://www.youtube.com/watch?v=UgPX49gkby4)
+
+
+Por que o R? 
+=======================
+<br/>  
+
+(se quiser mais motivos ainda ... assista o vídeo abaixo)
+
+<center>
+[![Por que o R MeetUp R IME-USP](http://img.youtube.com/vi/UgPX49gkby4/0.jpg)](http://www.youtube.com/watch?v=UgPX49gkby4 "Video Title")
+<center>
+
+
 
 RStudio
 =======
