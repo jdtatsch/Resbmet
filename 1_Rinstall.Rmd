@@ -14,14 +14,6 @@ output:
     toc: yes
 ---
 
-- - -
-
-<p align="center">
-<img src="figs/logo_resbmet.png" alt="Resbmet"/>
-</p>
-
-- - -
-
 ```{r Chunk0, comment="",prompt=FALSE, echo=FALSE, eval=TRUE, error=TRUE,highlight=TRUE,message=FALSE,warning=FALSE, results='hide'}
 rm(list=ls())
 # definindo globalmente tz = "GMT"
@@ -44,7 +36,13 @@ invisible(sapply(pcks, require, character.only = TRUE, quietly = TRUE))
 opts_chunk$set(cache = FALSE, fig.path = "figs/")
 ```
 
+- - -
 
+<p align="center">
+<img src="figs/logo_resbmet.png" alt="Resbmet"/>
+</p>
+
+- - -
 
 # Introdução
 
@@ -63,7 +61,7 @@ O *R* pode ser instalado a partir dos binários pré-compilados ou do código fo
 
 O [R](http://www.r-project.org/) é um software multiplataforma (Windows, Linux e MacOS) distribuído  na **Rede Abrangente de Arquivos do R** ([CRAN](http://cran.r-project.org/mirrors.html)). Geralmente há duas atualizações ao ano. A versão mais atual é a `r R.version$version.string`. Para que ele seja atualizado automaticamente no Ubuntu precisamos adicionar o [repósitório do R](http://cran.r-project.org/mirrors.html) mais próximo da nossa região à lista de repositórios do sistema. No nosso caso, o repositório mais próximo é o da UFPR (<http://cran-r.c3sl.ufpr.br/>).
 
-## Adicionando o repositório do *R* na Lista de repositórios do Ubuntu
+## Incluindo repositório do *R* na Lista de repositórios do Ubuntu
 
 A lista de repositórios do sistema é armazenada no arquivo `/etc/apt/sources.list`. Vamos abrir um terminal linux (use o atalho `Ctr+Alt+t`) e ver o conteúdo desse arquivo pelo seguinte comando no terminal linux:
    

@@ -80,7 +80,7 @@ img {
 <ul>
 <li><a href="#introducao"><span class="toc-section-number">1</span> Introdução</a></li>
 <li><a href="#r-sempre-atualizado"><span class="toc-section-number">2</span> <em>R</em> sempre atualizado</a><ul>
-<li><a href="#adicionando-o-repositorio-do-r-na-lista-de-repositorios-do-ubuntu"><span class="toc-section-number">2.1</span> Adicionando o repositório do <em>R</em> na Lista de repositórios do Ubuntu</a></li>
+<li><a href="#incluindo-repositorio-do-r-na-lista-de-repositorios-do-ubuntu"><span class="toc-section-number">2.1</span> Incluindo repositório do <em>R</em> na Lista de repositórios do Ubuntu</a></li>
 <li><a href="#apt-protegido-adaptado-da-cran-secao-secure-apt."><span class="toc-section-number">2.2</span> <a href="https://wiki.debian.org/SecureApt">APT protegido</a> (adaptado da <a href="http://cran.r-project.org">CRAN</a> seção Secure Apt).</a></li>
 <li><a href="#atualizacao-da-lista-de-repositorios-do-ubuntu-e-instalacao-do-r"><span class="toc-section-number">2.3</span> Atualização da lista de repositórios do Ubuntu e instalação do <em>R</em></a></li>
 <li><a href="#local-para-instalacao-de-pacotes"><span class="toc-section-number">2.4</span> Local para instalação de pacotes</a></li>
@@ -111,8 +111,8 @@ img {
 <div id="r-sempre-atualizado" class="section level1">
 <h1><span class="header-section-number">2</span> <em>R</em> sempre atualizado</h1>
 <p>O <a href="http://www.r-project.org/">R</a> é um software multiplataforma (Windows, Linux e MacOS) distribuído na <strong>Rede Abrangente de Arquivos do R</strong> (<a href="http://cran.r-project.org/mirrors.html">CRAN</a>). Geralmente há duas atualizações ao ano. A versão mais atual é a R version 3.2.2 (2015-08-14). Para que ele seja atualizado automaticamente no Ubuntu precisamos adicionar o <a href="http://cran.r-project.org/mirrors.html">repósitório do R</a> mais próximo da nossa região à lista de repositórios do sistema. No nosso caso, o repositório mais próximo é o da UFPR (<a href="http://cran-r.c3sl.ufpr.br/" class="uri">http://cran-r.c3sl.ufpr.br/</a>).</p>
-<div id="adicionando-o-repositorio-do-r-na-lista-de-repositorios-do-ubuntu" class="section level2">
-<h2><span class="header-section-number">2.1</span> Adicionando o repositório do <em>R</em> na Lista de repositórios do Ubuntu</h2>
+<div id="incluindo-repositorio-do-r-na-lista-de-repositorios-do-ubuntu" class="section level2">
+<h2><span class="header-section-number">2.1</span> Incluindo repositório do <em>R</em> na Lista de repositórios do Ubuntu</h2>
 <p>A lista de repositórios do sistema é armazenada no arquivo <code>/etc/apt/sources.list</code>. Vamos abrir um terminal linux (use o atalho <code>Ctr+Alt+t</code>) e ver o conteúdo desse arquivo pelo seguinte comando no terminal linux:</p>
 <pre><code>$ cat /etc/apt/sources.list </code></pre>
 <p>Desde o <em>R</em> as primeiras linhas desse arquivo podem ser lidas com o comando abaixo:</p>

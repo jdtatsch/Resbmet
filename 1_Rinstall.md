@@ -2,6 +2,8 @@
 Jônatan Tatsch  
 11-08-2015  
 
+
+
 - - -
 
 <p align="center">
@@ -9,10 +11,6 @@ Jônatan Tatsch
 </p>
 
 - - -
-
-
-
-
 
 # Introdução
 
@@ -31,7 +29,7 @@ O *R* pode ser instalado a partir dos binários pré-compilados ou do código fo
 
 O [R](http://www.r-project.org/) é um software multiplataforma (Windows, Linux e MacOS) distribuído  na **Rede Abrangente de Arquivos do R** ([CRAN](http://cran.r-project.org/mirrors.html)). Geralmente há duas atualizações ao ano. A versão mais atual é a R version 3.2.2 (2015-08-14). Para que ele seja atualizado automaticamente no Ubuntu precisamos adicionar o [repósitório do R](http://cran.r-project.org/mirrors.html) mais próximo da nossa região à lista de repositórios do sistema. No nosso caso, o repositório mais próximo é o da UFPR (<http://cran-r.c3sl.ufpr.br/>).
 
-## Adicionando o repositório do *R* na Lista de repositórios do Ubuntu
+## Incluindo repositório do *R* na Lista de repositórios do Ubuntu
 
 A lista de repositórios do sistema é armazenada no arquivo `/etc/apt/sources.list`. Vamos abrir um terminal linux (use o atalho `Ctr+Alt+t`) e ver o conteúdo desse arquivo pelo seguinte comando no terminal linux:
    
