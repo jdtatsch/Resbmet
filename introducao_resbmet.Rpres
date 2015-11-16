@@ -128,7 +128,7 @@ Programação do curso
 <br/>
 ## &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;**Introdução ao Curso**
 <br/>
-## &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;[Instalando o R e o RStudio]()
+## &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;[Instalando o R e o RStudio](https://rawgit.com/jdtatsch/Resbmet/master/0_Rinstall.html)
 <br/>
 ## &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;Dia 1: O Essencial sobre R
 <br/>
