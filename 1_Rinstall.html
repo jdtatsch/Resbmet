@@ -87,11 +87,11 @@ img {
 <li><a href="#iniciando-o-r"><span class="toc-section-number">2.5</span> Iniciando o <em>R</em></a></li>
 </ul></li>
 <li><a href="#rstudio-no-ubuntu"><span class="toc-section-number">3</span> RStudio no Ubuntu</a></li>
-<li><a href="#referencias"><span class="toc-section-number">4</span> Referências</a></li>
-<li><a href="#bibliotecas-linux-que-sao-pre-requisitos-para-alguns-pacotes-do-r"><span class="toc-section-number">5</span> Bibliotecas Linux que são pré-requisitos para alguns pacotes do R</a></li>
-<li><a href="#pacotes-do-r-instalados-para-o-curso"><span class="toc-section-number">6</span> Pacotes do R instalados para o curso</a></li>
-<li><a href="#informacoes-da-sessao-r"><span class="toc-section-number">7</span> Informações da sessão R</a></li>
-<li><a href="#lista-de-pacotes-do-r-relacionados-a-meteorologia."><span class="toc-section-number">8</span> Lista de pacotes do R relacionados a meteorologia.</a></li>
+<li><a href="#bibliotecas-linux-necessarias-para-alguns-pacotes-do-r"><span class="toc-section-number">4</span> Bibliotecas Linux necessárias para alguns pacotes do R</a></li>
+<li><a href="#pacotes-do-r-instalados-para-o-curso"><span class="toc-section-number">5</span> Pacotes do R instalados para o curso</a></li>
+<li><a href="#informacoes-da-sessao-r"><span class="toc-section-number">6</span> Informações da sessão R</a></li>
+<li><a href="#lista-de-pacotes-do-r-relacionados-a-meteorologia."><span class="toc-section-number">7</span> Lista de pacotes do R relacionados a meteorologia.</a></li>
+<li><a href="#referencias"><span class="toc-section-number">8</span> Referências</a></li>
 </ul>
 </div>
 
@@ -205,12 +205,8 @@ $ gpg -a --export E084DAB9 | sudo apt-key add -</code></pre>
 <pre><code>$ rstudio &amp;</code></pre>
 <p>Agora você está pronto para começar a programar com <em>R</em> aproveitando as facilidades que o RStudio oferece.</p>
 </div>
-<div id="referencias" class="section level1">
-<h1><span class="header-section-number">4</span> Referências</h1>
-<p>Outros links que podem ajudar na instalação do <a href="https://cran.r-project.org/bin/linux/ubuntu/README">R</a> e do <a href="http://www.rstudio.com/ide/download/desktop">RStudio</a>.</p>
-</div>
-<div id="bibliotecas-linux-que-sao-pre-requisitos-para-alguns-pacotes-do-r" class="section level1">
-<h1><span class="header-section-number">5</span> Bibliotecas Linux que são pré-requisitos para alguns pacotes do R</h1>
+<div id="bibliotecas-linux-necessarias-para-alguns-pacotes-do-r" class="section level1">
+<h1><span class="header-section-number">4</span> Bibliotecas Linux necessárias para alguns pacotes do R</h1>
 <p>Para preparação dos computadores do LSI para esse curso foram instaladas algumas bibliotecas linux. Essas bibliotecas podem ser necessárias como pré-requisito de algums pacotes do R. Um exemplo desse tipo de dependência é o pacote <a href="https://cran.r-project.org/web/packages/rgdal/index.html">RGDAL</a> que faz a ligação com o software (GDAL)[<a href="http://www.gdal.org/" class="uri">http://www.gdal.org/</a>] (<em>Geospatial Data Abstraction Library</em>) possibilitando o accesso a operações de transformação/projeção da biblioteca <a href="https://en.wikipedia.org/wiki/PROJ.4">PROJ.4</a>. Então para usarmos o pacote <a href="https://cran.r-project.org/web/packages/rgdal/index.html">RGDAL</a> é necessário a instalação das bibliotecas: <code>proj-bin</code>, <code>libproj-dev</code>, <code>gdal-bin</code>, <code>libgdal1-dev</code>.</p>
 <p>A seguir mostra-se a forma como foi feita a instalação dessas bibliotecas LSI. Utilizaram-se comandos básicos de R e Linux facilmente executados no terminal de ambos. As bibliotecas instaladas a seguir possibilitam a ligação do R com softwares que permitem por exemplo: acesso a dados em diferentes formatos <a href="https://pt.wikipedia.org/wiki/Sistema_de_informa%C3%A7%C3%A3o_geogr%C3%A1fica">SIG</a>, banco de dados e a <a href="https://en.wikipedia.org/wiki/Web_scraping">extração de dados da web</a>, importação de dados no formato <a href="https://en.wikipedia.org/wiki/NetCDF">NetCDF</a> entre outras.</p>
 <p>Para instalação destas bibliotecas, no terminal Linux, execute os seguintes comandos:</p>
@@ -222,7 +218,7 @@ wget -c http://www.rforge.net/src/contrib/rJava_0.9-8.tar.gz
 R CMD INSTALL rJava_0.9-8.tar.gz</code></pre>
 </div>
 <div id="pacotes-do-r-instalados-para-o-curso" class="section level1">
-<h1><span class="header-section-number">6</span> Pacotes do R instalados para o curso</h1>
+<h1><span class="header-section-number">5</span> Pacotes do R instalados para o curso</h1>
 <p>Existe uma diversidade de pacotes do <em>R</em> relacionados a Meteorologia. Alguns exemplos são os pacotes <a href="http://www.openair-project.org/">openair</a> (ferramentas para análise de poluentes atmosféricos), <code>hydroTSM</code> (ferramentas para manipulação de séries hidrometeorológicas), <code>raster</code> (ferramentas análise de dados geográficos), entre outros.</p>
 <p>Nesta seção serão instalados os pacotes do <em>R</em> importantes para aplicações em Meteorologia. Alguns deles são utilizados nesse curso.</p>
 <pre class="sourceCode r"><code class="sourceCode r"><span class="co"># vetor com nome dos pacotes do R</span>
@@ -258,7 +254,7 @@ pacotes &lt;-<span class="st"> </span><span class="kw">c</span>(<span class="st"
 <span class="kw">install.packages</span>(pacotes, <span class="dt">dependencies =</span> T)</code></pre>
 </div>
 <div id="informacoes-da-sessao-r" class="section level1">
-<h1><span class="header-section-number">7</span> Informações da sessão R</h1>
+<h1><span class="header-section-number">6</span> Informações da sessão R</h1>
 <pre class="sourceCode r"><code class="sourceCode r"><span class="kw">sessionInfo</span>()</code></pre>
 <pre><code>R version 3.2.2 (2015-08-14)
 Platform: x86_64-pc-linux-gnu (64-bit)
@@ -284,7 +280,7 @@ loaded via a namespace (and not attached):
  [9] digest_0.6.8    evaluate_0.7.2 </code></pre>
 </div>
 <div id="lista-de-pacotes-do-r-relacionados-a-meteorologia." class="section level1">
-<h1><span class="header-section-number">8</span> Lista de pacotes do R relacionados a meteorologia.</h1>
+<h1><span class="header-section-number">7</span> Lista de pacotes do R relacionados a meteorologia.</h1>
 <ul>
 <li><p><a href="https://cran.r-project.org/web/packages/cmsaf/index.html">cmsaf</a> Tools for CM SAF Netcdf Data</p></li>
 <li><p><a href="https://cran.r-project.org/web/packages/RNCEP/index.html">RNCEP</a> Obtain, Organize, and Visualize NCEP Weather Data</p></li>
@@ -334,6 +330,10 @@ loaded via a namespace (and not attached):
 <li><p><a href="https://cran.r-project.org/web/packages/ClamR/index.html">ClamR</a> Time Series Modeling for Climate Change Proxies</p></li>
 <li><p><a href="https://cran.r-project.org/web/packages/ClamR/index.html">REddyProc</a> EddyCovariance data processing and plotting utilities</p></li>
 </ul>
+</div>
+<div id="referencias" class="section level1">
+<h1><span class="header-section-number">8</span> Referências</h1>
+<p>Outros links que podem ajudar na instalação do <a href="https://cran.r-project.org/bin/linux/ubuntu/README">R</a> e do <a href="http://www.rstudio.com/ide/download/desktop">RStudio</a>.</p>
 </div>
 
 

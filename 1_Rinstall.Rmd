@@ -188,10 +188,6 @@ Abra o RStudio digitando no terminal:
     
 Agora você está pronto para começar a programar com *R* aproveitando as facilidades que o RStudio oferece.
 
-# Referências
-
-Outros links que podem ajudar na instalação do [R](https://cran.r-project.org/bin/linux/ubuntu/README) e do [RStudio](http://www.rstudio.com/ide/download/desktop).
-
 # Bibliotecas Linux necessárias para alguns pacotes do R 
 
 Para preparação dos computadores do LSI para esse curso foram instaladas algumas bibliotecas linux. Essas bibliotecas podem ser necessárias como pré-requisito de algums pacotes do R. Um exemplo desse tipo de dependência é o pacote [RGDAL](https://cran.r-project.org/web/packages/rgdal/index.html) que faz a ligação com o software (GDAL)[http://www.gdal.org/] (*Geospatial Data Abstraction Library*) possibilitando o accesso a operações de transformação/projeção da biblioteca [PROJ.4](https://en.wikipedia.org/wiki/PROJ.4). Então para usarmos o pacote [RGDAL](https://cran.r-project.org/web/packages/rgdal/index.html) é necessário a instalação das bibliotecas: `proj-bin`, `libproj-dev`, `gdal-bin`, `libgdal1-dev`.
@@ -400,3 +396,7 @@ Meteorological Observations
 * [ClamR](https://cran.r-project.org/web/packages/ClamR/index.html) Time Series Modeling for Climate Change Proxies
 
 * [REddyProc](https://cran.r-project.org/web/packages/ClamR/index.html) EddyCovariance data processing and plotting utilities
+
+# Referências
+
+Outros links que podem ajudar na instalação do [R](https://cran.r-project.org/bin/linux/ubuntu/README) e do [RStudio](http://www.rstudio.com/ide/download/desktop).
