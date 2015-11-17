@@ -33,6 +33,7 @@ Todo o material do curso está disponível para download nesse [link](https://gi
     - `Ctrl + l`: limpa tela do console do R
 <br/>
 <br/>
+
 - *Tour* básico no [RStudio](https://www.rstudio.com/)
 
 ![RStudio IDE](figs/screenshot_rstudio.png)
@@ -253,6 +254,8 @@ trunc(pi)
 ```
 [1] 3
 ```
+
+
 
 > Funções são identificadas por serem precedidas de parênteses.
 
@@ -785,6 +788,73 @@ mode(mat)
 [1] "numeric"
 ```
 
+Para aplicar uma função a cada linha (coluna) de uma `matrix` podemos usar-se a função `apply()` da família `*apply()`, por exemplo:
+
+
+```r
+mat
+```
+
+```
+     [,1] [,2] [,3] [,4] [,5]
+[1,]    1    4    7   10   13
+[2,]    2    5    8   11   14
+[3,]    3    6    9   12   15
+```
+
+```r
+# margin = 1, para operação ser realizada so longo das linhas
+# margin = 2, para operação ser realizada so longo das colunas
+(mat_max_lin <- apply(X = mat, MARGIN = 1, FUN = max))
+```
+
+```
+[1] 13 14 15
+```
+
+```r
+(mat_max_col <- apply(X = mat, MARGIN = 2, FUN = max))
+```
+
+```
+[1]  3  6  9 12 15
+```
+
+Existe um conjunto de funções próprias e eficientes para uso em matrizes, como:
+
+
+```r
+rowSums(mat)
+```
+
+```
+[1] 35 40 45
+```
+
+```r
+colSums(mat)
+```
+
+```
+[1]  6 15 24 33 42
+```
+
+```r
+rowMeans(mat)
+```
+
+```
+[1] 7 8 9
+```
+
+```r
+colMeans(mat)
+```
+
+```
+[1]  2  5  8 11 14
+```
+
 ## Data frame 
 
 Um data frame é como uma matriz mas é capaz de acomodar campos (colunas) com diferentes tipos de dados. Cada linha do `data-frame` corresponde a um registro da tabela e cada coluna corresponde ao registro de uma variável na tabela.
@@ -1140,6 +1210,67 @@ dados[dados$data %in% c("2013-01-10", "2013-01-13"),]   # mais de uma condição
 ```
 
 
+<span style="color: red">Fim da aula do 1º dia.</span>
+
+### Examinando data frames
+
+Quando trabalhamos com grandes dataframes a visualização dos dados como um todo pode ser inviável. A alternativa nesse caso é usar as funções apresentadas no trecho de código abaixo:
+
+
+```r
+# linhas iniciais do dataframe
+head(dados)
+```
+
+```
+        data   municipio temp tmin
+1 2013-01-01 Santa Maria   31    5
+2 2013-01-02 Santa Maria   35   10
+3 2013-01-03 Santa Maria   21   11
+4 2013-01-04 Santa Maria   23   12
+5 2013-01-05 Santa Maria   33   13
+6 2013-01-06 Santa Maria   17   16
+```
+
+```r
+# linhas finais do dataframe
+tail(dados)
+```
+
+```
+         data   municipio temp tmin
+11 2013-01-11 Santa Maria   15   24
+12 2013-01-12 Santa Maria   28   26
+13 2013-01-13 Santa Maria   22   27
+14 2013-01-14 Santa Maria   29   28
+15 2013-01-15 Santa Maria   32   29
+16 2013-01-15    São Sepé   10   30
+```
+
+```r
+# últimos duas linhas do dataframe
+tail(dados, 2)
+```
+
+```
+         data   municipio temp tmin
+15 2013-01-15 Santa Maria   32   29
+16 2013-01-15    São Sepé   10   30
+```
+
+```r
+# A mais importante: resumo da estrutura dos dados
+str(dados)
+```
+
+```
+'data.frame':	16 obs. of  4 variables:
+ $ data     : chr  "2013-01-01" "2013-01-02" "2013-01-03" "2013-01-04" ...
+ $ municipio: chr  "Santa Maria" "Santa Maria" "Santa Maria" "Santa Maria" ...
+ $ temp     : num  31 35 21 23 33 17 18 16 34 27 ...
+ $ tmin     : num  5 10 11 12 13 16 17 18 22 23 ...
+```
+
 ## Listas
 
 Estrutura de dados muito versátil por pelo menos 3 razões:
@@ -1147,29 +1278,120 @@ Estrutura de dados muito versátil por pelo menos 3 razões:
   1. Os elementos podem ser de diferentes classes de objetos (p.ex.: um elemento `numeric`, outro `character`);
   2. Cada elemento pode ter um tamanho diferente;
   3. Os elementos podem conter diferentes estrutura de dados (p.ex.: um elemento `matrix`, outro `vector`);
-  
-Dentro da lista o conjunto de objetos são ordenados e cada elemento pode conter sub-elementos.
+
+Listas podem ser criadas com a função `list()`. A especificação do conteúdo de uma lista é muito similar a da função `c()` vista anteriormente. Nós simplemente listamos os elementos da lista separados por uma vírgula dentro da função `list()`.
 
 
 ```r
-lst <- list()
-# forma de atribuir ou incluir itens na lista
-lst[1] = "one"
-lst[[2]] <- "two"
-lst[length(lst)+1] <- "three"
-print(lst)
+## lista de dados heterogêneos
+lst <- list(1:4, c(1.1, 2.3, 5.9), c(TRUE, FALSE), "R", list(0,1), dados[1:4, ])
+lst
 ```
 
 ```
 [[1]]
-[1] "one"
+[1] 1 2 3 4
 
 [[2]]
-[1] "two"
+[1] 1.1 2.3 5.9
 
 [[3]]
-[1] "three"
+[1]  TRUE FALSE
+
+[[4]]
+[1] "R"
+
+[[5]]
+[[5]][[1]]
+[1] 0
+
+[[5]][[2]]
+[1] 1
+
+
+[[6]]
+        data   municipio temp tmin
+1 2013-01-01 Santa Maria   31    5
+2 2013-01-02 Santa Maria   35   10
+3 2013-01-03 Santa Maria   21   11
+4 2013-01-04 Santa Maria   23   12
 ```
+
+```r
+## estrutura da lista
+str(lst)
+```
+
+```
+List of 6
+ $ : int [1:4] 1 2 3 4
+ $ : num [1:3] 1.1 2.3 5.9
+ $ : logi [1:2] TRUE FALSE
+ $ : chr "R"
+ $ :List of 2
+  ..$ : num 0
+  ..$ : num 1
+ $ :'data.frame':	4 obs. of  4 variables:
+  ..$ data     : chr [1:4] "2013-01-01" "2013-01-02" "2013-01-03" "2013-01-04"
+  ..$ municipio: chr [1:4] "Santa Maria" "Santa Maria" "Santa Maria" "Santa Maria"
+  ..$ temp     : num [1:4] 31 35 21 23
+  ..$ tmin     : num [1:4] 5 10 11 12
+```
+
+```r
+## tamanho da lista (num. de componentes ou elementos)
+length(lst)
+```
+
+```
+[1] 6
+```
+
+```r
+## atribuindo nomes a lista
+names(lst) 
+```
+
+```
+NULL
+```
+
+```r
+names(lst) <- c("vetor_int", "vetor_num", "logico", "char", "lista", "df")
+lst
+```
+
+```
+$vetor_int
+[1] 1 2 3 4
+
+$vetor_num
+[1] 1.1 2.3 5.9
+
+$logico
+[1]  TRUE FALSE
+
+$char
+[1] "R"
+
+$lista
+$lista[[1]]
+[1] 0
+
+$lista[[2]]
+[1] 1
+
+
+$df
+        data   municipio temp tmin
+1 2013-01-01 Santa Maria   31    5
+2 2013-01-02 Santa Maria   35   10
+3 2013-01-03 Santa Maria   21   11
+4 2013-01-04 Santa Maria   23   12
+```
+
+Acesso as componentes das lista:
+
 
 ```r
 # extraindo dados
@@ -1178,7 +1400,16 @@ lst[[1]]
 ```
 
 ```
-[1] "one"
+[1] 1 2 3 4
+```
+
+```r
+# o nome da componente também pode ser usada para extração
+lst[["vetor_int"]]
+```
+
+```
+[1] 1 2 3 4
 ```
 
 ```r
@@ -1187,131 +1418,214 @@ lst[2:3]
 ```
 
 ```
-[[1]]
-[1] "two"
+$vetor_num
+[1] 1.1 2.3 5.9
 
-[[2]]
-[1] "three"
+$logico
+[1]  TRUE FALSE
 ```
 
 ```r
 # mas o objeto retornado é uma lista
-lst[c(1,3)]   
+lst[c(1,3)]
 ```
 
 ```
-[[1]]
-[1] "one"
+$vetor_int
+[1] 1 2 3 4
 
-[[2]]
-[1] "three"
+$logico
+[1]  TRUE FALSE
+```
+
+```r
+lst[c("vetor_int","logico")]
+```
+
+```
+$vetor_int
+[1] 1 2 3 4
+
+$logico
+[1]  TRUE FALSE
+```
+
+```r
+is.list(lst[c(1,3)])
+```
+
+```
+[1] TRUE
 ```
 
 ```r
 # deletetando itens de uma lista
 lst[[3]] <- NULL
+str(lst)
+```
+
+```
+List of 5
+ $ vetor_int: int [1:4] 1 2 3 4
+ $ vetor_num: num [1:3] 1.1 2.3 5.9
+ $ char     : chr "R"
+ $ lista    :List of 2
+  ..$ : num 0
+  ..$ : num 1
+ $ df       :'data.frame':	4 obs. of  4 variables:
+  ..$ data     : chr [1:4] "2013-01-01" "2013-01-02" "2013-01-03" "2013-01-04"
+  ..$ municipio: chr [1:4] "Santa Maria" "Santa Maria" "Santa Maria" "Santa Maria"
+  ..$ temp     : num [1:4] 31 35 21 23
+  ..$ tmin     : num [1:4] 5 10 11 12
+```
+
+```r
 lst[1:2] <- NULL
-lst
+str(lst)
 ```
 
 ```
-list()
+List of 3
+ $ char : chr "R"
+ $ lista:List of 2
+  ..$ : num 0
+  ..$ : num 1
+ $ df   :'data.frame':	4 obs. of  4 variables:
+  ..$ data     : chr [1:4] "2013-01-01" "2013-01-02" "2013-01-03" "2013-01-04"
+  ..$ municipio: chr [1:4] "Santa Maria" "Santa Maria" "Santa Maria" "Santa Maria"
+  ..$ temp     : num [1:4] 31 35 21 23
+  ..$ tmin     : num [1:4] 5 10 11 12
 ```
+
+Outro exemplo de uso de uma lista é quando os dados que trabalhamos possuem tamanhos diferentes.
+
 
 ```r
-# dados em uma lista oidem ser armazenados com nomes
-d <- list(seg=1, ter=2)
-d['qua'] <- 3
-print(d)
+(dados_l <- list(c(1, 2, 3), 3:7, 10:5, 12:5))
 ```
 
 ```
-$seg
-[1] 1
+[[1]]
+[1] 1 2 3
 
-$ter
+[[2]]
+[1] 3 4 5 6 7
+
+[[3]]
+[1] 10  9  8  7  6  5
+
+[[4]]
+[1] 12 11 10  9  8  7  6  5
+```
+
+Para aplicar uma função a cada elemento da lista podemos usar-se as funções da família `*apply()`, por exemplo:
+
+
+```r
+# lapply ---> resultado é uma "l"ista
+(med_dl_l <- lapply(dados_l, mean))
+```
+
+```
+[[1]]
 [1] 2
 
-$qua
-[1] 3
+[[2]]
+[1] 5
+
+[[3]]
+[1] 7.5
+
+[[4]]
+[1] 8.5
 ```
 
 ```r
-d[['ter']]
+# sapply ---> resultado é um objeto "s"implificado (vetor ou matrizes)
+(med_dl_s <- sapply(dados_l, mean))
 ```
 
 ```
-[1] 2
+[1] 2.0 5.0 7.5 8.5
+```
+
+Observe que as funções da família `*apply` são essencialmente *loopings* ou laço.
+
+# Dados de pacotes do R
+
+O `R` possui diversos conjuntos de dados internos que são automaticamente carregados quando iniciado. Esses dados são usados nos exemplos do `help()` de diversas funções para ilustrar o uso e a aplicação delas. Esses dados podem ser carregados com a função `data`.
+
+
+```r
+data()
+## Annual Precipitation in US Cities, p/ mais informações "?precip"
+data(precip)
+## primeiros 30 elementos dos dados precip
+head(precip, n = 30)
+```
+
+```
+             Mobile              Juneau             Phoenix 
+               67.0                54.7                 7.0 
+        Little Rock         Los Angeles          Sacramento 
+               48.5                14.0                17.2 
+      San Francisco              Denver            Hartford 
+               20.7                13.0                43.4 
+         Wilmington          Washington        Jacksonville 
+               40.2                38.9                54.5 
+              Miami             Atlanta            Honolulu 
+               59.8                48.3                22.9 
+              Boise             Chicago              Peoria 
+               11.5                34.4                35.1 
+       Indianapolis          Des Moines             Wichita 
+               38.7                30.8                30.6 
+         Louisville         New Orleans            Portland 
+               43.1                56.8                40.8 
+          Baltimore              Boston             Detroit 
+               41.8                42.5                31.0 
+   Sault Ste. Marie              Duluth Minneapolis/St Paul 
+               31.7                30.2                25.9 
 ```
 
 ```r
-d[c('seg','qua')]
+## New York Air Quality Measurements, , p/ mais informações "?airquality"
+data(airquality)
+## primeiras linhas dos dados
+head(airquality, n = 10)
 ```
 
 ```
-$seg
-[1] 1
-
-$qua
-[1] 3
+   Ozone Solar.R Wind Temp Month Day
+1     41     190  7.4   67     5   1
+2     36     118  8.0   72     5   2
+3     12     149 12.6   74     5   3
+4     18     313 11.5   62     5   4
+5     NA      NA 14.3   56     5   5
+6     28      NA 14.9   66     5   6
+7     23     299  8.6   65     5   7
+8     19      99 13.8   59     5   8
+9      8      19 20.1   61     5   9
+10    NA     194  8.6   69     5  10
 ```
 
+# Funções estatísticas básicas
 
-
-
-
-## Funções estatísticas básicas
 
 ```r
+# carregando data frame "New York Air Quality Measurements" do pacote datasets
 data("airquality")
-x <- airquality$Temp
-y <- airquality$Ozone
-mean(x)
+# ?airquality
+str(airquality)
 ```
 
 ```
-[1] 77.88235
-```
-
-```r
-sd(x)
-```
-
-```
-[1] 9.46527
-```
-
-```r
-max(y)
-```
-
-```
-[1] NA
-```
-
-```r
-min(y)
-```
-
-```
-[1] NA
-```
-
-```r
-range(y)
-```
-
-```
-[1] NA NA
-```
-
-```r
-quantile(x, c(0.1, 0.9))
-```
-
-```
- 10%  90% 
-64.2 90.0 
+'data.frame':	153 obs. of  6 variables:
+ $ Ozone  : int  41 36 12 18 NA 28 23 19 8 NA ...
+ $ Solar.R: int  190 118 149 313 NA NA 299 99 19 194 ...
+ $ Wind   : num  7.4 8 12.6 11.5 14.3 14.9 8.6 13.8 20.1 8.6 ...
+ $ Temp   : int  67 72 74 62 56 66 65 59 61 69 ...
+ $ Month  : int  5 5 5 5 5 5 5 5 5 5 ...
+ $ Day    : int  1 2 3 4 5 6 7 8 9 10 ...
 ```
 
 ```r
@@ -1338,236 +1652,170 @@ summary(airquality)
 ```
 
 ```r
-cor(x, y, use = "complete.obs")
+# removendo qualquer linha dos dados com dados faltantes
+complete.cases(airquality)
 ```
 
 ```
-[1] 0.6983603
+  [1]  TRUE  TRUE  TRUE  TRUE FALSE FALSE  TRUE  TRUE  TRUE FALSE FALSE
+ [12]  TRUE  TRUE  TRUE  TRUE  TRUE  TRUE  TRUE  TRUE  TRUE  TRUE  TRUE
+ [23]  TRUE  TRUE FALSE FALSE FALSE  TRUE  TRUE  TRUE  TRUE FALSE FALSE
+ [34] FALSE FALSE FALSE FALSE  TRUE FALSE  TRUE  TRUE FALSE FALSE  TRUE
+ [45] FALSE FALSE  TRUE  TRUE  TRUE  TRUE  TRUE FALSE FALSE FALSE FALSE
+ [56] FALSE FALSE FALSE FALSE FALSE FALSE  TRUE  TRUE  TRUE FALSE  TRUE
+ [67]  TRUE  TRUE  TRUE  TRUE  TRUE FALSE  TRUE  TRUE FALSE  TRUE  TRUE
+ [78]  TRUE  TRUE  TRUE  TRUE  TRUE FALSE FALSE  TRUE  TRUE  TRUE  TRUE
+ [89]  TRUE  TRUE  TRUE  TRUE  TRUE  TRUE  TRUE FALSE FALSE FALSE  TRUE
+[100]  TRUE  TRUE FALSE FALSE  TRUE  TRUE  TRUE FALSE  TRUE  TRUE  TRUE
+[111]  TRUE  TRUE  TRUE  TRUE FALSE  TRUE  TRUE  TRUE FALSE  TRUE  TRUE
+[122]  TRUE  TRUE  TRUE  TRUE  TRUE  TRUE  TRUE  TRUE  TRUE  TRUE  TRUE
+[133]  TRUE  TRUE  TRUE  TRUE  TRUE  TRUE  TRUE  TRUE  TRUE  TRUE  TRUE
+[144]  TRUE  TRUE  TRUE  TRUE  TRUE  TRUE FALSE  TRUE  TRUE  TRUE
 ```
+
+```r
+airquality <- airquality[complete.cases(airquality), ]
+summary(airquality)
+```
+
+```
+     Ozone          Solar.R           Wind            Temp      
+ Min.   :  1.0   Min.   :  7.0   Min.   : 2.30   Min.   :57.00  
+ 1st Qu.: 18.0   1st Qu.:113.5   1st Qu.: 7.40   1st Qu.:71.00  
+ Median : 31.0   Median :207.0   Median : 9.70   Median :79.00  
+ Mean   : 42.1   Mean   :184.8   Mean   : 9.94   Mean   :77.79  
+ 3rd Qu.: 62.0   3rd Qu.:255.5   3rd Qu.:11.50   3rd Qu.:84.50  
+ Max.   :168.0   Max.   :334.0   Max.   :20.70   Max.   :97.00  
+     Month            Day       
+ Min.   :5.000   Min.   : 1.00  
+ 1st Qu.:6.000   1st Qu.: 9.00  
+ Median :7.000   Median :16.00  
+ Mean   :7.216   Mean   :15.95  
+ 3rd Qu.:9.000   3rd Qu.:22.50  
+ Max.   :9.000   Max.   :31.00  
+```
+
+```r
+# gráfico de dispersão entre Ozônio e temperatura do ar
+with(airquality, plot(Temp, Ozone, pch = 20))
+abline(h = mean(airquality$Ozone, na.rm = TRUE))
+```
+
+![](figs/unnamed-chunk-32-1.png) 
+
+```r
+# esttísticas de algumas variáveis
+sd(airquality$Temp)
+```
+
+```
+[1] 9.529969
+```
+
+```r
+range(airquality$Ozone)
+```
+
+```
+[1]   1 168
+```
+
+```r
+qs <- quantile(airquality$Temp, c(0.05, 0.95))
+# histograma
+hist(airquality$Temp, col = "gray"); box()
+abline(v = qs, col = 2, lwd = 3, lty =2)
+```
+
+![](figs/unnamed-chunk-32-2.png) 
+
+```r
+with(airquality, cor(Temp, Ozone, use = "complete.obs"))
+```
+
+```
+[1] 0.6985414
+```
+
+```r
+# FEDA
+plot(ecdf(airquality$Temp), col = "blue", main = "função empírica de densidade acumulada"); box()
+```
+
+![](figs/unnamed-chunk-32-3.png) 
 
 ```r
 # reordena o vetor
-x
+head(airquality$Ozone, 20)
 ```
 
 ```
-  [1] 67 72 74 62 56 66 65 59 61 69 74 69 66 68 58 64 66 57 68 62 59 73 61
- [24] 61 57 58 57 67 81 79 76 78 74 67 84 85 79 82 87 90 87 93 92 82 80 79
- [47] 77 72 65 73 76 77 76 76 76 75 78 73 80 77 83 84 85 81 84 83 83 88 92
- [70] 92 89 82 73 81 91 80 81 82 84 87 85 74 81 82 86 85 82 86 88 86 83 81
- [93] 81 81 82 86 85 87 89 90 90 92 86 86 82 80 79 77 79 76 78 78 77 72 75
-[116] 79 81 86 88 97 94 96 94 91 92 93 93 87 84 80 78 75 73 81 76 77 71 71
-[139] 78 67 76 68 82 64 71 81 69 63 70 77 75 76 68
+ [1] 41 36 12 18 23 19  8 16 11 14 18 14 34  6 30 11  1 11  4 32
 ```
 
 ```r
-sort(x)
+head(sort(airquality$Ozone), 20)
 ```
 
 ```
-  [1] 56 57 57 57 58 58 59 59 61 61 61 62 62 63 64 64 65 65 66 66 66 67 67
- [24] 67 67 68 68 68 68 69 69 69 70 71 71 71 72 72 72 73 73 73 73 73 74 74
- [47] 74 74 75 75 75 75 76 76 76 76 76 76 76 76 76 77 77 77 77 77 77 77 78
- [70] 78 78 78 78 78 79 79 79 79 79 79 80 80 80 80 80 81 81 81 81 81 81 81
- [93] 81 81 81 81 82 82 82 82 82 82 82 82 82 83 83 83 83 84 84 84 84 84 85
-[116] 85 85 85 85 86 86 86 86 86 86 86 87 87 87 87 87 88 88 88 89 89 90 90
-[139] 90 91 91 92 92 92 92 92 93 93 93 94 94 96 97
+ [1]  1  4  6  7  7  8  9  9  9 10 11 11 11 12 12 13 13 13 13 14
 ```
 
 ```r
-(o <- order(x))
+head(o <- order(airquality$Ozone), 20)
 ```
 
 ```
-  [1]   5  18  25  27  15  26   8  21   9  23  24   4  20 148  16 144   7
- [18]  49   6  13  17   1  28  34 140  14  19 142 153  10  12 147 149 137
- [35] 138 145   2  48 114  22  50  58  73 133   3  11  33  82  56 115 132
- [52] 151  31  51  53  54  55 110 135 141 152  47  52  60 108 113 136 150
- [69]  32  57 111 112 131 139  30  37  46 107 109 116  45  59  76 106 130
- [86]  29  64  74  77  83  92  93  94 117 134 146  38  44  72  78  84  87
-[103]  95 105 143  61  66  67  91  35  62  65  79 129  36  63  81  86  97
-[120]  85  88  90  96 103 104 118  39  41  80  98 128  68  89 119  71  99
-[137]  40 100 101  75 124  43  69  70 102 125  42 126 127 121 123 122 120
+ [1]  17  19  14  45 106   7  61  75  96  43   9  16  18   3  32  33  97
+[18] 100 103  10
 ```
 
 ```r
-# ordenando dataframe pela ordem de x
-airquality[o, ]
+#plot(airquality$Ozone[o])
+# ordenando dataframe pela Temp
+head(airquality[o, ], 20)
 ```
 
 ```
     Ozone Solar.R Wind Temp Month Day
-5      NA      NA 14.3   56     5   5
-18      6      78 18.4   57     5  18
-25     NA      66 16.6   57     5  25
-27     NA      NA  8.0   57     5  27
-15     18      65 13.2   58     5  15
-26     NA     266 14.9   58     5  26
-8      19      99 13.8   59     5   8
 21      1       8  9.7   59     5  21
-9       8      19 20.1   61     5   9
 23      4      25  9.7   61     5  23
-24     32      92 12.0   61     5  24
-4      18     313 11.5   62     5   4
-20     11      44  9.7   62     5  20
-148    14      20 16.6   63     9  25
-16     14     334 11.5   64     5  16
-144    13     238 12.6   64     9  21
-7      23     299  8.6   65     5   7
-49     20      37  9.2   65     6  18
-6      28      NA 14.9   66     5   6
-13     11     290  9.2   66     5  13
-17     34     307 12.0   66     5  17
-1      41     190  7.4   67     5   1
-28     23      13 12.0   67     5  28
-34     NA     242 16.1   67     6   3
-140    18     224 13.8   67     9  17
-14     14     274 10.9   68     5  14
-19     30     322 11.5   68     5  19
-142    24     238 10.3   68     9  19
-153    20     223 11.5   68     9  30
-10     NA     194  8.6   69     5  10
-12     16     256  9.7   69     5  12
-147     7      49 10.3   69     9  24
-149    30     193  6.9   70     9  26
-137     9      24 10.9   71     9  14
-138    13     112 11.5   71     9  15
-145    23      14  9.2   71     9  22
-2      36     118  8.0   72     5   2
-48     37     284 20.7   72     6  17
-114     9      36 14.3   72     8  22
-22     11     320 16.6   73     5  22
-50     12     120 11.5   73     6  19
-58     NA      47 10.3   73     6  27
-73     10     264 14.3   73     7  12
-133    24     259  9.7   73     9  10
-3      12     149 12.6   74     5   3
-11      7      NA  6.9   74     5  11
-33     NA     287  9.7   74     6   2
-82     16       7  6.9   74     7  21
-56     NA     135  8.0   75     6  25
-115    NA     255 12.6   75     8  23
-132    21     230 10.9   75     9   9
-151    14     191 14.3   75     9  28
-31     37     279  7.4   76     5  31
-51     13     137 10.3   76     6  20
-53     NA      59  1.7   76     6  22
-54     NA      91  4.6   76     6  23
-55     NA     250  6.3   76     6  24
-110    23     115  7.4   76     8  18
-135    21     259 15.5   76     9  12
-141    13      27 10.3   76     9  18
-152    18     131  8.0   76     9  29
-47     21     191 14.9   77     6  16
-52     NA     150  6.3   77     6  21
-60     NA      31 14.9   77     6  29
-108    22      71 10.3   77     8  16
-113    21     259 15.5   77     8  21
-136    28     238  6.3   77     9  13
-150    NA     145 13.2   77     9  27
-32     NA     286  8.6   78     6   1
-57     NA     127  8.0   78     6  26
-111    31     244 10.9   78     8  19
-112    44     190 10.3   78     8  20
-131    23     220 10.3   78     9   8
-139    46     237  6.9   78     9  16
-30    115     223  5.7   79     5  30
-37     NA     264 14.3   79     6   6
-46     NA     322 11.5   79     6  15
-107    NA      64 11.5   79     8  15
-109    59      51  6.3   79     8  17
-116    45     212  9.7   79     8  24
-45     NA     332 13.8   80     6  14
-59     NA      98 11.5   80     6  28
+18      6      78 18.4   57     5  18
 76      7      48 14.3   80     7  15
-106    65     157  9.7   80     8  14
-130    20     252 10.9   80     9   7
-29     45     252 14.9   81     5  29
-64     32     236  9.2   81     7   3
-74     27     175 14.9   81     7  13
-77     48     260  6.9   81     7  16
-83     NA     258  9.7   81     7  22
-92     59     254  9.2   81     7  31
-93     39      83  6.9   81     8   1
+147     7      49 10.3   69     9  24
+9       8      19 20.1   61     5   9
 94      9      24 13.8   81     8   2
-117   168     238  3.4   81     8  25
-134    44     236 14.9   81     9  11
-146    36     139 10.3   81     9  23
-38     29     127  9.7   82     6   7
-44     23     148  8.0   82     6  13
-72     NA     139  8.6   82     7  11
-78     35     274 10.3   82     7  17
-84     NA     295 11.5   82     7  23
-87     20      81  8.6   82     7  26
-95     16      77  7.4   82     8   3
-105    28     273 11.5   82     8  13
-143    16     201  8.0   82     9  20
-61     NA     138  8.0   83     6  30
-66     64     175  4.6   83     7   5
-67     40     314 10.9   83     7   6
-91     64     253  7.4   83     7  30
-35     NA     186  9.2   84     6   4
-62    135     269  4.1   84     7   1
-65     NA     101 10.9   84     7   4
-79     61     285  6.3   84     7  18
-129    32      92 15.5   84     9   6
-36     NA     220  8.6   85     6   5
-63     49     248  9.2   85     7   2
-81     63     220 11.5   85     7  20
-86    108     223  8.0   85     7  25
-97     35      NA  7.4   85     8   5
-85     80     294  8.6   86     7  24
-88     52      82 12.0   86     7  27
-90     50     275  7.4   86     7  29
-96     78      NA  6.9   86     8   4
-103    NA     137 11.5   86     8  11
-104    44     192 11.5   86     8  12
-118    73     215  8.0   86     8  26
-39     NA     273  6.9   87     6   8
-41     39     323 11.5   87     6  10
-80     79     187  5.1   87     7  19
-98     66      NA  4.6   87     8   6
-128    47      95  7.4   87     9   5
-68     77     276  5.1   88     7   7
-89     82     213  7.4   88     7  28
-119    NA     153  5.7   88     8  27
-71     85     175  7.4   89     7  10
-99    122     255  4.0   89     8   7
-40     71     291 13.8   90     6   9
-100    89     229 10.3   90     8   8
-101   110     207  8.0   90     8   9
-75     NA     291 14.9   91     7  14
-124    96     167  6.9   91     9   1
-43     NA     250  9.2   92     6  12
-69     97     267  6.3   92     7   8
-70     97     272  5.7   92     7   9
-102    NA     222  8.6   92     8  10
-125    78     197  5.1   92     9   2
-42     NA     259 10.9   93     6  11
-126    73     183  2.8   93     9   3
-127    91     189  4.6   93     9   4
-121   118     225  2.3   94     8  29
-123    85     188  6.3   94     8  31
-122    84     237  6.3   96     8  30
-120    76     203  9.7   97     8  28
+114     9      36 14.3   72     8  22
+137     9      24 10.9   71     9  14
+73     10     264 14.3   73     7  12
+13     11     290  9.2   66     5  13
+20     11      44  9.7   62     5  20
+22     11     320 16.6   73     5  22
+3      12     149 12.6   74     5   3
+50     12     120 11.5   73     6  19
+51     13     137 10.3   76     6  20
+138    13     112 11.5   71     9  15
+141    13      27 10.3   76     9  18
+144    13     238 12.6   64     9  21
+14     14     274 10.9   68     5  14
 ```
 
-### Regressão linear e gráfico de dispersão
+### Regressão linear e gráficos 
 
 
 ```r
 # regressão linear
-(reg <- lm(y~x))
+(reg <- with(airquality, lm(Ozone ~ Temp)))
 ```
 
 ```
 
 Call:
-lm(formula = y ~ x)
+lm(formula = Ozone ~ Temp)
 
 Coefficients:
-(Intercept)            x  
-   -146.995        2.429  
+(Intercept)         Temp  
+   -147.646        2.439  
 ```
 
 ```r
@@ -1577,45 +1825,38 @@ summary(reg)
 ```
 
 Call:
-lm(formula = y ~ x)
+lm(formula = Ozone ~ Temp)
 
 Residuals:
     Min      1Q  Median      3Q     Max 
--40.729 -17.409  -0.587  11.306 118.271 
+-40.922 -17.459  -0.874  10.444 118.078 
 
 Coefficients:
              Estimate Std. Error t value Pr(>|t|)    
-(Intercept) -146.9955    18.2872  -8.038 9.37e-13 ***
-x              2.4287     0.2331  10.418  < 2e-16 ***
+(Intercept) -147.6461    18.7553  -7.872 2.76e-12 ***
+Temp           2.4391     0.2393  10.192  < 2e-16 ***
 ---
 Signif. codes:  0 '***' 0.001 '**' 0.01 '*' 0.05 '.' 0.1 ' ' 1
 
-Residual standard error: 23.71 on 114 degrees of freedom
-  (37 observations deleted due to missingness)
-Multiple R-squared:  0.4877,	Adjusted R-squared:  0.4832 
-F-statistic: 108.5 on 1 and 114 DF,  p-value: < 2.2e-16
+Residual standard error: 23.92 on 109 degrees of freedom
+Multiple R-squared:  0.488,	Adjusted R-squared:  0.4833 
+F-statistic: 103.9 on 1 and 109 DF,  p-value: < 2.2e-16
 ```
 
 ```r
-plot(x, y); abline(coef(reg))
+with(airquality, plot(Temp, Ozone, pch = 20))
+abline(coef(reg))
 ```
 
-![](figs/unnamed-chunk-27-1.png) 
+![](figs/unnamed-chunk-33-1.png) 
 
 ```r
-hist(x)
+boxplot(airquality[, 1:4])
 ```
 
-![](figs/unnamed-chunk-27-2.png) 
+![](figs/unnamed-chunk-33-2.png) 
 
-```r
-boxplot(y)
-```
-
-![](figs/unnamed-chunk-27-3.png) 
-
-
-# Pacotes
+# Uso de Pacotes
 
 Instalação e lista de funções.
 
@@ -1628,23 +1869,12 @@ library(help = openair)
 ```
 
 
-# Obtendo ajuda
-
-
-```r
-# use '?' para ajuda sobre qualquer função do R (se o pacote tiver sido carregado na seção)
-?max
-# procura pelo texto na documentação dos pacotes do R
-??csv
-```
-
-
 # Manipulação de arquivos e diretórios
 
 
 ```r
 # diretório de trabalho: onde estamos com a seção do R aberta
-getwd()
+(wd <- getwd())
 ```
 
 ```
@@ -1652,6 +1882,7 @@ getwd()
 ```
 
 ```r
+# lista conteúdo do diretório de trabalho
 dir()
 ```
 
@@ -1659,15 +1890,24 @@ dir()
  [1] "0_Rinstall.html"          "0_Rinstall.md"           
  [3] "0_Rinstall.Rmd"           "1_Ressencial.html"       
  [5] "1_Ressencial.md"          "1_Ressencial.Rmd"        
- [7] "figs"                     "introducao_resbmet.html" 
- [9] "introducao_resbmet.md"    "introducao_resbmet.Rpres"
-[11] "my_style.css"             "R"                       
-[13] "README.html"              "README.md"               
-[15] "Resbmet.Rproj"           
+ [7] "bdmep.txt"                "bdmep.txt~"              
+ [9] "data"                     "figs"                    
+[11] "introducao_resbmet.html"  "introducao_resbmet.md"   
+[13] "introducao_resbmet.Rpres" "my_style.css"            
+[15] "R"                        "README.html"             
+[17] "README.md"                "Resbmet.Rproj"           
 ```
 
 ```r
-# mudando o diretório de trabalho
+file.exists("1_Ressencial.html")
+```
+
+```
+[1] TRUE
+```
+
+```r
+# mudando o diretório de trabalho para dois diretórios
 setwd("../../")
 getwd()
 ```
@@ -1677,44 +1917,725 @@ getwd()
 ```
 
 ```r
-file.exists()
+setwd(wd)
+# para combinar caminhos com "/"
+file.path(getwd(),"nome_de_um_arquivo.txt")
 ```
 
 ```
-Error in file.exists(): invalid 'file' argument
-```
-
-```r
-file.path()
-```
-
-```
-character(0)
+[1] "/home/hidrometeorologista/UFSM/extensao/cursos/Resbmet/nome_de_um_arquivo.txt"
 ```
 
 ```r
-list.files("../")
+# listar arquvos de um dir
+list.files(path = "/etc/apt")
 ```
 
 ```
-[1] "013.pdf"                           
-[2] "adm"                               
-[3] "ensino"                            
-[4] "extensao"                          
-[5] "ips_inpe"                          
-[6] "Mem076.2014CPPD_minimo_8h-aula.pdf"
-[7] "orientacoes"                       
-[8] "outros"                            
-[9] "pesquisa"                          
+[1] "apt.conf.d"        "preferences.d"     "sources.list"     
+[4] "sources.list.d"    "sources.list.save" "trustdb.gpg"      
+[7] "trusted.gpg"       "trusted.gpg~"      "trusted.gpg.d"    
 ```
 
 # Manipulação de Caracteres
 
+*Strings* ou Caracteres frquentemente precisam ser construídas ou destruídas para identificarmos observações, pré-processar textos, combinar informações ou atender outras necessidades.
 
+## Combinando *strings*
+
+
+```r
+# juntando caracteres
+vetor_char <- c("Manipulação", "de", "dados", "dados", "meteorológicos", "com", "R")
+# em uma único string
+(resbmet <- paste(vetor_char, collapse = " "))
+```
+
+```
+[1] "Manipulação de dados dados meteorológicos com R"
+```
+
+```r
+# colando strings com separador "-"
+resbmet1 <- paste("Manipulação", "de", "dados", "meteorológicos", "com", "R", sep = "-")
+cat(resbmet1)
+```
+
+```
+Manipulação-de-dados-meteorológicos-com-R
+```
+
+## Substituição de *strings*
+
+
+```r
+urlData <- "http://www.inmet.gov.br/projetos/rede/pesquisa/gera_serie_txt.php?&mRelEstacao=XXXXX&btnProcesso=serie&mRelDtInicio=dd/mm/yyyy&mRelDtFim=DD/MM/YYYY&mAtributos=1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,"
+# código da estação
+stnid   <- "83726"
+# data inicial dos dados
+sdate   <- "01/01/1961"
+# data final dos dados
+edate   <- "31/12/2014"
+# Substituindo
+(urlData <- gsub("XXXXX", stnid, urlData))
+```
+
+```
+[1] "http://www.inmet.gov.br/projetos/rede/pesquisa/gera_serie_txt.php?&mRelEstacao=83726&btnProcesso=serie&mRelDtInicio=dd/mm/yyyy&mRelDtFim=DD/MM/YYYY&mAtributos=1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,"
+```
+
+```r
+(urlData <- gsub("dd/mm/yyyy", sdate, urlData))
+```
+
+```
+[1] "http://www.inmet.gov.br/projetos/rede/pesquisa/gera_serie_txt.php?&mRelEstacao=83726&btnProcesso=serie&mRelDtInicio=01/01/1961&mRelDtFim=DD/MM/YYYY&mAtributos=1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,"
+```
+
+```r
+(urlData <- gsub("DD/MM/YYYY", edate, urlData))
+```
+
+```
+[1] "http://www.inmet.gov.br/projetos/rede/pesquisa/gera_serie_txt.php?&mRelEstacao=83726&btnProcesso=serie&mRelDtInicio=01/01/1961&mRelDtFim=31/12/2014&mAtributos=1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,"
+```
+
+
+```r
+# abre navegador web (o acesso requer usuario e senha mediante registro)
+browseURL(urlData)
+#download.file(url = urlData, destfile = paste0("data/", stnid, ".txt"))
+```
+
+## Leitura de dados para demonstração de Manipulação de Caracteres
+
+R pode ler dados de uma variedade de fontes e em uma variedade de formatos. Por uma limitação de tempo, será mostrado como importar somente os dados que serão usados como exemplos.
+
+Exemplo de leitura de dados do [BDMEP-INMET](http://www.inmet.gov.br/portal/index.php?r=bdmep/bdmep).
+
+Os objetivos desse trecho de código são
+- encontrar a linha que contém o nome das variáveis meteorológicas (nome das colunas dos dados)
+- corrigir o nome das variáveis
+- substituir o nome das variáveis
+
+Para isso serão utilizadas as seguintes funções relacionadas a manipulação de strings: `readLines()`, `grep()`, `gsub()`,  `strsplit()`. 
+
+
+```r
+# pacotes necessários
+library(descr); library(doBy)
+# nome do arquivo
+(filename <- list.files("data", full.names = TRUE))
+```
+
+```
+[1] "data/83726.test" "data/83897.txt"  "data/83936.txt"  "data/83985.txt" 
+```
+
+```r
+(filename <- grep("83936", filename, value = TRUE))
+```
+
+```
+[1] "data/83936.txt"
+```
+
+```r
+## linha com nome das variáveis
+x <- readLines(filename)
+head(x, 50)
+```
+
+```
+ [1] "<html><meta http-equiv=\"Content-Type\" content=\"text/html; charset=iso-8859-1\">"                                                                                                                                                                                     
+ [2] "<head>"                                                                                                                                                                                                                                                                 
+ [3] "<title>Estação - 83936</title>"                                                                                                                                                                                                                                         
+ [4] "   <!-- FACE BOX -->"                                                                                                                                                                                                                                                   
+ [5] "   <script src=\"facebox/js/jquery.js\" type=\"text/javascript\"></script>"                                                                                                                                                                                             
+ [6] "   <link href=\"facebox/styles/facebox.css\" media=\"screen\" rel=\"stylesheet\" type=\"text/css\" >"                                                                                                                                                                   
+ [7] ""                                                                                                                                                                                                                                                                       
+ [8] "   <script src=\"facebox/js/facebox.js\" type=\"text/javascript\"></script>"                                                                                                                                                                                            
+ [9] "   <script type=\"text/javascript\">"                                                                                                                                                                                                                                   
+[10] "      jQuery(document).ready(function($) {"                                                                                                                                                                                                                             
+[11] "         $('a[rel*=facebox]').facebox({"                                                                                                                                                                                                                                
+[12] "            loading_image : 'loading.gif',"                                                                                                                                                                                                                             
+[13] "            close_image   : 'closelabel.gif'})"                                                                                                                                                                                                                         
+[14] "         $('area[rel*=facebox]').facebox({"                                                                                                                                                                                                                             
+[15] "            loading_image : 'loading.gif',"                                                                                                                                                                                                                             
+[16] "            close_image   : 'closelabel.gif'})"                                                                                                                                                                                                                         
+[17] "      })"                                                                                                                                                                                                                                                               
+[18] "   </script>"                                                                                                                                                                                                                                                           
+[19] "   <script type=\"text/javascript\">"                                                                                                                                                                                                                                   
+[20] "      function showFoto(src) {"                                                                                                                                                                                                                                         
+[21] "         //criando um link falso, para o LightBox captar as informações"                                                                                                                                                                                                
+[22] "         var a_false = document.createElement(\"A\");"                                                                                                                                                                                                                  
+[23] "         a_false.rel = \"lightbox\";"                                                                                                                                                                                                                                   
+[24] "         a_false.href = src;"                                                                                                                                                                                                                                           
+[25] "         //chamando a função do lightbox responsável pelo início das ações"                                                                                                                                                                                             
+[26] "         myLightbox.start(a_false);"                                                                                                                                                                                                                                    
+[27] "         //anulando o link"                                                                                                                                                                                                                                             
+[28] "         a_false = null;"                                                                                                                                                                                                                                               
+[29] "      }"                                                                                                                                                                                                                                                                
+[30] "   </script>"                                                                                                                                                                                                                                                           
+[31] "</head>"                                                                                                                                                                                                                                                                
+[32] "<pre>--------------------"                                                                                                                                                                                                                                              
+[33] "BDMEP - INMET"                                                                                                                                                                                                                                                          
+[34] "--------------------"                                                                                                                                                                                                                                                   
+[35] "Estação           : SANTA MARIA - RS (OMM: 83936)"                                                                                                                                                                                                                      
+[36] "Latitude  (graus) : -29.7"                                                                                                                                                                                                                                              
+[37] "Longitude (graus) : -53.7"                                                                                                                                                                                                                                              
+[38] "Altitude  (metros): 95.00"                                                                                                                                                                                                                                              
+[39] "Estação Operante"                                                                                                                                                                                                                                                       
+[40] "Inicio de operação: 01/01/1912"                                                                                                                                                                                                                                         
+[41] "Periodo solicitado dos dados: 01/01/1930 a 31/12/2012"                                                                                                                                                                                                                  
+[42] "Os dados listados abaixo são os que encontram-se digitados no BDMEP"                                                                                                                                                                                                    
+[43] "--------------------"                                                                                                                                                                                                                                                   
+[44] "Obs.: Os dados aparecem separados por ; (ponto e vírgula) no formato txt."                                                                                                                                                                                              
+[45] "      Para o formato planilha XLS, <A HREF=\"instrucao.html\" TARGET=\"_top\" rel=\"facebox\">siga as instruções</a>"                                                                                                                                                   
+[46] "--------------------"                                                                                                                                                                                                                                                   
+[47] "Estacao;Data;Hora;Precipitacao;TempBulboSeco;TempBulboUmido;TempMaxima;TempMinima;UmidadeRelativa;PressaoAtmEstacao;PressaoAtmMar;DirecaoVento;VelocidadeVentoInsolacao;Nebulosidade;Evaporacao Piche;Temp Comp Media;Umidade Relativa Media;Velocidade do Vento Media;"
+[48] "83936;01/01/1961;0000;;;;31.9;;;;;;;7.7;;1.1;25.86;73;1;"                                                                                                                                                                                                               
+[49] "83936;01/01/1961;1200;;23.9;21.4;;18.1;79;990.3;;;0;;0;;;;;"                                                                                                                                                                                                            
+[50] "83936;01/01/1961;1800;;30.6;25.1;;;63;988.2;;;3;;9;;;;;"                                                                                                                                                                                                                
+```
+
+```r
+# rowheader <- toUTF8(rowheader)
+# linha com cabeçalho
+(rowheader <- grep("Data;Hora;", x))
+```
+
+```
+[1] 47
+```
+
+```r
+## extraindo cabecalho(h) e corrigindo se necessario
+tmp <- readLines(filename)
+(h <- grep("Data;Hora;", tmp, value = TRUE))
+```
+
+```
+[1] "Estacao;Data;Hora;Precipitacao;TempBulboSeco;TempBulboUmido;TempMaxima;TempMinima;UmidadeRelativa;PressaoAtmEstacao;PressaoAtmMar;DirecaoVento;VelocidadeVentoInsolacao;Nebulosidade;Evaporacao Piche;Temp Comp Media;Umidade Relativa Media;Velocidade do Vento Media;"
+```
+
+```r
+## PROBLEMA: nomes das vars (VelocidadeVento e Insolacao) grudados
+(h2 <- gsub("VelocidadeVentoInsolacao;", "VelocidadeVento;Insolacao;", h))
+```
+
+```
+[1] "Estacao;Data;Hora;Precipitacao;TempBulboSeco;TempBulboUmido;TempMaxima;TempMinima;UmidadeRelativa;PressaoAtmEstacao;PressaoAtmMar;DirecaoVento;VelocidadeVento;Insolacao;Nebulosidade;Evaporacao Piche;Temp Comp Media;Umidade Relativa Media;Velocidade do Vento Media;"
+```
+
+```r
+## transformando h de string para vetor (hvec)
+(hvec <- unlist(strsplit(h2, ";")))
+```
+
+```
+ [1] "Estacao"                   "Data"                     
+ [3] "Hora"                      "Precipitacao"             
+ [5] "TempBulboSeco"             "TempBulboUmido"           
+ [7] "TempMaxima"                "TempMinima"               
+ [9] "UmidadeRelativa"           "PressaoAtmEstacao"        
+[11] "PressaoAtmMar"             "DirecaoVento"             
+[13] "VelocidadeVento"           "Insolacao"                
+[15] "Nebulosidade"              "Evaporacao Piche"         
+[17] "Temp Comp Media"           "Umidade Relativa Media"   
+[19] "Velocidade do Vento Media"
+```
+
+```r
+## correspondencia entre variveis originais e novos nomes
+## variaveis horarias do arquivo bruto baixado do inmet
+#    Estacao;Data;Hora;
+#    Precipitacao;TempBulboSeco;TempBulboUmido;TempMaxima;TempMinima;UmidadeRelativa;
+#    PressaoAtmEstacao;PressaoAtmMar;DirecaoVento;VelocidadeVentoInsolacao;Nebulosidade;
+#    Evaporacao Piche;Temp Comp Media;Umidade Relativa Media;Velocidade do Vento Media;
+## novos nomes para variaveis horarias
+vnames <- c("codigo", "Data","Hora",
+            "prec", "tar", "tw", "tmax", "tmin", "urx", 
+            "patm", "pnmm", "wd", "wsx", "n", "cc", "evap", "tcomp", "ur", "ws")
+varnames <-  recodeVar(as.character(hvec),
+                       src = as.list(as.character(hvec)), 
+                       tgt = as.list(vnames))
+varnames
+```
+
+```
+ [1] "codigo" "Data"   "Hora"   "prec"   "tar"    "tw"     "tmax"  
+ [8] "tmin"   "urx"    "patm"   "pnmm"   "wd"     "wsx"    "n"     
+[15] "cc"     "evap"   "tcomp"  "ur"     "ws"    
+```
+
+Vamos extrair as coordenadas geográficas da estação.
+
+
+```r
+(lat <- grep("Latitude", tmp, value = TRUE))
+```
+
+```
+[1] "Latitude  (graus) : -29.7"
+```
+
+```r
+ (lat <- as.numeric(unlist(strsplit(lat, ":"))[c(F, T)]))
+```
+
+```
+[1] -29.7
+```
+
+```r
+(lon <- grep("Longitude", tmp, value = TRUE))
+```
+
+```
+[1] "Longitude (graus) : -53.7"
+```
+
+```r
+ (lon <- as.numeric(unlist(strsplit(lon, ":"))[c(F, T)]))
+```
+
+```
+[1] -53.7
+```
+
+```r
+(alt <- grep("Altitude", tmp, value = TRUE))
+```
+
+```
+[1] "Altitude  (metros): 95.00"
+```
+
+```r
+ (alt <- as.numeric(unlist(strsplit(alt, ":"))[c(F, T)]))
+```
+
+```
+[1] 95
+```
+
+```r
+(coords <- c(lon, lat, alt))
+```
+
+```
+[1] -53.7 -29.7  95.0
+```
 
 # Datas e horas
 
+Datas e horas são referências temporais e indicam a ordem cronológica dos dados. Em climatologia dados passados na escala diária são suficientes para maioria das pesquisas. Em micrometeorologia é comum o uso de dados na escala sub-horária (até frações de segundo). 
 
+Datas e horas podem ser expressas em diferentes formatos o que  pode dificultar o reconhecimento e a sua manipulação. Quanto a manipulação frequentemente precisamos extrair componentes das datas  e horas.
+
+O R possui várias opções de classes de objetos e pacotes para o tratamento de datas e horas. As três classes principais são:
+
++ `Date` (p.ex. 31/12/2000), para lidar somente com datas, p.ex.: `31/12/2000`.
+
++ `POSIXct` e `POSIXt` (Date-Time), p.ex.: `31/12/2000 14:10:00`, para lidar com datas e horas
+
+
+## Formatando datas
+
+
+```r
+## data atual no computador
+(hoje <- Sys.Date())
+```
+
+```
+[1] "2015-11-17"
+```
+
+```r
+class(hoje)
+```
+
+```
+[1] "Date"
+```
+
+Podemos manipular o formato de saída da data.
+
+
+```r
+format(hoje, "%d%b%Y")
+```
+
+```
+[1] "17Nov2015"
+```
+
+```r
+format(hoje, "%d/%m/%Y")
+```
+
+```
+[1] "17/11/2015"
+```
+
+```r
+format(hoje, "%d_%m_%Y.txt")
+```
+
+```
+[1] "17_11_2015.txt"
+```
+
+```r
+format(hoje, "Hoje é %d de %B de %Y.")
+```
+
+```
+[1] "Hoje é 17 de novembro de 2015."
+```
+
+Para saber sobre os formatos de data consulte `?strptime`.
+
+## Conversão de caracteres para `Date`
+
+
+```r
+d1 <- as.Date("2000-01-01")
+class(d1)
+```
+
+```
+[1] "Date"
+```
+
+```r
+# vetor de caracteres com datas no formato dia/mes/ano
+dts <-  c("2/2/2001", "04/4/2003", "03/03/2002", "5/05/2004", "1/1/2000")
+(datas <- as.Date(dts, format = "%d/%m/%Y"))
+```
+
+```
+[1] "2001-02-02" "2003-04-04" "2002-03-03" "2004-05-05" "2000-01-01"
+```
+
+```r
+class(datas)
+```
+
+```
+[1] "Date"
+```
+
+## Extração de informações da data
+
+
+```r
+# sequencia de datas diarias
+datas_1d <- seq(from = as.Date("2000-01-01"), as.Date("2001-12-31"), by = "days")
+head(datas_1d, 32)
+```
+
+```
+ [1] "2000-01-01" "2000-01-02" "2000-01-03" "2000-01-04" "2000-01-05"
+ [6] "2000-01-06" "2000-01-07" "2000-01-08" "2000-01-09" "2000-01-10"
+[11] "2000-01-11" "2000-01-12" "2000-01-13" "2000-01-14" "2000-01-15"
+[16] "2000-01-16" "2000-01-17" "2000-01-18" "2000-01-19" "2000-01-20"
+[21] "2000-01-21" "2000-01-22" "2000-01-23" "2000-01-24" "2000-01-25"
+[26] "2000-01-26" "2000-01-27" "2000-01-28" "2000-01-29" "2000-01-30"
+[31] "2000-01-31" "2000-02-01"
+```
+
+```r
+tail(datas_1d, 32)
+```
+
+```
+ [1] "2001-11-30" "2001-12-01" "2001-12-02" "2001-12-03" "2001-12-04"
+ [6] "2001-12-05" "2001-12-06" "2001-12-07" "2001-12-08" "2001-12-09"
+[11] "2001-12-10" "2001-12-11" "2001-12-12" "2001-12-13" "2001-12-14"
+[16] "2001-12-15" "2001-12-16" "2001-12-17" "2001-12-18" "2001-12-19"
+[21] "2001-12-20" "2001-12-21" "2001-12-22" "2001-12-23" "2001-12-24"
+[26] "2001-12-25" "2001-12-26" "2001-12-27" "2001-12-28" "2001-12-29"
+[31] "2001-12-30" "2001-12-31"
+```
+
+```r
+library(lubridate)
+# ano
+year(datas_1d)
+```
+
+```
+  [1] 2000 2000 2000 2000 2000 2000 2000 2000 2000 2000 2000 2000 2000 2000
+ [15] 2000 2000 2000 2000 2000 2000 2000 2000 2000 2000 2000 2000 2000 2000
+ [29] 2000 2000 2000 2000 2000 2000 2000 2000 2000 2000 2000 2000 2000 2000
+ [43] 2000 2000 2000 2000 2000 2000 2000 2000 2000 2000 2000 2000 2000 2000
+ [57] 2000 2000 2000 2000 2000 2000 2000 2000 2000 2000 2000 2000 2000 2000
+ [71] 2000 2000 2000 2000 2000 2000 2000 2000 2000 2000 2000 2000 2000 2000
+ [85] 2000 2000 2000 2000 2000 2000 2000 2000 2000 2000 2000 2000 2000 2000
+ [99] 2000 2000 2000 2000 2000 2000 2000 2000 2000 2000 2000 2000 2000 2000
+[113] 2000 2000 2000 2000 2000 2000 2000 2000 2000 2000 2000 2000 2000 2000
+[127] 2000 2000 2000 2000 2000 2000 2000 2000 2000 2000 2000 2000 2000 2000
+[141] 2000 2000 2000 2000 2000 2000 2000 2000 2000 2000 2000 2000 2000 2000
+[155] 2000 2000 2000 2000 2000 2000 2000 2000 2000 2000 2000 2000 2000 2000
+[169] 2000 2000 2000 2000 2000 2000 2000 2000 2000 2000 2000 2000 2000 2000
+[183] 2000 2000 2000 2000 2000 2000 2000 2000 2000 2000 2000 2000 2000 2000
+[197] 2000 2000 2000 2000 2000 2000 2000 2000 2000 2000 2000 2000 2000 2000
+[211] 2000 2000 2000 2000 2000 2000 2000 2000 2000 2000 2000 2000 2000 2000
+[225] 2000 2000 2000 2000 2000 2000 2000 2000 2000 2000 2000 2000 2000 2000
+[239] 2000 2000 2000 2000 2000 2000 2000 2000 2000 2000 2000 2000 2000 2000
+[253] 2000 2000 2000 2000 2000 2000 2000 2000 2000 2000 2000 2000 2000 2000
+[267] 2000 2000 2000 2000 2000 2000 2000 2000 2000 2000 2000 2000 2000 2000
+[281] 2000 2000 2000 2000 2000 2000 2000 2000 2000 2000 2000 2000 2000 2000
+[295] 2000 2000 2000 2000 2000 2000 2000 2000 2000 2000 2000 2000 2000 2000
+[309] 2000 2000 2000 2000 2000 2000 2000 2000 2000 2000 2000 2000 2000 2000
+[323] 2000 2000 2000 2000 2000 2000 2000 2000 2000 2000 2000 2000 2000 2000
+[337] 2000 2000 2000 2000 2000 2000 2000 2000 2000 2000 2000 2000 2000 2000
+[351] 2000 2000 2000 2000 2000 2000 2000 2000 2000 2000 2000 2000 2000 2000
+[365] 2000 2000 2001 2001 2001 2001 2001 2001 2001 2001 2001 2001 2001 2001
+[379] 2001 2001 2001 2001 2001 2001 2001 2001 2001 2001 2001 2001 2001 2001
+[393] 2001 2001 2001 2001 2001 2001 2001 2001 2001 2001 2001 2001 2001 2001
+[407] 2001 2001 2001 2001 2001 2001 2001 2001 2001 2001 2001 2001 2001 2001
+[421] 2001 2001 2001 2001 2001 2001 2001 2001 2001 2001 2001 2001 2001 2001
+[435] 2001 2001 2001 2001 2001 2001 2001 2001 2001 2001 2001 2001 2001 2001
+[449] 2001 2001 2001 2001 2001 2001 2001 2001 2001 2001 2001 2001 2001 2001
+[463] 2001 2001 2001 2001 2001 2001 2001 2001 2001 2001 2001 2001 2001 2001
+[477] 2001 2001 2001 2001 2001 2001 2001 2001 2001 2001 2001 2001 2001 2001
+[491] 2001 2001 2001 2001 2001 2001 2001 2001 2001 2001 2001 2001 2001 2001
+[505] 2001 2001 2001 2001 2001 2001 2001 2001 2001 2001 2001 2001 2001 2001
+[519] 2001 2001 2001 2001 2001 2001 2001 2001 2001 2001 2001 2001 2001 2001
+[533] 2001 2001 2001 2001 2001 2001 2001 2001 2001 2001 2001 2001 2001 2001
+[547] 2001 2001 2001 2001 2001 2001 2001 2001 2001 2001 2001 2001 2001 2001
+[561] 2001 2001 2001 2001 2001 2001 2001 2001 2001 2001 2001 2001 2001 2001
+[575] 2001 2001 2001 2001 2001 2001 2001 2001 2001 2001 2001 2001 2001 2001
+[589] 2001 2001 2001 2001 2001 2001 2001 2001 2001 2001 2001 2001 2001 2001
+[603] 2001 2001 2001 2001 2001 2001 2001 2001 2001 2001 2001 2001 2001 2001
+[617] 2001 2001 2001 2001 2001 2001 2001 2001 2001 2001 2001 2001 2001 2001
+[631] 2001 2001 2001 2001 2001 2001 2001 2001 2001 2001 2001 2001 2001 2001
+[645] 2001 2001 2001 2001 2001 2001 2001 2001 2001 2001 2001 2001 2001 2001
+[659] 2001 2001 2001 2001 2001 2001 2001 2001 2001 2001 2001 2001 2001 2001
+[673] 2001 2001 2001 2001 2001 2001 2001 2001 2001 2001 2001 2001 2001 2001
+[687] 2001 2001 2001 2001 2001 2001 2001 2001 2001 2001 2001 2001 2001 2001
+[701] 2001 2001 2001 2001 2001 2001 2001 2001 2001 2001 2001 2001 2001 2001
+[715] 2001 2001 2001 2001 2001 2001 2001 2001 2001 2001 2001 2001 2001 2001
+[729] 2001 2001 2001
+```
+
+```r
+# mês do ano
+unique(month(datas_1d))
+```
+
+```
+ [1]  1  2  3  4  5  6  7  8  9 10 11 12
+```
+
+```r
+# dia do calendário civil
+table(day(datas_1d))
+```
+
+```
+
+ 1  2  3  4  5  6  7  8  9 10 11 12 13 14 15 16 17 18 19 20 21 22 23 24 25 
+24 24 24 24 24 24 24 24 24 24 24 24 24 24 24 24 24 24 24 24 24 24 24 24 24 
+26 27 28 29 30 31 
+24 24 24 23 22 14 
+```
+
+```r
+# dia do ano
+unique(yday(datas_1d))
+```
+
+```
+  [1]   1   2   3   4   5   6   7   8   9  10  11  12  13  14  15  16  17
+ [18]  18  19  20  21  22  23  24  25  26  27  28  29  30  31  32  33  34
+ [35]  35  36  37  38  39  40  41  42  43  44  45  46  47  48  49  50  51
+ [52]  52  53  54  55  56  57  58  59  60  61  62  63  64  65  66  67  68
+ [69]  69  70  71  72  73  74  75  76  77  78  79  80  81  82  83  84  85
+ [86]  86  87  88  89  90  91  92  93  94  95  96  97  98  99 100 101 102
+[103] 103 104 105 106 107 108 109 110 111 112 113 114 115 116 117 118 119
+[120] 120 121 122 123 124 125 126 127 128 129 130 131 132 133 134 135 136
+[137] 137 138 139 140 141 142 143 144 145 146 147 148 149 150 151 152 153
+[154] 154 155 156 157 158 159 160 161 162 163 164 165 166 167 168 169 170
+[171] 171 172 173 174 175 176 177 178 179 180 181 182 183 184 185 186 187
+[188] 188 189 190 191 192 193 194 195 196 197 198 199 200 201 202 203 204
+[205] 205 206 207 208 209 210 211 212 213 214 215 216 217 218 219 220 221
+[222] 222 223 224 225 226 227 228 229 230 231 232 233 234 235 236 237 238
+[239] 239 240 241 242 243 244 245 246 247 248 249 250 251 252 253 254 255
+[256] 256 257 258 259 260 261 262 263 264 265 266 267 268 269 270 271 272
+[273] 273 274 275 276 277 278 279 280 281 282 283 284 285 286 287 288 289
+[290] 290 291 292 293 294 295 296 297 298 299 300 301 302 303 304 305 306
+[307] 307 308 309 310 311 312 313 314 315 316 317 318 319 320 321 322 323
+[324] 324 325 326 327 328 329 330 331 332 333 334 335 336 337 338 339 340
+[341] 341 342 343 344 345 346 347 348 349 350 351 352 353 354 355 356 357
+[358] 358 359 360 361 362 363 364 365 366
+```
+
+```r
+# é bissexto
+leap_year(2001)
+```
+
+```
+[1] FALSE
+```
+
+```r
+table(leap_year(datas_1d))
+```
+
+```
+
+FALSE  TRUE 
+  365   366 
+```
+
+## Conversão de caracteres para data (`date`) e hora (`time`)
+
+
+```r
+p <- as.POSIXct("2000-01-01 22:00:00")
+class(p)
+```
+
+```
+[1] "POSIXct" "POSIXt" 
+```
+
+```r
+# vetores caracteres com informações de data e hora 
+datas <- c("02/27/92", "02/27/92", "01/14/92", "02/28/92", "02/01/92")
+horas <- c("23:03:20", "22:29:56", "01:03:30", "18:21:03", "16:56:26")
+# convertendo para formato padrão de data e hora do POSIXt
+x <- paste(datas, horas, sep = " ")
+## mesma operação usando as.POSIXct
+x_pxct <- as.POSIXct(x, format = "%m/%d/%y %H:%M:%S", tz = "GMT")
+x_pxct
+```
+
+```
+[1] "1992-02-27 23:03:20 GMT" "1992-02-27 22:29:56 GMT"
+[3] "1992-01-14 01:03:30 GMT" "1992-02-28 18:21:03 GMT"
+[5] "1992-02-01 16:56:26 GMT"
+```
+
+```r
+str(x_pxct)
+```
+
+```
+ POSIXct[1:5], format: "1992-02-27 23:03:20" "1992-02-27 22:29:56" ...
+```
+
+```r
+# data mínima e máxima do intervalo
+range(x_pxct)
+```
+
+```
+[1] "1992-01-14 01:03:30 GMT" "1992-02-28 18:21:03 GMT"
+```
+
+```r
+# duração do intervalo
+diff(range(x_pxct))
+```
+
+```
+Time difference of 45.72052 days
+```
+
+## Extração de informações de um objeto POSIX
+
+
+```r
+## sequencia de datas de meia-hora
+dhh <- seq(from = as.POSIXct("2001-12-28 01:30:00", tz = "GMT"),
+             to = as.POSIXct("2002-01-04 02:30:00", tz = "GMT"), 
+             by = "30 min")
+head(dhh)
+```
+
+```
+[1] "2001-12-28 01:30:00 GMT" "2001-12-28 02:00:00 GMT"
+[3] "2001-12-28 02:30:00 GMT" "2001-12-28 03:00:00 GMT"
+[5] "2001-12-28 03:30:00 GMT" "2001-12-28 04:00:00 GMT"
+```
+
+```r
+tail(dhh)
+```
+
+```
+[1] "2002-01-04 00:00:00 GMT" "2002-01-04 00:30:00 GMT"
+[3] "2002-01-04 01:00:00 GMT" "2002-01-04 01:30:00 GMT"
+[5] "2002-01-04 02:00:00 GMT" "2002-01-04 02:30:00 GMT"
+```
+
+```r
+hour(dhh)
+```
+
+```
+  [1]  1  2  2  3  3  4  4  5  5  6  6  7  7  8  8  9  9 10 10 11 11 12 12
+ [24] 13 13 14 14 15 15 16 16 17 17 18 18 19 19 20 20 21 21 22 22 23 23  0
+ [47]  0  1  1  2  2  3  3  4  4  5  5  6  6  7  7  8  8  9  9 10 10 11 11
+ [70] 12 12 13 13 14 14 15 15 16 16 17 17 18 18 19 19 20 20 21 21 22 22 23
+ [93] 23  0  0  1  1  2  2  3  3  4  4  5  5  6  6  7  7  8  8  9  9 10 10
+[116] 11 11 12 12 13 13 14 14 15 15 16 16 17 17 18 18 19 19 20 20 21 21 22
+[139] 22 23 23  0  0  1  1  2  2  3  3  4  4  5  5  6  6  7  7  8  8  9  9
+[162] 10 10 11 11 12 12 13 13 14 14 15 15 16 16 17 17 18 18 19 19 20 20 21
+[185] 21 22 22 23 23  0  0  1  1  2  2  3  3  4  4  5  5  6  6  7  7  8  8
+[208]  9  9 10 10 11 11 12 12 13 13 14 14 15 15 16 16 17 17 18 18 19 19 20
+[231] 20 21 21 22 22 23 23  0  0  1  1  2  2  3  3  4  4  5  5  6  6  7  7
+[254]  8  8  9  9 10 10 11 11 12 12 13 13 14 14 15 15 16 16 17 17 18 18 19
+[277] 19 20 20 21 21 22 22 23 23  0  0  1  1  2  2  3  3  4  4  5  5  6  6
+[300]  7  7  8  8  9  9 10 10 11 11 12 12 13 13 14 14 15 15 16 16 17 17 18
+[323] 18 19 19 20 20 21 21 22 22 23 23  0  0  1  1  2  2
+```
+
+```r
+minute(dhh)
+```
+
+```
+  [1] 30  0 30  0 30  0 30  0 30  0 30  0 30  0 30  0 30  0 30  0 30  0 30
+ [24]  0 30  0 30  0 30  0 30  0 30  0 30  0 30  0 30  0 30  0 30  0 30  0
+ [47] 30  0 30  0 30  0 30  0 30  0 30  0 30  0 30  0 30  0 30  0 30  0 30
+ [70]  0 30  0 30  0 30  0 30  0 30  0 30  0 30  0 30  0 30  0 30  0 30  0
+ [93] 30  0 30  0 30  0 30  0 30  0 30  0 30  0 30  0 30  0 30  0 30  0 30
+[116]  0 30  0 30  0 30  0 30  0 30  0 30  0 30  0 30  0 30  0 30  0 30  0
+[139] 30  0 30  0 30  0 30  0 30  0 30  0 30  0 30  0 30  0 30  0 30  0 30
+[162]  0 30  0 30  0 30  0 30  0 30  0 30  0 30  0 30  0 30  0 30  0 30  0
+[185] 30  0 30  0 30  0 30  0 30  0 30  0 30  0 30  0 30  0 30  0 30  0 30
+[208]  0 30  0 30  0 30  0 30  0 30  0 30  0 30  0 30  0 30  0 30  0 30  0
+[231] 30  0 30  0 30  0 30  0 30  0 30  0 30  0 30  0 30  0 30  0 30  0 30
+[254]  0 30  0 30  0 30  0 30  0 30  0 30  0 30  0 30  0 30  0 30  0 30  0
+[277] 30  0 30  0 30  0 30  0 30  0 30  0 30  0 30  0 30  0 30  0 30  0 30
+[300]  0 30  0 30  0 30  0 30  0 30  0 30  0 30  0 30  0 30  0 30  0 30  0
+[323] 30  0 30  0 30  0 30  0 30  0 30  0 30  0 30  0 30
+```
+
+```r
+second(dhh)
+```
+
+```
+  [1] 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0
+ [36] 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0
+ [71] 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0
+[106] 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0
+[141] 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0
+[176] 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0
+[211] 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0
+[246] 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0
+[281] 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0
+[316] 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0
+```
 
 
 
