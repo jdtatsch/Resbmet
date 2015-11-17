@@ -2029,7 +2029,7 @@ library(descr); library(doBy)
 ```
 
 ```
-[1] "data/83726.test" "data/83897.txt"  "data/83936.txt"  "data/83985.txt" 
+[1] "data/83897.txt" "data/83936.txt" "data/83985.txt"
 ```
 
 ```r
