@@ -1890,12 +1890,14 @@ dir()
  [1] "0_Rinstall.html"          "0_Rinstall.md"           
  [3] "0_Rinstall.Rmd"           "1_Ressencial.html"       
  [5] "1_Ressencial.md"          "1_Ressencial.Rmd"        
- [7] "bdmep.txt"                "bdmep.txt~"              
- [9] "data"                     "figs"                    
-[11] "introducao_resbmet.html"  "introducao_resbmet.md"   
-[13] "introducao_resbmet.Rpres" "my_style.css"            
-[15] "R"                        "README.html"             
-[17] "README.md"                "Resbmet.Rproj"           
+ [7] "2_Manip_dados_met.html"   "2_Manip_dados_met.md"    
+ [9] "2_Manip_dados_met.Rmd"    "bdmep.txt"               
+[11] "bdmep.txt~"               "data"                    
+[13] "figs"                     "introducao_resbmet.html" 
+[15] "introducao_resbmet.md"    "introducao_resbmet.Rpres"
+[17] "my_style.css"             "R"                       
+[19] "README.html"              "README.md"               
+[21] "Resbmet.Rproj"           
 ```
 
 ```r
@@ -2637,5 +2639,5 @@ second(dhh)
 [316] 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0
 ```
 
-
+Próximo: [Manipulação de dados Met.](https://rawgit.com/jdtatsch/Resbmet/master/2_Manip_dados_met.html)
 
