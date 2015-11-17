@@ -47,710 +47,516 @@ opts_chunk$set(cache = FALSE, fig.path = "figs/")
 
 # Introdução
 
-asd
+> É frequentemente dito que 80% do tempo usado análise dados é gasto no processo de preparação dos dados [(Dasu e Johnson 2003)](http://onlinelibrary.wiley.com/doi/10.1002/0471448354.ch4/summary).
 
 
-# Funcionalidade básica do R
+# Dados padronizados
 
-- *prompt* do *R* (` > `) e operações aritméticas
+Dados bem estruturados servem para 2 propostas:
+- fornecem dados propícios para o processamento e análise de dados por softwares;
+- revelam informações e facilitam a percepção de padrões
 
-```{r , message=FALSE, comment="",eval = TRUE, prompt=TRUE}
-15 + 4
-pi
-60*pi/180
-# resto da divisao
-10 %% 4
-2000 %% 4
-1990 %% 4
-# parte inteira da divisão
-11/2
-11 %/% 2
+[Hadley 2014](http://www.jstatsoft.org/article/view/v059i10) fornece uma excelente explicação sobre o conceito de de *tidy data*, aqui traduzido como dados padronizados.
+
+![Estrura de dados padronizados](http://garrettgman.github.io/images/tidy-1.png)
+
+Embora muitas funções fundamentais de processamento de dados existam no R, elas são um pouco complicadas e limitadas em termos de uma codificação consistente e de se complementarem. Isso leva a uma dificuldade de ler funções aninhadas e um código desordenado.
+Como resultado um monte de tarefas de processamento vem tornando-se mais coesas e disponíveis na forma de pacotes do R, levando a:
+
+- um código mais eficiente 
+- uma sintaxe mais fácil de ser lembrada
+- uma sintaxe mais fácil de ler
+
+
+
+# Pré-requisitos
+
+Pacotes necessários:
+
+```{r , message=FALSE, comment="",eval = TRUE, prompt=FALSE}
+# carregando pacotes para gráficos
+library(lattice)
+library(scales)
+library(ggplot2)
+# carregando pacotes para manipulação de dados
+library(plyr)
+library(dplyr)
+library(tidyr)
+library(lubridate)
+library(openair)
+library(readr)
 ```
 
-  - `#` é usado para fazer **comentários**
+Os pacotes [tidyr](https://cran.r-project.org/package=tidyr) e [dplyr ](https://cran.r-project.org/package=dplyr) fornecem funções fundamentais para a limpeza, processamento e manipulação de dados meteorológicos.
 
-  - `+` indica que **continuação de uma expressão**
+As principais funções são:
 
-```{r, message=FALSE, comment="",eval = TRUE, prompt=TRUE}
-# COMENTÁRIO: selecione a expressão abaixo até o sinal de menos e então tecle <enter>.
-4 -
+- **tidyr**
+
+    - gather()
   
-  3
+    - spread()
+   
+    - separate()
+   
+    - unite()
+
+- **dplyr**
+
+    - select()
+   
+    - filter()
+   
+    - group_by()
+
+    - summarise()
+   
+    - arrange()
+   
+    - join()
+   
+    - mutate()
+
+# OperadoR %>% 
+
+Embora não requerido os pacotes tidyr e dplyr usam o operador pipe `%>%` que quando combinado com vários funções forma uma cadeia de processamento de dados, ao invés do aninhamento de funções que limita a legibilidade do código. 
+
+```{r , message=FALSE, comment="",eval = TRUE, prompt=FALSE}
+# exemplo simples para aplicar uma função 
+quadrado <- function(x) x^2
+a <- 2
+quadrado(a)
+a %>% quadrado
 ```
 
-Enquanto a expressão não estiver completa o sinal de `+` se repetirá. Até que você digite o número que deseja subtrair de `4`.
+Este operador irá transmitir um valor, ou o resultado de uma expressão, para a próxima função/expressão  chamada. Por exemplo, uma função para filtrar os dados pode ser escrito como:
 
- - Expressões executadas em sequência
- 
-```{r, message=FALSE, comment="",eval = TRUE, prompt=TRUE}
-15 + 4; pi; 60*pi/180; 4-3
+```{r , message=FALSE, comment="",eval = TRUE, prompt=FALSE}
+# exemplo com um dataframe
+data(airquality)
+filter(airquality, Ozone == 23)
+# ou
+airquality %>% filter(Ozone == 23)
 ```
 
- - Auto preenchimento de funções
+Ambas funções realizam a mesma tarefa e o benefício de usar  `%>%'não é evidente. Entretanto, quando desejamos realizar várias funções sua vantagem torna-se evidente. 
+Por exemplo, se queremos selecionar algumas colunas, filtrar algum dados e fazer algum resumo estatístico:
 
-```{r, message=FALSE, comment="",eval = FALSE, prompt=FALSE}
-read#<tab> pressione <tab> para ver as opções de comandos que iniciam com o termo read
+```{r , message=FALSE, comment="",eval = TRUE, prompt=FALSE}
+# opção aninhada 
+(res <- summarize(filter(select(airquality, Ozone, Temp), Ozone > 23), tmed = mean(Temp)))
+# opção por partes
+a <- select(airquality, Ozone, Temp)
+b <- filter(a, Ozone > 23)
+(c <- summarise(b, tmed = mean(Temp)))
+# opção usando pipe
+res_pipe <- airquality %>% 
+  select(Ozone, Temp) %>%
+  filter(Ozone > 23) %>% 
+  summarise(tmed = mean(Temp)) %>%
+  print
 ```
 
- - Acesso ao histórico de expressões (no console do R, tecle a seta para cima )
- 
-<span style="color: red">parei aqui</span>
+Quando as suas tarefas aumentam o operador pipe `%>%` torna-se mais eficiente e o seu código fica mais legível.
 
-# Usando Funções
+Para aprender mais sobre `%>%` operator (e o pacote `magrittr` visite qualquer um dos seguintes sites:
 
-O R é uma *linguagem de programação funcional*. Tudo no R são funções. O valor de saída de uma função depende somente de argumentos que são entrada(s) para a função. 
+- http://cran.r-project.org/web/packages/magrittr/vignettes/magrittr.html
 
-A sintaxe básica de uma função segue a forma:
+- http://www.r-bloggers.com/simpler-r-coding-with-pipes-the-present-and-future-of-the-magrittr-package/
 
-```{r , message=FALSE, comment="",eval = FALSE, echo = TRUE, prompt=FALSE}
-nome_da_funcao(arg1, arg2)
+- http://blog.revolutionanalytics.com/2014/07/magrittr-simplifying-r-code-with-pipes.html
+
+
+# Exemplo de aplicação aos dados de precipitação horária de SM
+
+Objetivos:
+
+- determinar a quantidade de dados de chuva horária faltantes em termos absolutos (número de casos) e relativos (% do total);
+
+- visualizar por meio de um gráfico a variação temporal da chuva horária com a identificação das falhas
+
+- determinar o número de dados faltantes por ano e verifique se o seu resultado confere com aquele da inspeção visual do gráfico;
+
+- determinar o valor da chuva máxima horária e a data de ocorrência do evento;
+
+- determinar a chuva máxima diária e a data de ocorrência do evento;
+
+- fazer o pluviograma mensal climatológico (médias dos totais mensais de precipitação);
+
+- plotar os totais anuais de chuva para cada ano;
+
+- determinar a frequência de ocorrência da chuva para cada ano;
+
+- determinar a intensidade média da chuva (em mm/dia) em Santa Maria;
+
+- determinar a frequência de ocorrência de chuva (ou seja, o número de casos em que choveu) para cada hora do dia (das 0 às 23 h)
+
+- determinar a frequência de ocorrência (%) de precipitação para cada dia da semana;
+
+
+
+**1. Disponibilidade de dados.**
+
+  a. Determine a quantidade de dados de chuva horária faltantes em termos absolutos (número de casos) e relativos (% do total).
+
+```{r chunck1a, echo = TRUE, eval = TRUE, warning=FALSE, message=FALSE,fig.align='center'}
+# definindo os horários como UTC para essa sessão do R
+Sys.setenv(TZ = "UTC")
+# importa dados, hprec: precipitação horária da EMA de SM
+hprec <- read_csv(file = "data/hprec_sm.csv"    # nome do arquivo
+                  ,col_names = TRUE        # tem cabeçalho? TRUE = verdadeiro, FALSE = falso
+                  ,col_types = list(col_character(), 
+                                    col_character(), 
+                                    col_double())
+                  ,na = "-9999")           # código usado para representar dados faltante
+# converte data e horas para POSIX
+hprec <- mutate(hprec, date = as.POSIXct(date))
+# número de casos faltantes
+sum(is.na(hprec$prec))
+# porcentagem de casos faltantes
+sum(is.na(hprec$prec))/nrow(hprec) * 100
 ```
 
-O R possui uma série de funções internas disponíveis com a sua instalação.
-
-```{r , message=FALSE, comment="",eval = TRUE, echo = TRUE, prompt=FALSE}
-exp(x = 1) # neperiano ou num. de euler
-log(10)
-log(x = 10, base = 10)
-log(exp(1))
-seq(from = 1, to = 10, by = 0.5)
-cos(x = 60*pi/180)
-pi
-# arrendondamentos
-round(pi, 6)
-trunc(pi)
+  
+  b. Faça um gráfico da chuva horária no tempo que permita identificar os períodos de falhas e que os anos sejam visíveis no eixo x. O gráfico deve ter aspecto similar ao mostrado na Figura abaixo. 
+  
+```{r chunck1b, echo = TRUE, eval = TRUE, warning=FALSE, message=FALSE,fig.align='center'}
+# dados para plot; adiciona uma prec modificada, para mostrar dados faltantes
+hprec_plot <- mutate(hprec
+                     ,faltante = ifelse(is.na(prec), -2, NA))
+hprec_plot <- as.data.frame(hprec_plot)
+# plot da chuva no tempo
+#tp <- timePlot(selectByDate(hprec_plot, year = 2014)
+tp <- timePlot(hprec_plot
+         ,c("prec", "faltante")
+         ,group = TRUE
+         ,plot.type = "h"
+         ,lty = 1
+         ,col = c(1, 2)
+         ,ylab = "Prec (mm/h)"
+         ,date.format = "%Y\n%b" )
 ```
 
+  c. Baseado na inspeção visual do seu gráfico qual o ano que tem mais falhas? Calcule o número de dados faltantes por ano e verifique se o seu resultado confere com aquele da inspeção visual do gráfico. Apresente esses resultados em uma tabela.
 
-
-> Funções são identificadas por serem precedidas de parênteses.
-
-# Criando e manipulando objetos do R
-
-Atribuição de valores a variáveis.
-
-```{r, message=FALSE, comment="", prompt=FALSE}
-# criando variável
-n <- 5
-n
-ls()
-# removendo a variável n
-rm(n)
-ls()
+```{r chunck1c, echo = TRUE, eval = TRUE, warning=FALSE, message=FALSE,fig.align='center'}
+######
+# R: por inpeção visual sugere o ano de 2005 devido a sequência de falhas consecutivas
+# Por meio do calculo verifica-se que foi 2011, uma falha longa contínua
+######
+tab_falt <- hprec %>%
+  # agrupa os dados por anos
+  group_by(year = lubridate::year(date)) %>%
+  # resumo estatístico (soma, porcentagem) da prec para cada componente do grupo
+  summarise(n_falt = sum(is.na(prec))
+            ,perc_falt = round(sum(is.na(prec))/n() * 100, 1))
+tab_falt
 ```
 
-Existem diversos tipo de objetos no R, mas os mais comuns são `numeric` e `character`.
+- - - 
 
-```{r, message=FALSE, comment="", prompt=FALSE}
-# colocando a expressão entre parênteses já imprime o resultado no console
-(num <- 3.14) 
-(char <- "VI encontro sul brasileiro de meteorologia")
-(trimestres <- c("DJF", "MAM", "JJA", "SON"))
+**2. Estatísticas básicas. Desconsidere os registros faltantes em seus cálculos.** 
+  
+  (a) Qual o valor da chuva máxima horária? Em que data ocorreu o evento?
+
+```{r chunck2a, echo = TRUE, eval = TRUE,  warning=FALSE, message=FALSE,fig.align='center'}
+######
+# (2a)
+######
+max(hprec$prec, na.rm = TRUE)
+hprec %>% slice(which.max(prec)) %>% select(date)
 ```
 
-## Vetores
-
-```{r, message=FALSE, comment="", prompt=FALSE}
-# criam-se vetores concatenando 'c()' valores
-vetor <- c(2,5,8,3,7)
-# sequencia
-(vetor <- 10:20)
-# tamanho do vetor
-length(vetor)
-```
-
-Vetores podem acessados de várias formas usando colchetes `[ ]`.
-
-```{r, message=FALSE, comment="", prompt=FALSE}
-# selecionando 3o elemento do vetor
-vetor[3]
-# o vetor sem a 1a posição
-vetor[-1]
-# o vetor sem a última posição
-vetor[-length(vetor)]
-# selecionando do 3o ao 6o elemento do vetor
-vetor[3:6]
-# selecionando o 1o, 3o e 8o elemento do vetor
-vetor[c(1,3,8)]
-# teste lógico
-vetor > 15
-# seleção de elementos do vetor usando vetor lógico
-vetor[vetor > 15]
-vetor[c(TRUE, FALSE)]
-vetor
-vetor[c(FALSE, FALSE, TRUE)]
-```
-
-## Vetores lógicos (verdadeiro ou falso?)
-
-Verificando se um vetor contém um valor.
-
-```{r, message=FALSE, comment="", prompt=FALSE}
-5 %in% vetor
-12 %in% vetor
-c(5, 12) %in% vetor
-# verificando se o vetor contém alguns valores
-vetor %in% c(11, 19)
-```
-
-Encontrando a posição dos valores contidos no vetor.
-
-```{r, message=FALSE, comment="", prompt=FALSE, echo = TRUE}
-which(vetor %in% c(11, 19))
-which(vetor == 11)
-which(vetor != 11)
-vetor[which(vetor != 11)]
-# vetor de horas
-(horas <- c(0:23, 0:23))
-# vetor lógico indicando se é noite
-eh_noite <- horas > 18 | horas < 6
-# posicoes do vetor horas que correspondem a noite
-pos_noturna <- which(eh_noite)
-# posicoes do vetor horas que correspondem a noite
-#eh_dia <- horas <= 18 & horas >= 6
-eh_dia <- !eh_noite
-pos_dia <- which(eh_dia)
-```
-
-```{r, message=FALSE, comment="", prompt=FALSE, echo = FALSE}
-library(pander)
-library(htmlTable)
-oper <- c("<", "<=", ">", ">=", "==","!=","!x","x | y","x & y","isTRUE(x)", "%in%") 
-desc <- c("menor que", " menor ou igual a", "maior que", "maior ou igual", "idêntico","diferente","não é x (negação)","x ou y","x e y","teste se x é verdadeiro", "está contido em") 
-operadores_logicos <- data.frame(Operador = oper, Descrição = desc, stringsAsFactors = FALSE)
-pander(operadores_logicos, caption = "Tabela 1. Operadores Lógicos")
-```
-
-### Sequências e repetições
-
-```{r, message=FALSE, comment="", prompt=FALSE, echo = TRUE}
-## horas
-h <- 0:23
-length(h)
-# meia-horas
-mh <- seq(0, 23, by = 0.5)
-length(mh)
-# 24 horas dividas igualmente em 10 pontos
-h10 <- seq(0, 23, length.out = 10)
-length(h10)
-# repetição de números
-(rep1 <- rep(1:2, times = 4))
-(rep2 <- rep(1:2, each = 4))
-(rep_t13 <- rep(c("chuva","sol"), times = c(1,3)))
-(rep_t13_t4 <- rep(rep(c("chuva","sol"), 
-                       times = c(1,3)), 
-                   times = 4))
-```
-
-### Lidando com dados faltantes
-
-**NA: Not Available**
-
-```{r, message=FALSE, comment="", prompt=FALSE, echo = TRUE}
-# criando vetor com dados faltantes
-(x <- 1:5)
-x[8] <- 8
-x[3] <- NA
-print(x)
-# onde há dados faltantes
-is.na(x)
-# valores dos elementos válidos?
-x[!is.na(x)]
-```
+  (b) Qual a chuva máxima diária? Em que data ocorreu o evento?
 
 
-## Matrizes
+```{r chunck2b, echo = TRUE, eval = TRUE,  warning=FALSE, message=FALSE,fig.align='center'}
+######
+# (2b)
+######
+dprec <- 
+  # agrupando os dados por data (dias)
+  group_by(hprec, date = as.character(as.Date(date))) %>%
+  # resumo estatístico (soma) da prec para cada componente do grupo
+  dplyr::summarise(prec = sum(prec, na.rm = TRUE)) %>%
+  # seleciona do resultado somente as colunas date e prec
+  dplyr::select(date, prec) %>%
+  # converte date para classe POSIX
+  mutate(date = as.POSIXct(date))
 
-Matriz é um vetor de 2 dimensões (linas e colunas) com mesmo tipo de dados.
-
-```{r, message=FALSE, comment="", prompt=FALSE, echo = TRUE}
-(mat <- matrix(data = 1:15, nrow = 3, ncol = 5))
-# transposta da mat
-t(mat)
-(mat1 <- matrix(data = 1:15, nrow = 3, ncol = 5, byrow = TRUE))
-# convertendo matriz para vetor
-c(mat)
-# convertenoo matriz para vetor seguindo as linhas
-c(t(mat1))
-# operações lógicas também funcionam com matrizes
-mat1 > 5
-```
-
-Informações sobre a estrutura da matriz.
-
-```{r, message=FALSE, comment="", prompt=FALSE, echo = TRUE}
-# num. de linhas da matriz
-nrow(mat)
-# num. de colunas
-ncol(mat)
-# num. de elementos
-ncol(mat) * nrow(mat)
-# classe dos dados
-class(mat)
-# modo (numeric, character, logical)
-mode(mat)
-```
-
-Para aplicar uma função a cada linha (coluna) de uma `matrix` podemos usar-se a função `apply()` da família `*apply()`, por exemplo:
-
-```{r, message=FALSE, comment="", prompt=FALSE, echo = TRUE}
-mat
-# margin = 1, para operação ser realizada so longo das linhas
-# margin = 2, para operação ser realizada so longo das colunas
-(mat_max_lin <- apply(X = mat, MARGIN = 1, FUN = max))
-(mat_max_col <- apply(X = mat, MARGIN = 2, FUN = max))
-```
-
-Existe um conjunto de funções próprias e eficientes para uso em matrizes, como:
-
-```{r, message=FALSE, comment="", prompt=FALSE, echo = TRUE}
-rowSums(mat)
-colSums(mat)
-rowMeans(mat)
-colMeans(mat)
-```
-
-## Data frame 
-
-Um data frame é como uma matriz mas é capaz de acomodar campos (colunas) com diferentes tipos de dados. Cada linha do `data-frame` corresponde a um registro da tabela e cada coluna corresponde ao registro de uma variável na tabela.
-
-```{r, message=FALSE, comment="", prompt=FALSE, echo = TRUE}
-## criando um dataframe
-dados <- data.frame(dates = c("2013-01-01", "2013-01-02", "2013-01-03", "2013-01-04", "2013-01-05", 
-                                 "2013-01-06", "2013-01-07", "2013-01-08", "2013-01-09", "2013-01-10", 
-                                 "2013-01-11", "2013-01-12", "2013-01-13", "2013-01-14", "2013-01-15"), 
-                       cidade = rep("Santa Maria", 15),    
-                       tar = c(31, 35, 21, 23, 33, 17, 18, 16, 34, 27, 15, 28, 22, 29, 32), stringsAsFactors = FALSE)  
-dados
-class(dados)
+# calcula máximo diário
+max(dprec$prec)
+# timePlot(dprec, "prec", plot.type = "h")
+# encontra quando ocorreu o máximo
+posicao <- which.max(dprec$prec)
+dprec$date[posicao]
 ```
 
 
-Data frame pode ser facilmente visualizados:
-```{r, message=FALSE, comment="", prompt=FALSE, echo = TRUE, eval=FALSE}
-View(dados)
+**3. Pluviograma mensal climatológico.**
+
+```{r chunck3ab, echo = TRUE, eval = TRUE,  warning=FALSE, message=FALSE,fig.align='center'}
+######
+# (3a) e (3b)
+######
+(n_anos <- length(unique(year(hprec$date))))
+# tabela com médias dos totais mensais, média do num. horas com prec
+# usando os dados HORÁRIOS
+tab_mon_h <- 
+  # agrupa dados por mês
+  group_by(hprec, month = lubridate::month(date)) %>%
+  # reumo estatístico para cada componente do grupo
+  summarise(prec_med = sum(prec, na.rm = TRUE)/n_anos
+            # total de horas com prec
+            ,n_horas_tot = sum(prec > 0, na.rm = TRUE)
+            # num. horas médio mensal (horas)
+            ,n_horas_med = sum(prec > 0, na.rm = TRUE)/n_anos
+            # num. horas médio mensal (dias)
+            ,n_horas_med_d = (sum(prec > 0, na.rm = TRUE)/n_anos)/24)
+#tab_mon_h
 ```
 
-Examine a estrutura interna de um dataframe
-```{r, message=FALSE, comment="", prompt=FALSE, echo = TRUE}
-str(dados)
+  (a) Faça um gráfico com as médias dos totais mensais de chuva.
+
+```{r chunck3ab2, echo = TRUE, eval = TRUE,  warning=FALSE, message=FALSE,fig.align='center'}
+g0 <- ggplot(tab_mon_h, aes(x = factor(month), y = prec_med))
+ggp1 <- g0 + geom_bar(stat = "identity") + 
+        ylab("Prec(mm/mês)") + 
+        xlab("mês")+
+        scale_y_continuous(expand = c(0.01, 0.01), 
+                           breaks = pretty_breaks(10)) +
+        theme(text = element_text(size=15), axis.text.x = element_text(angle=0))
+ggp1
+```
+  
+  (b) Utilizando a série horária de chuva, determine o número médio de horas com chuva para cada mês. Converta a número de horas em dias para melhor comparação com o item (c).
+
+```{r chunck3b, echo = TRUE, eval = TRUE,  warning=FALSE, message=FALSE,fig.align='center'}
+tab_mon_h
+``` 
+  
+  (c) Utilizando a série de totais diários de chuva, determine o número médio de dias com chuva para cada mês. Compare com os resultados do item (b) e discuta os resultados. 
+
+```{r chunck3c, echo = TRUE, eval = TRUE,  warning=FALSE, message=FALSE,fig.align='center'}
+######
+# (3c)
+######
+# tabela com médias dos totais mensais, média do num. horas com prec
+# usando os dados DIÁRIOS
+tab_mon_d <- 
+  # agrupa dados por mês
+  group_by(dprec, month = lubridate::month(date)) %>%
+  # resumo estatístico para cada componente do grupo
+  summarise(prec_med = sum(prec, na.rm = TRUE)/n_anos
+            ,n_dias = sum(prec > 0, na.rm = TRUE)
+            ,n_dias_med = (sum(prec > 0, na.rm = TRUE)/n_anos))
+tab_mon_d
+```
+  
+  (d) Compare a intensidade média da chuva para cada mês do ano obtida nos dois itens. Qual a importância das medidas horárias? 
+
+```{r chunck3d, echo = TRUE, eval = TRUE,  warning=FALSE, message=FALSE,fig.align='center'}
+######
+# (3d)
+######
+# insere coluna com intensidade baseada nos dados horários e diários
+tab_mon_h <- mutate(tab_mon_h, intens_d = prec_med/n_horas_med_d)
+tab_mon_d <- mutate(tab_mon_d, intens_d = prec_med/n_dias_med)
+tab_intens <- data.frame(month = tab_mon_h$month,
+                         #prec = tab_mon_h$prec_mon,
+                         #nh_d = tab_mon_h$n_d,
+                         #n_d =  tab_mon_d$n_d,
+                         intens_d = tab_mon_d$intens_d,
+                         intens_h = tab_mon_h$intens_d )
+tab_intens
+```
+
+**4. Pluviograma anual.** 
+
+  (a) Faça um gráfico com os totais anuais de chuva para cada ano.
+
+```{r chunck4a, echo = TRUE, eval = TRUE,  warning=FALSE, message=FALSE,fig.align='center'}
+######
+# Solução geral (4a-c)
+######
+# tabela de resultados anuais
+tab_year_h <- 
+  # agrupa dados por ano
+  group_by(hprec, year = lubridate::year(date)) %>%
+  summarise(prec_tot = sum(prec, na.rm = TRUE)
+            # num. total de horas com chuva por ano (em horas)
+            ,n_horas_tot = sum(prec > 0, na.rm = TRUE)) %>%
+            # num. total de horas com chuva por ano (em dias)
+  mutate(n_horas_tot_d = round(n_horas_tot/24, 2)
+         # intensidade por ano
+         ,intens = prec_tot/n_horas_tot * 24
+         # num. médio de "dias" (convertidos das horas) com chuva
+         ,n_d_med = mean(n_horas_tot_d)
+         # chuva total média anual
+         ,prec_tot_med = mean(prec_tot)
+         # instensidade média anual
+         ,intens_med_d = prec_tot_med/n_d_med)
+select(tab_year_h, year, prec_tot)
 ``` 
 
-### Seleção de partes de um data frame
-
-```{r, message=FALSE, comment="", prompt=FALSE, echo = TRUE}
-# por números
-dados[1,]
-dados[2:3,]
-dados[,1]
-dados[2,1]
-# por nomes
-dados$tar
-dados$tar[2:4]
-dados[, "tar"]
-dados[2:4, "tar"]
-dados["dates"]
-class(dados["dates"])
-is.vector(dados["dates"])
-dados[["dates"]]
-is.vector(dados[["dates"]])
+```{r chunck4a2, echo = TRUE, eval = TRUE,  warning=FALSE, message=FALSE,fig.align='center'}
+######
+# (4a)
+######
+# pluviograma anual
+g4a <- ggplot(tab_year_h, aes(x = factor(year), y = prec_tot))
+g4a + geom_bar(stat = "identity") + 
+     ylab("Prec (mm)") + 
+     xlab("Ano")+
+     geom_hline(yintercept = mean(tab_year_h$prec_tot)) +
+     geom_hline(yintercept = 1100, colour = "red") +
+     scale_y_continuous(expand = c(0.01, 0.01), 
+                        breaks = pretty_breaks(10)) +
+     theme(text = element_text(size=15), axis.text.x = element_text(angle=0))+
+     annotate("text", 
+              x = 9, 
+              y = 1100-50, 
+              label = "Prec. média global (continentes)",
+              colour = "red", size = 4)
 ```
 
-Data frames podem ter nomes associados às colunas e linhas.
+  (b) Determine a frequência de ocorrência da chuva para cada ano. O gráfico deve apresentar a frequência de ocorrência em dias. 
 
-```{r, message=FALSE, comment="", prompt=FALSE, echo = TRUE}
-colnames(dados)  
-names(dados)     # apenas para dataframes
-rownames(dados)
-# nomes podem ser alterados
-names(dados) <- c("data", "municipio", "temp")
-dados
+*Para determinar a frequência de ocorrência de chuva para cada ano, devem ser contados o número horas de chuva (`prec > 0`) (`n_horas_tot`) e então multiplicar por 24 h para obtê-la a em dias (`n_horas_tot_d`).*
+ 
+```{r chunck4b, echo = TRUE, eval = TRUE,  warning=FALSE, message=FALSE,fig.align='center'}
+select(tab_year_h, year, n_horas_tot, n_horas_tot_d, n_d_med)
 ```
 
-### Subconjunto de um data frame e filtragem 
+```{r chunck4b2, echo = TRUE, eval = TRUE,  warning=FALSE, message=FALSE,fig.align='center'}
+# freq ocorrência
+g4b <- ggplot(tab_year_h, aes(x = factor(year), y = n_horas_tot_d))
+g4b + geom_bar(stat = "identity") + 
+     ylab("Freq. ocorrência (dias)") + 
+     xlab("Anos")+
+     geom_hline(yintercept = mean(tab_year_h$n_d_med)) +
+     geom_hline(yintercept = 27, colour = "red") +
+     scale_y_continuous(expand = c(0.01, 0.01), 
+                        breaks = pretty_breaks(10)) +
+     theme(text = element_text(size=15), axis.text.x = element_text(angle=0))+
+     annotate("text", 
+              x = 10, 
+              y = 28, 
+              label = "Trenberth et al. (2003)",
+              colour = "red", size = 4)
+```
+ 
+*Para fins de comparação, abaixo mostra-se o resultado obtido a partir da série de totais de precipitação. Note que a frequência de ocorrência é superestimada em relação a frequência obtida com a série horária e tais valores são imcomparáveis ao valor de [Trenberth et al. 2003](http://journals.ametsoc.org/doi/abs/10.1175/BAMS-84-9-1205) (~27 dias por ano)*
+ 
+```{r chunck4a3, echo = TRUE, eval = TRUE,  warning=FALSE, message=FALSE,fig.align='center'}
+# tabela de resultados anuais com dados diarios
+tab_year_d <- 
+  # agrupa dados por ano
+  group_by(dprec, year = lubridate::year(date)) %>%
+  summarise(prec_tot = sum(prec, na.rm = TRUE)
+            # num. total de horas com chuva por ano (em horas)
+            ,n_tot_d = sum(prec > 0, na.rm = TRUE)) %>%
+            # num. total de horas com chuva por ano (em dias)
+  mutate(
+         # intensidade por ano
+         intens = prec_tot/n_tot_d
+         # num. médio de "dias" (convertidos das horas) com chuva
+         ,n_d_med = mean(n_tot_d)
+         # chuva total média anual
+         ,prec_tot_med = mean(prec_tot)
+         # instensidade média anual
+         ,intens_med_d = mean(intens))
+select(tab_year_d, year, n_tot_d, n_d_med) 
+```
+ 
+  
+  (c) Qual a intensidade média da chuva (em mm/dia) em Santa Maria? Faça a média das frequências de ocorrência e das intensidade obtidas para cada ano.
 
-```{r, message=FALSE, comment="", prompt=FALSE, echo = TRUE}
-dados[dados$temp==28, ]                 # uma condição
-dados[dados$data %in% c("2013-01-10", "2013-01-13"),]   # mais de uma condição
+```{r chunck4c1, echo = TRUE, eval = TRUE,  warning=FALSE, message=FALSE,fig.align='center'}
+select(tab_year_h, year, prec_tot, n_horas_tot_d, intens, intens_med_d)
 ```
 
-### Adicionando novas linas e colunas
-
-```{r, message=FALSE, comment="", prompt=FALSE, echo = TRUE}
-(nova_linha <- data.frame(data="2013-01-15", municipio="São Sepé", temp = 10))
-# cola linha
-(dados <- rbind(dados, nova_linha))
-(nova_coluna <- data.frame(tmin = sort(dados$temp)-5))
-# cola coluna
-(dados <- cbind(dados, nova_coluna))
+```{r chunck4c2, echo = TRUE, eval = TRUE,  warning=FALSE, message=FALSE,fig.align='center'}
+# intensdade anual
+g4c <- ggplot(tab_year_h, aes(x = factor(year), y = intens))
+g4c + geom_bar(stat = "identity") + 
+     ylab("Intensidade (mm/dia)") + 
+     xlab("Ano")+
+     geom_hline(yintercept = mean(tab_year_h$intens_med_d)) +
+     geom_hline(yintercept = 45, colour = "red") +
+     scale_y_continuous(expand = c(0.01, 0.01), 
+                        breaks = pretty_breaks(10)) +
+     theme(text = element_text(size=15), axis.text.x = element_text(angle=0)) +
+     annotate("text", 
+              x = 10, 
+              y = 47, 
+              label = "Trenberth et al. (2003)",
+              colour = "red", size = 4)
 ```
 
+- - - 
 
-<span style="color: red">Fim da aula do 1º dia.</span>
+**5. Frequência de ocorrência de chuva horária.**
 
-### Examinando data frames
+  (a) Determine a frequência de ocorrência de chuva (ou seja, o número de casos em que choveu) para cada hora do dia (das 0 às 23 h). Apresente os resultados na forma de um gráfico de barras com a frequência de ocorrência de chuva (eixo y, em %)  em cada hora (eixo x). Descreva se há algum padrão no gráfico? Chove mais de dia ou à noite?
 
-Quando trabalhamos com grandes dataframes a visualização dos dados como um todo pode ser inviável. A alternativa nesse caso é usar as funções apresentadas no trecho de código abaixo:
-
-```{r, message=FALSE, comment="", prompt=FALSE, echo = TRUE}
-# linhas iniciais do dataframe
-head(dados)
-# linhas finais do dataframe
-tail(dados)
-# últimos duas linhas do dataframe
-tail(dados, 2)
-# A mais importante: resumo da estrutura dos dados
-str(dados)
+```{r chunck5a1, echo = TRUE, eval = TRUE,  warning=FALSE, message=FALSE,fig.align='center'}
+tab_h <-
+group_by(filter(hprec, !is.na(prec)), 
+         hour = lubridate::hour(date)) %>%
+  summarise(n_h = sum(prec > 0)
+            #N = n()
+            ) %>%
+  mutate(n_h_perc = round(n_h/sum(n_h) * 100, 2)
+         #n_h_perc_all = round((n_h/sum(N)) * 100, 2)
+         )
+tab_h
 ```
 
-## Listas
-
-Estrutura de dados muito versátil por pelo menos 3 razões:
-
-  1. Os elementos podem ser de diferentes classes de objetos (p.ex.: um elemento `numeric`, outro `character`);
-  2. Cada elemento pode ter um tamanho diferente;
-  3. Os elementos podem conter diferentes estrutura de dados (p.ex.: um elemento `matrix`, outro `vector`);
-
-Listas podem ser criadas com a função `list()`. A especificação do conteúdo de uma lista é muito similar a da função `c()` vista anteriormente. Nós simplemente listamos os elementos da lista separados por uma vírgula dentro da função `list()`.
-
-```{r, message=FALSE, comment="", prompt=FALSE, echo = TRUE}
-## lista de dados heterogêneos
-lst <- list(1:4, c(1.1, 2.3, 5.9), c(TRUE, FALSE), "R", list(0,1), dados[1:4, ])
-lst
-## estrutura da lista
-str(lst)
-## tamanho da lista (num. de componentes ou elementos)
-length(lst)
-## atribuindo nomes a lista
-names(lst) 
-names(lst) <- c("vetor_int", "vetor_num", "logico", "char", "lista", "df")
-lst
+```{r chunck5a2, echo = TRUE, eval = TRUE,  warning=FALSE, message=FALSE,fig.align='center'}
+# gráfico
+g2 <- ggplot(tab_h, aes(x = factor(hour), y = n_h_perc))
+g2 + geom_bar(stat = "identity") + 
+     ylab("Freq. ocorrência (%)") + 
+     xlab("Hora")+
+     scale_y_continuous(expand = c(0.01, 0.01), 
+                        breaks = pretty_breaks(10)) +
+     theme(text = element_text(size=15), axis.text.x = element_text(angle=0))
 ```
 
-Acesso as componentes das lista:
+- - - 
 
-```{r, message=FALSE, comment="", prompt=FALSE, echo = TRUE}
-# extraindo dados
-# colchetes duplos significam que o objeto retornado é da classe de dados do item da lista
-lst[[1]]      
-# o nome da componente também pode ser usada para extração
-lst[["vetor_int"]]
-# a selecionando mais que 1 item da lista é possível com colchetes simples
-lst[2:3]
-# mas o objeto retornado é uma lista
-lst[c(1,3)]
-lst[c("vetor_int","logico")]
-is.list(lst[c(1,3)])
-# deletetando itens de uma lista
-lst[[3]] <- NULL
-str(lst)
-lst[1:2] <- NULL
-str(lst)
+**6. Frequência de ocorrência semanal.**
+
+(a) Determine a frequência de ocorrência (%) de precipitação para cada dia da semana. Qual o dia da semana é mais provável de ocorra precipitação?
+
+```{r chunck6a, echo = TRUE, eval = TRUE,  warning=FALSE, message=FALSE,fig.align='center'}
+tab_week <-
+group_by(filter(hprec, !is.na(prec)), 
+         dia = lubridate::wday(date, label = TRUE)) %>%
+  summarise(n_prec = sum(prec > 0),
+            N = n()) %>%
+  mutate(n_prec_perc = round(n_prec/sum(n_prec) * 100, 2),
+         n_all = round((n_prec/sum(N)) * 100, 2))
+tab_week
 ```
 
-Outro exemplo de uso de uma lista é quando os dados que trabalhamos possuem tamanhos diferentes.
-
-```{r, message=FALSE, comment="", prompt=FALSE, echo = TRUE}
-(dados_l <- list(c(1, 2, 3), 3:7, 10:5, 12:5))
+```{r chunck6a2, echo = TRUE, eval = TRUE,  warning=FALSE, message=FALSE,fig.align='center'}
+# gráfico
+g3 <- ggplot(tab_week, aes(x = factor(dia), y = n_prec_perc))
+g3 + geom_bar(stat = "identity") + 
+     ylab("Freq. ocorrência (%)") + 
+     xlab("dia da semana") +
+     scale_y_continuous(expand = c(0.01, 0.01), 
+                        breaks = pretty_breaks(10)) +
+     theme(text = element_text(size=15), axis.text.x = element_text(angle=0))
 ```
 
-Para aplicar uma função a cada elemento da lista podemos usar-se as funções da família `*apply()`, por exemplo:
+- - - 
 
-```{r, message=FALSE, comment="", prompt=FALSE, echo = TRUE}
-# lapply ---> resultado é uma "l"ista
-(med_dl_l <- lapply(dados_l, mean))
-# sapply ---> resultado é um objeto "s"implificado (vetor ou matrizes)
-(med_dl_s <- sapply(dados_l, mean))
-```
+**7. A Prefeitura Municipal de Santa Maria precisa definir uma data (mês, dia da semana e horário) para realização de um grande evento de entretenimento que requer um período de 3 horas sem chuva, independente do turno.** 
 
-Observe que as funções da família `*apply` são essencialmente *loopings* ou laço.
+  (a) Com base nos seus resultados que data você recomendaria?
 
-# Dados de pacotes do R
-
-O `R` possui diversos conjuntos de dados internos que são automaticamente carregados quando iniciado. Esses dados são usados nos exemplos do `help()` de diversas funções para ilustrar o uso e a aplicação delas. Esses dados podem ser carregados com a função `data`.
-
-```{r Chunk300, message=FALSE, comment="",prompt=FALSE, tidy=FALSE, echo=TRUE, eval=TRUE}
-data()
-## Annual Precipitation in US Cities, p/ mais informações "?precip"
-data(precip)
-## primeiros 30 elementos dos dados precip
-head(precip, n = 30)
-## New York Air Quality Measurements, , p/ mais informações "?airquality"
-data(airquality)
-## primeiras linhas dos dados
-head(airquality, n = 10)
-```
-
-# Funções estatísticas básicas
-
-```{r, message=FALSE, comment="", prompt=FALSE, echo = TRUE}
-# carregando data frame "New York Air Quality Measurements" do pacote datasets
-data("airquality")
-# ?airquality
-str(airquality)
-summary(airquality)
-# removendo qualquer linha dos dados com dados faltantes
-complete.cases(airquality)
-airquality <- airquality[complete.cases(airquality), ]
-summary(airquality)
-# gráfico de dispersão entre Ozônio e temperatura do ar
-with(airquality, plot(Temp, Ozone, pch = 20))
-abline(h = mean(airquality$Ozone, na.rm = TRUE))
-# esttísticas de algumas variáveis
-sd(airquality$Temp)
-range(airquality$Ozone)
-qs <- quantile(airquality$Temp, c(0.05, 0.95))
-# histograma
-hist(airquality$Temp, col = "gray"); box()
-abline(v = qs, col = 2, lwd = 3, lty =2)
-with(airquality, cor(Temp, Ozone, use = "complete.obs"))
-# FEDA
-plot(ecdf(airquality$Temp), col = "blue", main = "função empírica de densidade acumulada"); box()
-# reordena o vetor
-head(airquality$Ozone, 20)
-head(sort(airquality$Ozone), 20)
-head(o <- order(airquality$Ozone), 20)
-#plot(airquality$Ozone[o])
-# ordenando dataframe pela Temp
-head(airquality[o, ], 20)
-```
-
-### Regressão linear e gráficos 
-
-```{r, message=FALSE, comment="", prompt=FALSE, echo = TRUE}
-# regressão linear
-(reg <- with(airquality, lm(Ozone ~ Temp)))
-summary(reg)
-with(airquality, plot(Temp, Ozone, pch = 20))
-abline(coef(reg))
-boxplot(airquality[, 1:4])
-```
-
-# Uso de Pacotes
-
-Instalação e lista de funções.
-
-```{r, message=FALSE, comment="", prompt=FALSE, echo = TRUE, eval = FALSE}
-install.packages("nome_do_pacote")
-install.packages("sfsmisc")
-# obtém ajuda sobre um pacote (list suas funções)
-library(help = openair)  
-```
-
-
-# Manipulação de arquivos e diretórios
-
-```{r, comment="",prompt=FALSE, echo=TRUE, eval=TRUE, error=TRUE,highlight=TRUE,message=FALSE,warning=FALSE}
-# diretório de trabalho: onde estamos com a seção do R aberta
-(wd <- getwd())
-# lista conteúdo do diretório de trabalho
-dir()
-file.exists("1_Ressencial.html")
-# mudando o diretório de trabalho para dois diretórios
-setwd("../../")
-getwd()
-setwd(wd)
-# para combinar caminhos com "/"
-file.path(getwd(),"nome_de_um_arquivo.txt")
-# listar arquvos de um dir
-list.files(path = "/etc/apt")
-```
-
-# Manipulação de Caracteres
-
-*Strings* ou Caracteres frquentemente precisam ser construídas ou destruídas para identificarmos observações, pré-processar textos, combinar informações ou atender outras necessidades.
-
-## Combinando *strings*
-
-```{r, comment="",prompt=FALSE, echo=TRUE, eval=TRUE, error=TRUE,highlight=TRUE,message=FALSE,warning=FALSE}
-# juntando caracteres
-vetor_char <- c("Manipulação", "de", "dados", "dados", "meteorológicos", "com", "R")
-# em uma único string
-(resbmet <- paste(vetor_char, collapse = " "))
-# colando strings com separador "-"
-resbmet1 <- paste("Manipulação", "de", "dados", "meteorológicos", "com", "R", sep = "-")
-cat(resbmet1)
-```
-
-## Substituição de *strings*
-
-```{r, comment="",prompt=FALSE, echo=TRUE, eval=TRUE, error=TRUE,highlight=TRUE,message=FALSE,warning=FALSE}
-urlData <- "http://www.inmet.gov.br/projetos/rede/pesquisa/gera_serie_txt.php?&mRelEstacao=XXXXX&btnProcesso=serie&mRelDtInicio=dd/mm/yyyy&mRelDtFim=DD/MM/YYYY&mAtributos=1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,"
-# código da estação
-stnid   <- "83726"
-# data inicial dos dados
-sdate   <- "01/01/1961"
-# data final dos dados
-edate   <- "31/12/2014"
-# Substituindo
-(urlData <- gsub("XXXXX", stnid, urlData))
-(urlData <- gsub("dd/mm/yyyy", sdate, urlData))
-(urlData <- gsub("DD/MM/YYYY", edate, urlData))
-```
-
-```{r, comment="",prompt=FALSE, echo=TRUE, eval=FALSE, error=TRUE,highlight=TRUE,message=FALSE,warning=FALSE}
-# abre navegador web (o acesso requer usuario e senha mediante registro)
-browseURL(urlData)
-#download.file(url = urlData, destfile = paste0("data/", stnid, ".txt"))
-```
-
-## Leitura de dados para demonstração de Manipulação de Caracteres
-
-R pode ler dados de uma variedade de fontes e em uma variedade de formatos. Por uma limitação de tempo, será mostrado como importar somente os dados que serão usados como exemplos.
-
-Exemplo de leitura de dados do [BDMEP-INMET](http://www.inmet.gov.br/portal/index.php?r=bdmep/bdmep).
-
-Os objetivos desse trecho de código são
-- encontrar a linha que contém o nome das variáveis meteorológicas (nome das colunas dos dados)
-- corrigir o nome das variáveis
-- substituir o nome das variáveis
-
-Para isso serão utilizadas as seguintes funções relacionadas a manipulação de strings: `readLines()`, `grep()`, `gsub()`,  `strsplit()`. 
-
-```{r, comment="",prompt=FALSE, echo=TRUE, eval=TRUE, error=TRUE,highlight=TRUE,message=FALSE,warning=FALSE}
-# pacotes necessários
-library(descr); library(doBy)
-# nome do arquivo
-(filename <- list.files("data", full.names = TRUE))
-(filename <- grep("83936", filename, value = TRUE))
-## linha com nome das variáveis
-x <- readLines(filename)
-head(x, 50)
-# rowheader <- toUTF8(rowheader)
-# linha com cabeçalho
-(rowheader <- grep("Data;Hora;", x))
-## extraindo cabecalho(h) e corrigindo se necessario
-tmp <- readLines(filename)
-(h <- grep("Data;Hora;", tmp, value = TRUE))
-## PROBLEMA: nomes das vars (VelocidadeVento e Insolacao) grudados
-(h2 <- gsub("VelocidadeVentoInsolacao;", "VelocidadeVento;Insolacao;", h))
-## transformando h de string para vetor (hvec)
-(hvec <- unlist(strsplit(h2, ";")))
-## correspondencia entre variveis originais e novos nomes
-## variaveis horarias do arquivo bruto baixado do inmet
-#    Estacao;Data;Hora;
-#    Precipitacao;TempBulboSeco;TempBulboUmido;TempMaxima;TempMinima;UmidadeRelativa;
-#    PressaoAtmEstacao;PressaoAtmMar;DirecaoVento;VelocidadeVentoInsolacao;Nebulosidade;
-#    Evaporacao Piche;Temp Comp Media;Umidade Relativa Media;Velocidade do Vento Media;
-## novos nomes para variaveis horarias
-vnames <- c("codigo", "Data","Hora",
-            "prec", "tar", "tw", "tmax", "tmin", "urx", 
-            "patm", "pnmm", "wd", "wsx", "n", "cc", "evap", "tcomp", "ur", "ws")
-varnames <-  recodeVar(as.character(hvec),
-                       src = as.list(as.character(hvec)), 
-                       tgt = as.list(vnames))
-varnames
-```
-
-Vamos extrair as coordenadas geográficas da estação.
-
-```{r, comment="",prompt=FALSE, echo=TRUE, eval=TRUE, error=TRUE,highlight=TRUE,message=FALSE,warning=FALSE}
-(lat <- grep("Latitude", tmp, value = TRUE))
- (lat <- as.numeric(unlist(strsplit(lat, ":"))[c(F, T)]))
-(lon <- grep("Longitude", tmp, value = TRUE))
- (lon <- as.numeric(unlist(strsplit(lon, ":"))[c(F, T)]))
-(alt <- grep("Altitude", tmp, value = TRUE))
- (alt <- as.numeric(unlist(strsplit(alt, ":"))[c(F, T)]))
-(coords <- c(lon, lat, alt))
-```
-
-# Datas e horas
-
-Datas e horas são referências temporais e indicam a ordem cronológica dos dados. Em climatologia dados passados na escala diária são suficientes para maioria das pesquisas. Em micrometeorologia é comum o uso de dados na escala sub-horária (até frações de segundo). 
-
-Datas e horas podem ser expressas em diferentes formatos o que  pode dificultar o reconhecimento e a sua manipulação. Quanto a manipulação frequentemente precisamos extrair componentes das datas  e horas.
-
-O R possui várias opções de classes de objetos e pacotes para o tratamento de datas e horas. As três classes principais são:
-
-+ `Date` (p.ex. 31/12/2000), para lidar somente com datas, p.ex.: `31/12/2000`.
-
-+ `POSIXct` e `POSIXt` (Date-Time), p.ex.: `31/12/2000 14:10:00`, para lidar com datas e horas
-
-
-## Formatando datas
-
-```{r, comment="",prompt=FALSE, echo=TRUE, eval=TRUE, error=TRUE,highlight=TRUE,message=FALSE,warning=FALSE}
-## data atual no computador
-(hoje <- Sys.Date())
-class(hoje)
-```
-
-Podemos manipular o formato de saída da data.
-
-```{r, comment="",prompt=FALSE, echo=TRUE, eval=TRUE, error=TRUE,highlight=TRUE,message=FALSE,warning=FALSE}
-format(hoje, "%d%b%Y")
-format(hoje, "%d/%m/%Y")
-format(hoje, "%d_%m_%Y.txt")
-format(hoje, "Hoje é %d de %B de %Y.")
-```
-
-Para saber sobre os formatos de data consulte `?strptime`.
-
-## Conversão de caracteres para `Date`
-
-```{r, comment="",prompt=FALSE, echo=TRUE, eval=TRUE, error=TRUE,highlight=TRUE,message=FALSE,warning=FALSE}
-d1 <- as.Date("2000-01-01")
-class(d1)
-# vetor de caracteres com datas no formato dia/mes/ano
-dts <-  c("2/2/2001", "04/4/2003", "03/03/2002", "5/05/2004", "1/1/2000")
-(datas <- as.Date(dts, format = "%d/%m/%Y"))
-class(datas)
-```
-
-## Extração de informações da data
-
-```{r, comment="",prompt=FALSE, echo=TRUE, eval=TRUE, error=TRUE,highlight=TRUE,message=FALSE,warning=FALSE}
-# sequencia de datas diarias
-datas_1d <- seq(from = as.Date("2000-01-01"), as.Date("2001-12-31"), by = "days")
-head(datas_1d, 32)
-tail(datas_1d, 32)
-library(lubridate)
-# ano
-year(datas_1d)
-# mês do ano
-unique(month(datas_1d))
-# dia do calendário civil
-table(day(datas_1d))
-# dia do ano
-unique(yday(datas_1d))
-# é bissexto
-leap_year(2001)
-table(leap_year(datas_1d))
-```
-
-## Conversão de caracteres para data (`date`) e hora (`time`)
-
-```{r, comment="",prompt=FALSE, echo=TRUE, eval=TRUE, error=TRUE,highlight=TRUE,message=FALSE,warning=FALSE}
-p <- as.POSIXct("2000-01-01 22:00:00")
-class(p)
-# vetores caracteres com informações de data e hora 
-datas <- c("02/27/92", "02/27/92", "01/14/92", "02/28/92", "02/01/92")
-horas <- c("23:03:20", "22:29:56", "01:03:30", "18:21:03", "16:56:26")
-# convertendo para formato padrão de data e hora do POSIXt
-x <- paste(datas, horas, sep = " ")
-## mesma operação usando as.POSIXct
-x_pxct <- as.POSIXct(x, format = "%m/%d/%y %H:%M:%S", tz = "GMT")
-x_pxct
-str(x_pxct)
-# data mínima e máxima do intervalo
-range(x_pxct)
-# duração do intervalo
-diff(range(x_pxct))
-```
-
-## Extração de informações de um objeto POSIX
-
-```{r, comment="",prompt=FALSE, echo=TRUE, eval=TRUE, error=TRUE,highlight=TRUE,message=FALSE,warning=FALSE}
-## sequencia de datas de meia-hora
-dhh <- seq(from = as.POSIXct("2001-12-28 01:30:00", tz = "GMT"),
-             to = as.POSIXct("2002-01-04 02:30:00", tz = "GMT"), 
-             by = "30 min")
-head(dhh)
-tail(dhh)
-hour(dhh)
-minute(dhh)
-second(dhh)
-```
-
-
-
+> Em março, numa quinta-feira, entre 21 e 23 horas.
