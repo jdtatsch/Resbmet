@@ -401,3 +401,6 @@ Meteorological Observations
  [R](https://cran.r-project.org/bin/linux/ubuntu/README).
  
  [RStudio](http://www.rstudio.com/ide/download/desktop).
+ 
+ 
+Proximo: [O Essencial sobre a linguagem R](https://rawgit.com/jdtatsch/Resbmet/master/1_Ressencial.html)
