@@ -6,7 +6,7 @@ transition: none
 font-family: 'Helvetica'
 css: my_style.css
 author: Jonatan Tatsch, UFSM
-date: Santa Maria, 16, Nov de 2015
+date: Santa Maria, 22, Nov de 2015
 
 </style>
 <div class="midcenter" style="margin-left:250px; margin-top:-50px;">
@@ -108,16 +108,24 @@ Por que o R?
 
 Por que o R?
 =======================
+<br/>  
+A meteorologia é 4D: 
 
-Ferramentas específicas para:
-
+```r
+meteorologia <- function(x, y, z, t){
+  ...muita coisa para caber em um slide...
+}
+```
+<br/>  
+Logo, requer ferramentas específicas para:
+<br/>  
 * dados espacias
-
-* séries temporais
-
+<br/>  
+* análise de séries temporais (climáticas)
+<br/>  
 * importação e ferramentas de GIS
-
-* leitura de dados em formatos específicos (netcdf, binários, ...)
+<br/>  
+* leitura de dados em formatos específicos (netcdf, binários, grib2...)
 
 
 
@@ -128,7 +136,7 @@ Por que o R?
 (se quiser mais motivos ainda ... assista o vídeo abaixo)
 
 <center>
-[![Por que o R MeetUp R IME-USP](http://img.youtube.com/vi/UgPX49gkby4/0.jpg)](http://www.youtube.com/watch?v=UgPX49gkby4 "Video Title")
+[![Por que o R? MeetUp R IME-USP](https://img.youtube.com/vi/UgPX49gkby4/0.jpg)](https://www.youtube.com/watch?v=UgPX49gkby4 "Video Title")
 <center>
 
 
@@ -136,9 +144,9 @@ Por que o R?
 RStudio
 =======
 
-[RStudio](http://www.rstudio.com/) é um ambiente de desenvolvimento integrado livre e de código aberto. 
+[RStudio](https://www.rstudio.com/) é um ambiente de desenvolvimento integrado livre e de código aberto. 
 
-![RStudio IDE](http://www.rstudio.com/images/screenshots/rstudio-ubuntu.png)
+![RStudio IDE](https://www.rstudio.com/images/screenshots/rstudio-ubuntu.png)
 
 -------------
 - Para Windos, Linux e Mac
@@ -162,7 +170,7 @@ Programação do curso
 =======================
 
 <br/>
-## &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;**Introdução ao Curso**
+## &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;Introdução ao Curso
 <br/>
 ## &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;[Instalando o R e o RStudio](https://rawgit.com/jdtatsch/Resbmet/master/0_Rinstall.html)
 <br/>
@@ -170,8 +178,14 @@ Programação do curso
 <br/>
 ## &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;Dia 2: Manipulação de dados
 
-Material do curso
+
 =======================
 <br/>
 <br/>
-<span style="color:black; font-size:1.25em;">Acesse https://github.com/jdtatsch/Resbmet</span>
+<br/>
+<br/>
+<br/>
+<br/>
+<br/>
+<br/>
+<span style="color:black; font-size:1.7em;">Material do curso https://github.com/jdtatsch/Resbmet</span>
