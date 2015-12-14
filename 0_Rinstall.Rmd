@@ -332,6 +332,8 @@ sessionInfo()
 
 * [getMet](https://cran.r-project.org/web/packages/getMet/index.html)	Get Meteorological Data for Hydrological Modeling
 
+* [worldmet](https://github.com/davidcarslaw/worldmet)	R package for accessing NOAA Integrated Surface Database (ISD) meteorological observations
+
 * [HelpersMG](https://cran.r-project.org/web/packages/HelpersMG/index.html)	Tools for Earth Meteorological Analysis
 
 * [meteo](https://cran.r-project.org/web/packages/meteo/index.html)	Spatio-Temporal Analysis and Mapping of 
