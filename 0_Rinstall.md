@@ -267,11 +267,13 @@ other attached packages:
 
 loaded via a namespace (and not attached):
  [1] magrittr_1.5    formatR_1.2     tools_3.2.2     htmltools_0.2.6
- [5] yaml_2.1.13     stringi_0.5-5   rmarkdown_0.7.3 stringr_1.0.0  
+ [5] yaml_2.1.13     stringi_1.0-1   rmarkdown_0.7.3 stringr_1.0.0  
  [9] digest_0.6.8    evaluate_0.7.2 
 ```
 
 # Lista de pacotes do R relacionados a meteorologia.
+
+* [mtsdi](https://cran.r-project.org/web/packages/mtsdi/) Imputação de dados de séries multivariadas; [link](http://www.sciencedirect.com/science/article/pii/S1352231014009145#) para o artigo;
 
 * [cmsaf](https://cran.r-project.org/web/packages/cmsaf/index.html) Tools for CM SAF Netcdf Data
 

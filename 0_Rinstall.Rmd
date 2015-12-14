@@ -300,6 +300,8 @@ sessionInfo()
 
 # Lista de pacotes do R relacionados a meteorologia.
 
+* [mtsdi](https://cran.r-project.org/web/packages/mtsdi/) Imputação de dados de séries multivariadas; [link](http://www.sciencedirect.com/science/article/pii/S1352231014009145#) para o artigo;
+
 * [cmsaf](https://cran.r-project.org/web/packages/cmsaf/index.html) Tools for CM SAF Netcdf Data
 
 * [RNCEP](https://cran.r-project.org/web/packages/RNCEP/index.html) Obtain, Organize, and Visualize NCEP Weather Data
